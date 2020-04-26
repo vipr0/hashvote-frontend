@@ -1,0 +1,10 @@
+.modal-image {
+    width: 120px;
+    margin-right: 32px;
+}
+
+.modal-description {
+    display: flex;
+    align-items: center;
+    margin-bottom: 32px;
+}
