@@ -1,20 +1,26 @@
 import React from "react";
-import { useHistory, Link } from "react-router-dom";
-import { Form, Input, Button, Row, Col, Card, Typography } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import { useHistory } from "react-router-dom";
+import { Row, Col, Card, Form, Typography, Input, Button, message } from "antd";
+import { LockOutlined } from "@ant-design/icons";
 import API from "../../utils/api";
 import PageLayout from "../../components/PageLayout";
 
 const { Title } = Typography;
 
-const LoginPage = () => {
+const SignupPage = ({ match }) => {
   const history = useHistory();
 
-  function login(values) {
-    API.login(values)
-      .then(() => history.push("/"))
-      .catch((err) => alert(err.message));
-  }
+  const signup = async (data) => {
+    try {
+      message.loading({ content: "Please wait", key: "activate" });
+      const result = await API.finishRegister(match.params.token, data);
+      console.log(result);
+      message.success({ content: result.message, key: "activate" });
+      history.push("/votings");
+    } catch (err) {
+      message.error({ content: err.message, key: "activate" });
+    }
+  };
 
   return (
     <PageLayout>
@@ -22,7 +28,7 @@ const LoginPage = () => {
         type="flex"
         justify="center"
         align="middle"
-        style={{ minHeight: "80vh" }}
+        style={{ minHeight: "90vh" }}
       >
         <Col>
           <Card>
@@ -32,45 +38,43 @@ const LoginPage = () => {
               initialValues={{
                 remember: true,
               }}
-              onFinish={login}
+              onFinish={signup}
               style={{ textAlign: "center" }}
             >
-              <Title level={4}>Log In</Title>
-              <Form.Item
-                name="email"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Username!",
-                  },
-                ]}
-              >
-                <Input
-                  prefix={<UserOutlined className="site-form-item-icon" />}
-                  placeholder="Email"
-                />
-              </Form.Item>
+              <Title level={4}>Finish registration</Title>
               <Form.Item
                 name="password"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Password!",
+                    message: "Please input your new password!",
                   },
                 ]}
               >
                 <Input
                   prefix={<LockOutlined className="site-form-item-icon" />}
                   type="password"
-                  placeholder="Password"
+                  placeholder="Your new password"
+                />
+              </Form.Item>
+              <Form.Item
+                name="passwordConfirm"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your new password again!",
+                  },
+                ]}
+              >
+                <Input
+                  prefix={<LockOutlined className="site-form-item-icon" />}
+                  type="password"
+                  placeholder="Your new password again"
                 />
               </Form.Item>
               <Form.Item>
-                <Link to="/forgot">Forgot password</Link>
-              </Form.Item>
-              <Form.Item>
                 <Button type="primary" htmlType="submit">
-                  Log in
+                  Sign up
                 </Button>
               </Form.Item>
             </Form>
@@ -81,4 +85,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;

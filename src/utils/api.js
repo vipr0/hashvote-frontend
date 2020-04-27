@@ -17,7 +17,8 @@ class API {
       body: data ? JSON.stringify(data) : null,
     });
     const json = await res.json();
-    if (!res.ok) throw new Error(json.message);
+    console.log(json);
+    if (json.status === "error") throw new Error(json.message);
     return json;
   }
 
@@ -35,7 +36,7 @@ class API {
     const res = await fetch(`${this.url}/api/v1/users/me/data`, {
       method: "PATCH",
       headers: { Authorization: `Bearer ${this.token}` },
-      body: photo
+      body: photo,
     });
     const json = await res.json();
     if (!res.ok) throw new Error(json.message);
@@ -58,6 +59,11 @@ class API {
     return json.result;
   }
 
+  async updateVoting(id, data) {
+    const json = await this.createRequest(`/votings/${id}`, "PATCH", data);
+    return json.message;
+  }
+
   async getUsers() {
     const json = await this.createRequest("/users");
     json.result.map((user, i) => (user.key = i));
@@ -77,8 +83,37 @@ class API {
       values,
       false
     );
-    Cookies.set("jwt", json.token);
-    Cookies.set("user", json.data.user);
+    this.setToken(json.token);
+    this.setUser(json.data.user);
+  }
+
+  async finishRegister(token, values) {
+    const json = await this.createRequest(
+      `/users/signup/${token}`,
+      "POST",
+      values,
+      false
+    );
+    this.setToken(json.token);
+    this.setUser(json.data.user);
+    return json;
+  }
+
+  async forgotPassword(data) {
+    const json = await this.createRequest(`/users/forgot`, "POST", data, false);
+    return json;
+  }
+
+  async resetPassword(token, data) {
+    const json = await this.createRequest(
+      `/users/reset/${token}`,
+      "POST",
+      data,
+      false
+    );
+    this.setToken(json.token);
+    this.setUser(json.data.user);
+    return json;
   }
 
   async logout() {
@@ -96,8 +131,14 @@ class API {
     return json;
   }
 
-  getUser() {
-    return Cookies.getJSON("user");
+  setUser(user) {
+    Cookies.set("user", user);
+    this.user = user;
+  }
+
+  setToken(token) {
+    Cookies.set("jwt", token);
+    this.token = token;
   }
 }
 
