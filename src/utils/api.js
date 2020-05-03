@@ -6,25 +6,23 @@ class API {
     this.url = "http://127.0.0.1:8080";
   }
 
-  addKeys(arr) {
-    return arr.map((value, i) => (value.key = i));
-  }
-
   async createRequest(route, parameters = {}) {
-    const res = await fetch(`${this.url}/api/v1${route}`, {
-      method: parameters.method || "GET",
+    const defaultParameters = {
+      method: "GET",
       headers: {
-        Authorization: !parameters.authorized
-          ? `Bearer ${getAuthToken()}`
-          : null,
-        "Content-Type": parameters.contentType || "application/json",
+        Authorization: `Bearer ${getAuthToken()}`,
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(parameters.data) || null,
+      body: null,
+    };
+
+    const res = await fetch(`${this.url}/api/v1${route}`, {
+      ...defaultParameters,
+      ...parameters,
     });
 
     const json = await res.json();
     if (json.status === "error") throw new Error(json.message);
-    // if (json.result.length) json.result = this.addKeys(json.result);
     return json;
   }
 
@@ -32,8 +30,8 @@ class API {
   // USERS
   // ====================================
 
-  async createUser(data) {
-    return await this.createRequest(`/users`, { method: "POST", data });
+  async createUser(body) {
+    return await this.createRequest(`/users`, { method: "POST", body });
   }
 
   async getUsers() {
@@ -44,8 +42,8 @@ class API {
     return await this.createRequest(`/users/${id}`);
   }
 
-  async updateUser(id, data) {
-    return await this.createRequest(`/users/${id}`, { method: "PATCH", data });
+  async updateUser(id, body) {
+    return await this.createRequest(`/users/${id}`, { method: "PATCH", body });
   }
 
   async deleteUser(id) {
@@ -60,18 +58,18 @@ class API {
     return await this.createRequest("/users/me");
   }
 
-  async updateMe(data, type) {
-    return await this.createRequest(`/users/me/${type}`, {
+  async changeProfileData(body) {
+    return await this.createRequest(`/users/me/data`, {
       method: "PATCH",
-      data,
+      headers: { Authorization: `Bearer ${getAuthToken()}` },
+      body,
     });
   }
 
-  async uploadPhoto(photo) {
-    return await this.createRequest("/users/me/data", {
+  async changeProfilePassword(body) {
+    return await this.createRequest(`/users/me/password`, {
       method: "PATCH",
-      contentType: "multipart/form-data",
-      data: photo,
+      body,
     });
   }
 
@@ -91,15 +89,15 @@ class API {
     return await this.createRequest(`/votings/${id}/contractinfo`);
   }
 
-  async voteForCandidate(votingID, data) {
+  async voteForCandidate(votingID, body) {
     return await this.createRequest(`/votings/${votingID}`, {
       method: "POST",
-      data,
+      body,
     });
   }
 
-  async createVoting(data) {
-    return await this.createRequest("/votings", { method: "PATCH", data });
+  async createVoting(body) {
+    return await this.createRequest("/votings", { method: "PATCH", body });
   }
 
   async updateVoting(id, data) {
@@ -119,18 +117,18 @@ class API {
     await this.createRequest(`/votings/${id}`, { method: "DELETE" });
   }
 
-  async addUsersToVoting(id, file) {
+  async addUsersToVoting(id, body) {
     return await this.createRequest(`votings/${id}/users`, {
       method: "POST",
-      contentType: "multipart/form-data",
-      data: file,
+      headers: { Authorization: `Bearer ${getAuthToken()}` },
+      body,
     });
   }
 
-  async startVoting(votingID, data) {
+  async startVoting(votingID, body) {
     return await this.createRequest(`/votings/${votingID}/start`, {
       method: "POST",
-      data,
+      body,
     });
   }
 
@@ -138,35 +136,35 @@ class API {
   // AUTHETICATION
   // ====================================
 
-  async login(data) {
+  async login(body) {
     return await this.createRequest("/users/login", {
       method: "POST",
-      data,
-      authorized: false,
+      headers: {},
+      body,
     });
   }
 
-  async finishRegister(token, data) {
+  async finishRegister(token, body) {
     return await this.createRequest(`/users/signup/${token}`, {
       method: "POST",
-      data,
-      authorized: false,
+      headers: {},
+      body,
     });
   }
 
-  async forgotPassword(data) {
+  async forgotPassword(body) {
     return await this.createRequest(`/users/forgot`, {
       method: "POST",
-      data,
-      authorized: false,
+      headers: {},
+      body,
     });
   }
 
-  async resetPassword(token, data) {
+  async resetPassword(token, body) {
     return await this.createRequest(`/users/reset/${token}`, {
       method: "POST",
-      data,
-      authorized: false,
+      headers: {},
+      body,
     });
   }
 }

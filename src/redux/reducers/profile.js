@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT, GET_CURRENT_USER } from "../constants";
+import { LOGIN, LOGOUT, GET_CURRENT_USER, UPDATE_PROFILE } from "../constants";
 
 const initialState = {};
 
@@ -17,6 +17,11 @@ export default (state = initialState, action) => {
         data: null,
       };
     case GET_CURRENT_USER:
+      return {
+        ...state,
+        data: action.payload,
+      };
+    case UPDATE_PROFILE:
       return {
         ...state,
         data: action.payload,

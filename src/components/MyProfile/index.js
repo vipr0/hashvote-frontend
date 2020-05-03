@@ -3,7 +3,6 @@ import { Typography, Row, Col } from "antd";
 import { connect } from "react-redux";
 import Loader from "../Loader";
 import ChangePasswordCard from "./ChangePasswordCard";
-import ChangeAvatarCard from "./ChangeAvatarCard";
 import ChangeDataCard from "./ChangeDataCard";
 import protectedComponent from "../protectedComponent";
 
@@ -20,9 +19,6 @@ const MyProfile = ({ loading, user }) => {
       <Row gutter={[32, 16]}>
         <Col span={24} sm={12}>
           <ChangeDataCard name={user.name} email={user.email} />
-        </Col>
-        <Col span={24} sm={12}>
-          <ChangeAvatarCard />
         </Col>
         <Col span={24} sm={12}>
           <ChangePasswordCard />

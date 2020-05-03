@@ -1,16 +1,24 @@
 import React from "react";
-import { Form, Input, Button, Card } from "antd";
+import { Form, Input, Button, Card, Upload } from "antd";
 import { connect } from "react-redux";
+import { changeProfileData } from "../../redux/actions/profile";
+import { UploadOutlined } from "@ant-design/icons";
 
-const mapDispathToProps = (dispatch) => ({
-  changeData: () => {},
+const mapStateToProps = (state) => ({
+  loading: state.app.loading,
 });
 
-const ChangeDataCard = ({ name, email }) => {
+const mapDispathToProps = (dispatch) => ({
+  changeProfileData: (data) => {
+    dispatch(changeProfileData(data));
+  },
+});
+
+const ChangeDataCard = ({ name, email, changeProfileData, loading }) => {
   return (
     <Card title="Change your data" bordered={false}>
       <Form
-        // onFinish={(data) => updateData(data, "data")}
+        onFinish={changeProfileData}
         initialValues={{ name, email }}
         layout="vertical"
       >
@@ -29,8 +37,21 @@ const ChangeDataCard = ({ name, email }) => {
         >
           <Input placeholder="Please input your email" />
         </Form.Item>
+        <Form.Item name="photo" label="Avatar" valuePropName="photo">
+          <Upload
+            name="photo"
+            listType="picture"
+            multiple={false}
+            beforeUpload={() => false}
+            accept="image/*"
+          >
+            <Button>
+              <UploadOutlined /> Click to select photo
+            </Button>
+          </Upload>
+        </Form.Item>
         <Form.Item style={{ textAlign: "center" }}>
-          <Button type="primary" htmlType="submit">
+          <Button loading={loading} type="primary" htmlType="submit">
             Update Data
           </Button>
         </Form.Item>
@@ -39,4 +60,4 @@ const ChangeDataCard = ({ name, email }) => {
   );
 };
 
-export default connect(null, mapDispathToProps)(ChangeDataCard);
+export default connect(mapStateToProps, mapDispathToProps)(ChangeDataCard);
