@@ -1,12 +1,16 @@
 import React from "react";
 import { Form, Input, Button, Card } from "antd";
+import { connect } from "react-redux";
+import { changeProfilePassword } from "../../redux/actions/profile";
 
-const ChangePasswordCard = () => {
+const mapDispatchToProps = (dispatch) => ({
+  changeProfilePassword: (data) => dispatch(changeProfilePassword(data)),
+});
+
+const ChangePasswordCard = ({ changeProfilePassword }) => {
   return (
     <Card title="Change your password" bordered={false}>
-      <Form 
-      // onFinish={(data) => updateData(data, "password")} 
-      layout="vertical">
+      <Form onFinish={changeProfilePassword} layout="vertical">
         <Form.Item
           name="password"
           label="Current password"
@@ -50,4 +54,4 @@ const ChangePasswordCard = () => {
   );
 };
 
-export default ChangePasswordCard;
+export default connect(null, mapDispatchToProps)(ChangePasswordCard);

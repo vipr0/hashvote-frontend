@@ -19,9 +19,11 @@ class API {
     const res = await fetch(`${this.url}/api/v1${route}`, {
       ...defaultParameters,
       ...parameters,
+      body: JSON.stringify(parameters.body) || null,
     });
 
     const json = await res.json();
+    if (json.status === "error") console.log(json.message);
     if (json.status === "error") throw new Error(json.message);
     return json;
   }

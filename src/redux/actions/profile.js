@@ -88,7 +88,7 @@ export const changeProfileData = (data) => async (dispatch) => {
     formData.append("name", data.name);
     formData.append("email", data.email);
     const response = await API.changeProfileData(formData);
-
+    
     dispatch({ type: UPDATE_PROFILE, payload: response.result });
     dispatch(showMessage("success", response.message));
   } catch (error) {
