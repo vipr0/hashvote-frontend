@@ -1,5 +1,10 @@
 import React from "react";
 import { Form, Input, Button, Card } from "antd";
+import { connect } from "react-redux";
+
+const mapDispathToProps = (dispatch) => ({
+  changeData: () => {},
+});
 
 const ChangeDataCard = ({ name, email }) => {
   return (
@@ -34,4 +39,4 @@ const ChangeDataCard = ({ name, email }) => {
   );
 };
 
-export default ChangeDataCard;
+export default connect(null, mapDispathToProps)(ChangeDataCard);

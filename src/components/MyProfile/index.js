@@ -10,7 +10,7 @@ import protectedComponent from "../protectedComponent";
 const { Title } = Typography;
 
 const mapStateToProps = (state) => ({
-  user: state.currentUser.data,
+  user: state.profile.data,
 });
 
 const MyProfile = ({ loading, user }) => {

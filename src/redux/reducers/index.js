@@ -1,5 +1,5 @@
 import appReducer from "./app";
-import authReducer from "./auth";
+import profileReducer from "./profile";
 import votingsReducer from "./votings";
 import votingReducer from "./voting";
 import usersReducer from "./users";
@@ -8,7 +8,7 @@ import { connectRouter } from "connected-react-router";
 
 export default (history) =>
   combineReducers({
-    currentUser: authReducer,
+    profile: profileReducer,
     app: appReducer,
     users: usersReducer,
     votings: votingsReducer,

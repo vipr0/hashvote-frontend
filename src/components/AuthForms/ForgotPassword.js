@@ -2,7 +2,7 @@ import React from "react";
 import { Form, Input, Button, Card, Typography } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
-import { forgotPassword } from "../../redux/actions/auth";
+import { forgotPassword } from "../../redux/actions/profile";
 
 const { Title } = Typography;
 

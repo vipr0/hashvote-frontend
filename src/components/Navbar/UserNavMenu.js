@@ -8,7 +8,7 @@ import {
 } from "@ant-design/icons";
 import API from "../../utils/api";
 import { connect } from "react-redux";
-import { logOut } from "../../redux/actions/auth";
+import { logOut } from "../../redux/actions/profile";
 
 const { SubMenu } = Menu;
 

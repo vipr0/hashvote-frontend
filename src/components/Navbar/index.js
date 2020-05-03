@@ -8,7 +8,7 @@ import { connect } from "react-redux";
 
 const { Header } = Layout;
 
-const mapStateToProps = (state) => ({ user: state.currentUser.data });
+const mapStateToProps = (state) => ({ user: state.profile.data });
 
 const notAuthenticatedLayout = () => (
   <div className="login-button">

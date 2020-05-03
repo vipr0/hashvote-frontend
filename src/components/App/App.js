@@ -3,7 +3,7 @@ import { Switch, Redirect, Route } from "react-router-dom";
 import { connect } from "react-redux";
 import { message } from "antd";
 import "./App.css";
-import { getCurrentUser } from "../../redux/actions/auth";
+import { getCurrentUser } from "../../redux/actions/profile";
 import { Login, SignUp, ResetPassword, ForgotPassword } from "../AuthForms";
 import VotingsList from "../VotingsList";
 import VotingDetails from "../VotingDetails";

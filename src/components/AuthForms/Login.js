@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Form, Input, Button, Card, Typography } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
-import { logIn } from "../../redux/actions/auth";
+import { logIn } from "../../redux/actions/profile";
 
 const { Title } = Typography;
 
