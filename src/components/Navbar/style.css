@@ -1,0 +1,22 @@
+.site-header {
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    padding: 0
+}
+
+.site-logo {
+    display: flex;
+    padding: 0 20px;
+    align-content: center;
+}
+
+.site-logo-image {
+    width: 36px;
+    margin-right: 20px;
+}
+
+.login-button {
+    float: right;
+    margin: 0 20px;
+}

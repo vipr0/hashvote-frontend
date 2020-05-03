@@ -1,37 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { Table, Button, Modal, Typography, Row, Col } from "antd";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
+import React, { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
+import { Table, Button, Typography, Row, Col, Tag, Popconfirm } from "antd";
 import API from "../../utils/api";
+import CreateUserModal from "../CreateUserModal";
 
-const { confirm } = Modal;
 const { Title } = Typography;
 
 const UsersTable = () => {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const history = useHistory();
 
-  useEffect(() => {
-    API.getUsers().then((data) => {
-      setUsers(data);
-      setIsLoading(false);
-    });
-  }, []);
-
-  const showDeleteConfirm = () => {
-    confirm({
-      title: "Are you sure delete this user?",
-      icon: <ExclamationCircleOutlined />,
-      content: "This action can`t be undone!",
-      okText: "Yes",
-      okType: "danger",
-      cancelText: "No",
-      onOk() {
-        console.log("OK");
-      },
-    });
-  };
+  // useEffect(() => {
+  //   API.getUsers().then((data) => {
+  //     setUsers(data);
+  //     setIsLoading(false);
+  //   });
+  // }, [result]);
 
   const columns = [
     {
@@ -40,6 +24,9 @@ const UsersTable = () => {
       key: "name",
       width: 150,
       sorter: (a, b) => a.name.length - b.name.length,
+      render: (name, record) => (
+        <Link to={`/admin/users/${record._id}`}>{name}</Link>
+      ),
     },
     {
       title: "Email",
@@ -69,17 +56,35 @@ const UsersTable = () => {
       dataIndex: "isVerified",
       key: "isVerified",
       width: 100,
+      render: (value) =>
+        value ? <Tag color="success">Yes</Tag> : <Tag color="error">No</Tag>,
+      filters: [
+        {
+          text: "Yes",
+          value: true,
+        },
+        {
+          text: "No",
+          value: false,
+        },
+      ],
+      onFilter: (value, user) => user.isVerified === value,
     },
     {
       title: "Action",
       key: "action",
       width: 100,
       render: (text, record) => (
-        <span>
-          <Button onClick={showDeleteConfirm} danger shape="round">
-            Delete
+        <Popconfirm
+          title="Are you sure delete this task?"
+          onConfirm={() => API.deleteUser(record._id)}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button key="3" type="danger" >
+            Delete{" "}
           </Button>
-        </span>
+        </Popconfirm>
       ),
     },
   ];
@@ -91,16 +96,18 @@ const UsersTable = () => {
           <Title>Table of users</Title>
         </Col>
         <Col span={24} md={12} align="end">
-          <Button type="primary">Create new user</Button>
+          <Button
+            // onClick={() => dispatch({ type: "SHOW", window: "createUser" })}
+            type="primary"
+          >
+            Create new user
+          </Button>
         </Col>
       </Row>
 
+      <CreateUserModal />
+
       <Table
-        onRow={(rec, rowIndex) => {
-          return {
-            onClick: (event) => history.push(`/admin/users/${rec.id}`),
-          };
-        }}
         dataSource={users}
         columns={columns}
         loading={isLoading}

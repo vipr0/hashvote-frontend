@@ -1,0 +1,13 @@
+.voting-info {
+  margin: 32px 0;
+}
+
+.buttons-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-token-input {
+  margin-bottom: 24px;
+}

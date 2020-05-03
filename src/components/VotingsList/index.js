@@ -1,21 +1,17 @@
 import { Link } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Typography, Card, Row, Col } from "antd";
-import API from "../../utils/api";
 import Loader from "../Loader";
+import { connect } from "react-redux";
+import { getAllVotings } from "../../redux/actions/votings";
+import protectedComponent from "../protectedComponent";
 
 const { Title } = Typography;
 const { Meta } = Card;
 
-const VotingsList = () => {
-  const [loading, setIsLoading] = useState(true);
-  const [votings, setVotings] = useState();
-
+const VotingsList = ({ votings, loading, getAllVotings }) => {
   useEffect(() => {
-    API.getVotings().then((data) => {
-      setVotings(data);
-      setIsLoading(false);
-    });
+    getAllVotings();
   }, []);
 
   return (
@@ -27,10 +23,13 @@ const VotingsList = () => {
             <Col key={i} span={24} md={8} lg={6}>
               <Card
                 hoverable
-                style={{ height: 144 }}
                 actions={[<Link to={`/votings/${_id}`}>Go to voting</Link>]}
               >
-                <Meta title={title} description={description} />
+                <Meta
+                  title={title}
+                  description={description}
+                  style={{ overflow: "hidden", height: 76 }}
+                />
               </Card>
             </Col>
           ))}
@@ -40,4 +39,15 @@ const VotingsList = () => {
   );
 };
 
-export default VotingsList;
+const mapStateToProps = (state) => ({
+  votings: state.votings.data,
+  loading: state.votings.loading,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getAllVotings: () => dispatch(getAllVotings()),
+});
+
+export default protectedComponent(
+  connect(mapStateToProps, mapDispatchToProps)(VotingsList)
+);

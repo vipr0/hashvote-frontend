@@ -1,24 +1,31 @@
 import React from "react";
 import { Button, Form, Select, Input, Typography } from "antd";
 import ModalWrapper from "../ModalWrapper";
-import API from "../../utils/api";
 import RaiseHand from "../../assets/raise-hand.svg";
 import "./style.css";
 
 const { Option } = Select;
 const { Title } = Typography;
 
-const VoteModal = ({ visible, votingID, candidates, handleHide }) => {
-  const [form] = Form.useForm();
+const VoteModal = ({ loading, visible, votingID, candidates, handleHide }) => {
+  const handleRequest = async (data) => {
+    // try {
+    //   dispatch({ type: "LOADING" });
+    //   const result = await API.voteForCandidate(data);
+    //   dispatch({ type: "SUCCESS", description: result.message });
+    // } catch (error) {
+    //   dispatch({ type: "ERROR", description: error.message });
+    // }
+  };
 
-  const renderForm = (handleRequest, loading) => {
-    return (
+  return (
+    <ModalWrapper>
       <div>
         <div className="modal-description">
           <img src={RaiseHand} alt="Raise hand" className="modal-image" />
           <Title level={3}>Choose you candidate and enter your token</Title>
         </div>
-        <Form form={form} onFinish={handleRequest}>
+        <Form onFinish={handleRequest}>
           <Form.Item
             name="candidate"
             label="Candidate"
@@ -49,26 +56,7 @@ const VoteModal = ({ visible, votingID, candidates, handleHide }) => {
           </Form.Item>
         </Form>
       </div>
-    );
-  };
-
-  const createRequest = async (values) => {
-    const fields = await form.validateFields();
-    const result = await API.voteForCandidate(votingID, fields);
-    return {
-      status: "success",
-      title: "You have been succesfully voted",
-      description: `This is hash of transaction: ${result.result.tx}`,
-    };
-  };
-
-  return (
-    <ModalWrapper
-      visible={visible}
-      handleHide={handleHide}
-      modalForm={renderForm}
-      createRequest={createRequest}
-    />
+    </ModalWrapper>
   );
 };
 

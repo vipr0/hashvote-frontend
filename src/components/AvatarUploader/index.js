@@ -33,7 +33,6 @@ export default class AvatarUploader extends Component {
       return;
     }
     if (info.file.status === "done") {
-      // Get this url from response in real world.
       getBase64(info.file.originFileObj, (imageUrl) =>
         this.setState({
           imageUrl,
@@ -43,15 +42,10 @@ export default class AvatarUploader extends Component {
     }
   };
 
-  async uploadPhoto({ data, file, filename, onError, onSuccess }) {
+  async uploadPhoto({ file, filename, onError, onSuccess }) {
     message.loading({ content: "Uploading your photo...", key: "update" });
 
     const formData = new FormData();
-    if (data) {
-      Object.keys(data).forEach((key) => {
-        formData.append(key, data[key]);
-      });
-    }
     formData.append(filename, file);
 
     API.uploadPhoto(formData)

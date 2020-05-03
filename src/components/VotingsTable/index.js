@@ -1,41 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { Table, Button, Modal, Typography, Row, Col } from "antd";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
+import React, { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
+import { Table, Button, Typography, Row, Col, Popconfirm } from "antd";
+import moment from "moment";
+
 import API from "../../utils/api";
 import CreateVotingModal from "../CreateVotingModal";
-import ModalWrapper from "../ModalWrapper";
 
-const { confirm } = Modal;
 const { Title } = Typography;
 
 const VotingsTable = () => {
   const [votings, setVotings] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const history = useHistory();
 
-  useEffect(() => {
-    API.getVotings().then((data) => {
-      console.log(data);
-      setVotings(data);
-      setIsLoading(false);
-    });
-  }, []);
-
-  const showDeleteConfirm = () => {
-    confirm({
-      title: "Are you sure delete this user?",
-      icon: <ExclamationCircleOutlined />,
-      content: "This action can`t be undone!",
-      okText: "Yes",
-      okType: "danger",
-      cancelText: "No",
-      onOk() {
-        console.log("OK");
-      },
-    });
-  };
+  // useEffect(() => {
+  //   API.getVotings().then((data) => {
+  //     console.log(data);
+  //     setVotings(data);
+  //     setIsLoading(false);
+  //   });
+  // }, [state.result]);
 
   const columns = [
     {
@@ -44,6 +27,9 @@ const VotingsTable = () => {
       key: "title",
       width: 150,
       sorter: (a, b) => a.title.length - b.title.length,
+      render: (title, record) => (
+        <Link to={`/admin/votings/${record._id}`}>{title}</Link>
+      ),
     },
     {
       title: "Description",
@@ -56,48 +42,50 @@ const VotingsTable = () => {
       dataIndex: "createdAt",
       key: "createdAt",
       width: 100,
+      render: (record) =>
+        moment(record).format("MMMM Do YYYY, HH:mm:ss"),
+      sorter: (a, b) => {
+        console.log(a);
+        return a.createdAt.length - b.createdAt.length;
+      },
     },
     {
       title: "Action",
       key: "action",
       width: 100,
       render: (text, record) => (
-        <span>
-          <Button onClick={showDeleteConfirm} danger shape="round">
-            Delete
+        <Popconfirm
+          title="Are you sure delete this voting?"
+          onConfirm={() => API.deleteVoting(record._id)}
+          okText="Yes"
+          cancelText="No"
+        >
+          <Button key="3" type="danger">
+            Delete{" "}
           </Button>
-        </span>
+        </Popconfirm>
       ),
     },
   ];
 
   return (
     <div>
-      <ModalWrapper
-        visible={modalVisible}
-        handleHide={() => setModalVisible(false)}
-      >
-        <CreateVotingModal />
-      </ModalWrapper>
-
+      {/* <CreateVotingModal /> */}
       <Row align="middle">
         <Col span={24} md={12}>
-          <Title>Table of voters</Title>
+          <Title>Table of votings</Title>
         </Col>
 
         <Col span={24} md={12} align="end">
-          <Button onClick={() => setModalVisible(true)} type="primary">
+          <Button 
+          // onClick={() => dispatch({ type: "SHOW" })} 
+          type="primary">
             Create new voting
           </Button>
         </Col>
       </Row>
 
       <Table
-        onRow={(rec, rowIndex) => {
-          return {
-            onClick: (event) => history.push(`/admin/votings/${rec._id}`),
-          };
-        }}
         dataSource={votings}
         columns={columns}
         loading={isLoading}

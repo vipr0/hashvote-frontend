@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { Modal, Button, Result } from "antd";
+import React from "react";
+import { Button, Result, Modal } from "antd";
 
-const ModalWrapper = ({ visible, handleHide, children }) => {
-  const [loading, setIsLoading] = useState(false);
-  const [result, setResult] = useState({});
+const ModalWrapper = ({ result, visible, children, title }) => {
+  const handleHide = () => {
+    // dispatch({ type: "HIDE" });
+  };
 
-  const handleClose = () => {
-    handleHide();
-    setResult({});
+  const handleRetry = () => {
+    // dispatch({ type: "RETRY" });
   };
 
   const renderResult = () => {
@@ -16,42 +16,16 @@ const ModalWrapper = ({ visible, handleHide, children }) => {
     return (
       <div>
         <Result status={status} title={title} subTitle={description} />
-        <Button
-          onClick={status === "error" ? () => setResult({}) : handleClose}
-        >
-          {status === "error" ? "Retry" : "Close"}
+        <Button onClick={status === "success" ? handleHide : handleRetry}>
+          {status === "success" ? "Close" : "Retry"}
         </Button>
       </div>
     );
   };
 
-  const handleRequest = async (requestFunction, values) => {
-    try {
-      setIsLoading(true);
-      const result = await requestFunction(values);
-
-      setResult(result);
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-      setResult({
-        status: "error",
-        title: "Oops! There is an error",
-        description: error.message,
-      });
-    }
-  };
-
   return (
-    <Modal
-      visible={visible}
-      title="Vote for a candidate"
-      onCancel={handleHide}
-      footer={null}
-    >
-      {result.status
-        ? renderResult()
-        : React.cloneElement(children, { handleRequest, loading })}
+    <Modal visible={visible} title={title} onCancel={handleHide} footer={null}>
+      {result.status ? renderResult() : children}
     </Modal>
   );
 };

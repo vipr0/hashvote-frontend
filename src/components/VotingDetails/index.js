@@ -1,109 +1,74 @@
-import React, { useEffect, useState } from "react";
-import { Typography, Button, Progress, Row, Col, Card, Statistic } from "antd";
-import API from "../../utils/api";
+import React, { useEffect } from "react";
+import { Typography, Button, Row, Col } from "antd";
+import { connect } from "react-redux";
+import { useParams } from "react-router-dom";
 import Loader from "../Loader";
-import "./style.css";
 import VoteModal from "../VoteModal";
+import VotingDecription from "./VotingDecription";
+import VotingResult from "./VotingResult";
+import VotingInfo from "./VotingInfo";
+import { getVoting } from "../../redux/actions/voting";
+import protectedComponent from "../protectedComponent";
 
-const { Title, Paragraph } = Typography;
-const { Countdown } = Statistic;
+const { Title } = Typography;
 
-const VotingDetails = ({ match }) => {
-  const [votingDB, setVotingDB] = useState({});
-  const [votingContract, setVotingContract] = useState({});
-  const [loadingDB, setIsLoadingDB] = useState(true);
-  const [loadingContract, setIsLoadingContract] = useState(true);
-  const [modalVisible, setModalIsVisible] = useState(false);
-
-  useEffect(() => {
-    API.getVotingDB(match.params.votingId)
-      .then((data) => {
-        setVotingDB(data);
-        setIsLoadingDB(false);
-      })
-      .catch((err) => alert(err.message));
-  }, []);
+const VotingDetails = ({ getVoting, dataFromDB, dataFromContract }) => {
+  let { votingId } = useParams();
 
   useEffect(() => {
-    API.getVotingContract(match.params.votingId)
-      .then((data) => {
-        setVotingContract(data);
-        setIsLoadingContract(false);
-      })
-      .catch((err) => alert(err.message));
+    getVoting(votingId);
   }, []);
 
   return (
-    <Loader loading={loadingDB}>
-      <Row>
-        <Col span={24} md={12} className="col-margin">
-          <Title level={2}>{votingDB.title}</Title>
+    <Loader loading={dataFromDB.loading && dataFromContract.loading}>
+      {/* <VoteModal /> */}
+
+      <Row gutter={[32, 32]}>
+        <Col span={24} md={12}>
+          <Title level={2}>{dataFromDB.title}</Title>
           <Button
-            disabled={!votingDB.isStarted}
+            disabled={dataFromDB.isStarted}
             type="primary"
-            onClick={() => setModalIsVisible(true)}
+            // onClick={() => dispatch({type: 'SHOW', window: 'vote'})}
           >
             Vote for candidate
           </Button>
         </Col>
-        <Col span={24} md={12} className="col-margin">
-          {votingContract.votingStarted ? (
-            <Card loading={loadingContract}>
-              <Row align="middle" justify="space-between">
-                <Title level={4}>Time to end</Title>
-                <Countdown value={votingDB.endTime} format="HH:mm:ss" />
-              </Row>
-              <Row align="middle" justify="space-between">
-                <Col span={12}>
-                  <Title level={4}>Tournout</Title>
-                </Col>
-                <Col span={12}>
-                  <Progress
-                    percent={
-                      (votingContract.alreadyVoted /
-                        votingContract.votersTotal) *
-                      100
-                    }
-                    strokeColor={{
-                      "0%": "#108ee9",
-                      "100%": "#87d068",
-                    }}
-                  />
-                </Col>
-              </Row>
-            </Card>
-          ) : (
-            <Card>
-              <Title level={4}>Voting is not yet started</Title>
-            </Card>
-          )}
+        <Col span={24} md={12}>
+          <VotingInfo
+            loading={dataFromDB.loading && dataFromContract.loading}
+            started={dataFromDB.isStarted}
+            endTime={dataFromDB.endTime}
+            alreadyVoted={dataFromContract.alreadyVoted}
+            votersTotal={dataFromContract.votersTotal}
+          />
         </Col>
       </Row>
-      <Row>
-        <Col span={24} md={12} className="col-margin">
-          <Title level={2}>Description</Title>
-          <Paragraph>{votingDB.description}</Paragraph>
+      <Row gutter={[32, 32]}>
+        <Col span={24} md={12}>
+          <VotingDecription description={dataFromDB.description} />
         </Col>
-        <Col span={24} md={12} className="col-margin">
-          <Card loading={loadingContract}>
-            <Title level={3}>Candidates</Title>
-            {votingContract.voteResult
-              ? votingContract.voteResult.map((candidate, i) => (
-                  <div key={i}>
-                    <Title level={4}>{`${i + 1}. ${candidate.name}`}</Title>
-                    <Progress
-                      percent={Math.round(
-                        (candidate.votesNum / votingContract.alreadyVoted) * 100
-                      )}
-                    />
-                  </div>
-                ))
-              : null}
-          </Card>
+        <Col span={24} md={12}>
+          <VotingResult
+            loading={dataFromDB.loading && dataFromContract.loading}
+            result={dataFromContract.voteResult}
+            allVotes={dataFromContract.votersTotal}
+          />
         </Col>
       </Row>
     </Loader>
   );
 };
 
-export default VotingDetails;
+const mapStateToProps = (state) => ({
+  dataFromDB: state.voting.dataFromDB,
+  dataFromContract: state.voting.dataFromContract,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getVoting: (id) => dispatch(getVoting(id)),
+});
+
+export default protectedComponent(
+  connect(mapStateToProps, mapDispatchToProps)(VotingDetails)
+);
