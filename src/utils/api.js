@@ -1,9 +1,14 @@
 import { getAuthToken } from "./cookies";
+import { v4 as uuidv4 } from "uuid";
 
 class API {
   constructor() {
     // this.url = "http://64.227.124.43:3000";
     this.url = "http://127.0.0.1:8080";
+  }
+
+  addUniqueKeys(arr) {
+    return arr.map((elem) => ({ ...elem, key: uuidv4() }));
   }
 
   async createRequest(route, parameters = {}) {
@@ -19,12 +24,13 @@ class API {
     const res = await fetch(`${this.url}/api/v1${route}`, {
       ...defaultParameters,
       ...parameters,
-      body: JSON.stringify(parameters.body) || null,
     });
 
-    const json = await res.json();
-    if (json.status === "error") console.log(json.message);
+    if (res.status === 204) return null;
+
+    let json = await res.json();
     if (json.status === "error") throw new Error(json.message);
+    if (json.result.length) json.result = this.addUniqueKeys(json.result);
     return json;
   }
 
@@ -33,7 +39,10 @@ class API {
   // ====================================
 
   async createUser(body) {
-    return await this.createRequest(`/users`, { method: "POST", body });
+    return await this.createRequest(`/users`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
   }
 
   async getUsers() {
@@ -45,7 +54,10 @@ class API {
   }
 
   async updateUser(id, body) {
-    return await this.createRequest(`/users/${id}`, { method: "PATCH", body });
+    return await this.createRequest(`/users/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify(body),
+    });
   }
 
   async deleteUser(id) {
@@ -71,7 +83,7 @@ class API {
   async changeProfilePassword(body) {
     return await this.createRequest(`/users/me/password`, {
       method: "PATCH",
-      body,
+      body: JSON.stringify(body),
     });
   }
 
@@ -94,18 +106,21 @@ class API {
   async voteForCandidate(votingID, body) {
     return await this.createRequest(`/votings/${votingID}`, {
       method: "POST",
-      body,
+      body: JSON.stringify(body),
     });
   }
 
   async createVoting(body) {
-    return await this.createRequest("/votings", { method: "PATCH", body });
+    return await this.createRequest("/votings", {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
   }
 
-  async updateVoting(id, data) {
+  async updateVoting(id, body) {
     return await this.createRequest(`/votings/${id}`, {
       method: "PATCH",
-      data,
+      body: JSON.stringify(body),
     });
   }
 
@@ -130,7 +145,7 @@ class API {
   async startVoting(votingID, body) {
     return await this.createRequest(`/votings/${votingID}/start`, {
       method: "POST",
-      body,
+      body: JSON.stringify(body),
     });
   }
 
@@ -142,7 +157,7 @@ class API {
     return await this.createRequest("/users/login", {
       method: "POST",
       headers: {},
-      body,
+      body: JSON.stringify(body),
     });
   }
 
@@ -150,7 +165,7 @@ class API {
     return await this.createRequest(`/users/signup/${token}`, {
       method: "POST",
       headers: {},
-      body,
+      body: JSON.stringify(body),
     });
   }
 
@@ -158,7 +173,7 @@ class API {
     return await this.createRequest(`/users/forgot`, {
       method: "POST",
       headers: {},
-      body,
+      body: JSON.stringify(body),
     });
   }
 
@@ -166,7 +181,7 @@ class API {
     return await this.createRequest(`/users/reset/${token}`, {
       method: "POST",
       headers: {},
-      body,
+      body: JSON.stringify(body),
     });
   }
 }

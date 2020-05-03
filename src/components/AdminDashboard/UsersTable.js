@@ -1,21 +1,25 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Table, Button, Typography, Row, Col, Tag, Popconfirm } from "antd";
+import { Table, Button, Tag, Popconfirm } from "antd";
 import API from "../../utils/api";
-import CreateUserModal from "../CreateUserModal";
+import { connect } from "react-redux";
+import { getAllUsers } from "../../redux/actions/users";
+import { deleteUser } from "../../redux/actions/user";
 
-const { Title } = Typography;
+const mapStateToProps = (state) => ({
+  loading: state.users.loading,
+  users: state.users.data,
+});
 
-const UsersTable = () => {
-  const [users, setUsers] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+const mapDispatchToProps = (dispatch) => ({
+  getAllUsers: () => dispatch(getAllUsers()),
+  deleteUser: (id) => dispatch(deleteUser(id)),
+});
 
-  // useEffect(() => {
-  //   API.getUsers().then((data) => {
-  //     setUsers(data);
-  //     setIsLoading(false);
-  //   });
-  // }, [result]);
+const UsersTable = ({ getAllUsers, deleteUser, loading, users }) => {
+  useEffect(() => {
+    getAllUsers();
+  }, []);
 
   const columns = [
     {
@@ -77,12 +81,12 @@ const UsersTable = () => {
       render: (text, record) => (
         <Popconfirm
           title="Are you sure delete this task?"
-          onConfirm={() => API.deleteUser(record._id)}
+          onConfirm={() => deleteUser(record._id)}
           okText="Yes"
           cancelText="No"
         >
-          <Button key="3" type="danger" >
-            Delete{" "}
+          <Button key="3" danger shape="round">
+            Delete
           </Button>
         </Popconfirm>
       ),
@@ -90,31 +94,13 @@ const UsersTable = () => {
   ];
 
   return (
-    <div>
-      <Row align="middle">
-        <Col span={24} md={12}>
-          <Title>Table of users</Title>
-        </Col>
-        <Col span={24} md={12} align="end">
-          <Button
-            // onClick={() => dispatch({ type: "SHOW", window: "createUser" })}
-            type="primary"
-          >
-            Create new user
-          </Button>
-        </Col>
-      </Row>
-
-      <CreateUserModal />
-
-      <Table
-        dataSource={users}
-        columns={columns}
-        loading={isLoading}
-        scroll={{ x: 700 }}
-      />
-    </div>
+    <Table
+      dataSource={users}
+      columns={columns}
+      loading={loading}
+      scroll={{ x: 700 }}
+    />
   );
 };
 
-export default UsersTable;
+export default connect(mapStateToProps, mapDispatchToProps)(UsersTable);

@@ -1,25 +1,31 @@
 import React from "react";
 import { Button, Form, Input } from "antd";
 import ModalWrapper from "../ModalWrapper";
+import { connect } from "react-redux";
+import { createUser } from "../../redux/actions/user";
+
+const mapStateToProps = (state) => ({
+  modal: state.modals.createUser,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  createUser: (data) => dispatch(createUser(data)),
+});
 
 const formItemLayout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
 };
 
-const CreateUserModal = ({ loading }) => {
-  const createUser = async (data) => {
-    // try {
-    //   dispatch({ type: "LOADING" });
-    //   const result = await API.createUser(data);
-    //   dispatch({ type: "SUCCESS", description: result.message });
-    // } catch (error) {
-    //   dispatch({ type: "ERROR", description: error.message });
-    // }
-  };
-
+const CreateUserModal = ({ modal, createUser }) => {
   return (
-    <ModalWrapper title="Create a new voting">
+    <ModalWrapper
+      modalName="createUser"
+      result={modal.result}
+      visible={modal.visible}
+      error={modal.error}
+      title="Create a new user"
+    >
       <Form {...formItemLayout} onFinish={createUser}>
         <Form.Item
           name="name"
@@ -38,7 +44,7 @@ const CreateUserModal = ({ loading }) => {
         </Form.Item>
 
         <Form.Item>
-          <Button loading={loading} type="primary" htmlType="submit">
+          <Button loading={modal.loading} type="primary" htmlType="submit">
             Create
           </Button>
         </Form.Item>
@@ -47,4 +53,4 @@ const CreateUserModal = ({ loading }) => {
   );
 };
 
-export default CreateUserModal;
+export default connect(mapStateToProps, mapDispatchToProps)(CreateUserModal);

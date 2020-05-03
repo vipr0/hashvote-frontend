@@ -2,33 +2,27 @@ import React from "react";
 import { Button, Form, Input, DatePicker } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import ModalWrapper from "../ModalWrapper";
+import { connect } from "react-redux";
+import { createVoting } from "../../redux/actions/voting";
 
-const formItemLayout = {
-  labelCol: { span: 8 },
-  wrapperCol: { span: 16 },
-};
+const mapStateToProps = (state) => ({
+  modal: state.modals.createVoting,
+});
 
-const formItemLayoutWithOutLabel = {
-  wrapperCol: { sm: { span: 16, offset: 8 }, xs: { span: 24 } },
-};
+const mapDispatchToProps = (dispatch) => ({
+  createVoting: (data) => dispatch(createVoting(data)),
+});
 
-const CreateVotingModal = ({ loading }) => {
-  const createVoting = async (data) => {
-    // try {
-    //   dispatch({ type: "LOADING" });
-    //   const result = await API.createVoting({
-    //     ...data,
-    //     endTime: data.endTime.valueOf(),
-    //   });
-    //   dispatch({ type: "SUCCESS", description: result.message });
-    // } catch (error) {
-    //   dispatch({ type: "ERROR", description: error.message });
-    // }
-  };
-
+const CreateVotingModal = ({ modal, createVoting }) => {
   return (
-    <ModalWrapper title="Create a new voting">
-      <Form {...formItemLayout} onFinish={createVoting}>
+    <ModalWrapper
+      modalName="createVoting"
+      result={modal.result}
+      visible={modal.visible}
+      error={modal.error}
+      title="Create a new voting"
+    >
+      <Form layout="vertical" onFinish={createVoting}>
         <Form.Item
           name="title"
           label="Title"
@@ -51,9 +45,6 @@ const CreateVotingModal = ({ loading }) => {
               <div>
                 {fields.map((field, index) => (
                   <Form.Item
-                    {...(index === 0
-                      ? formItemLayout
-                      : formItemLayoutWithOutLabel)}
                     key={field.key}
                     label={index === 0 ? "Candidates" : ""}
                   >
@@ -83,7 +74,7 @@ const CreateVotingModal = ({ loading }) => {
                     ) : null}
                   </Form.Item>
                 ))}
-                <Form.Item {...formItemLayoutWithOutLabel}>
+                <Form.Item>
                   <Button type="dashed" onClick={() => add()}>
                     <PlusOutlined /> Add candidate
                   </Button>
@@ -105,7 +96,7 @@ const CreateVotingModal = ({ loading }) => {
         </Form.Item>
 
         <Form.Item>
-          <Button loading={loading} type="primary" htmlType="submit">
+          <Button loading={modal.loading} type="primary" htmlType="submit">
             Create
           </Button>
         </Form.Item>
@@ -114,4 +105,4 @@ const CreateVotingModal = ({ loading }) => {
   );
 };
 
-export default CreateVotingModal;
+export default connect(mapStateToProps, mapDispatchToProps)(CreateVotingModal);

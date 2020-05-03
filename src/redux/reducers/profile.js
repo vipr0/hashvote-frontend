@@ -1,9 +1,28 @@
-import { LOGIN, LOGOUT, GET_CURRENT_USER, UPDATE_PROFILE } from "../constants";
+import {
+  PROFILE_LOADING,
+  PROFILE_LOADED,
+  GET_PROFILE,
+  LOGIN,
+  LOGOUT,
+  REGISTER,
+  FORGOT_PASSWORD,
+  RESET_PASSWORD,
+  UPDATE_PROFILE,
+} from "../constants";
 
-const initialState = {};
+const initialState = {
+  loading: true,
+  data: null,
+  token: null,
+};
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case PROFILE_LOADING:
+      return { ...state, loading: true };
+    case PROFILE_LOADED:
+      return { ...state, loading: false };
+    case RESET_PASSWORD:
     case LOGIN:
       return {
         ...state,
@@ -16,7 +35,7 @@ export default (state = initialState, action) => {
         token: null,
         data: null,
       };
-    case GET_CURRENT_USER:
+    case GET_PROFILE:
       return {
         ...state,
         data: action.payload,

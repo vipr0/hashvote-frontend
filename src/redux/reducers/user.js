@@ -1,31 +1,27 @@
 import {
-  USERS_LOADING,
-  USERS_LOADED,
-  GET_ALL_USERS,
-  CREATE_USER,
+  USER_LOADING,
+  USER_LOADED,
+  GET_USER,
+  UPDATE_USER,
   DELETE_USER,
 } from "../constants";
 
 const initialState = {
   loading: true,
-  data: [],
+  data: {},
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case USERS_LOADING:
+    case USER_LOADING:
       return { ...state, loading: true };
-    case USERS_LOADED:
+    case USER_LOADED:
       return { ...state, loading: false };
-    case GET_ALL_USERS:
+    case UPDATE_USER:
+    case GET_USER:
       return { ...state, data: action.payload };
-    case CREATE_USER:
-      return { ...state, data: [...state.data, action.payload] };
     case DELETE_USER:
-      return {
-        ...state,
-        data: state.data.filter((user) => user._id !== action.payload),
-      };
+      return { ...state, data: {} };
     default:
       return state;
   }

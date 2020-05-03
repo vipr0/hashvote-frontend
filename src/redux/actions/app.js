@@ -1,22 +1,20 @@
 import {
-  START_LOADING,
-  SET_ERROR,
-  FINISH_LOADING,
+  SHOW_ERROR,
+  HIDE_ERROR,
   SHOW_MESSAGE,
   HIDE_MESSAGE,
+  SET_ADMIN_TAB,
 } from "../constants";
 
-export const loading = () => {
-  return { type: START_LOADING };
-};
-
-export const ready = () => {
-  return { type: FINISH_LOADING };
-};
-
-export const setError = (message) => {
+export const showError = (message) => {
   return (dispatch) => {
-    dispatch({ type: SET_ERROR, payload: message });
+    dispatch({ type: SHOW_ERROR, payload: message });
+  };
+};
+
+export const hideError = () => {
+  return (dispatch) => {
+    dispatch({ type: HIDE_ERROR });
   };
 };
 
@@ -25,4 +23,10 @@ export const showMessage = (type, message) => (dispatch) => {
   setTimeout(() => {
     dispatch({ type: HIDE_MESSAGE });
   }, 5000);
+};
+
+export const setAdminTab = (tab) => {
+  return (dispatch) => {
+    dispatch({ type: SET_ADMIN_TAB, payload: tab });
+  };
 };
