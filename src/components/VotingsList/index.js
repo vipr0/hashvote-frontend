@@ -1,13 +1,12 @@
-import { Link } from "react-router-dom";
 import React, { useEffect } from "react";
-import { Typography, Card, Row, Col } from "antd";
+import { Typography, Row, Empty } from "antd";
 import Loader from "../Loader";
 import { connect } from "react-redux";
 import { getAllVotings } from "../../redux/actions/votings";
 import protectedComponent from "../protectedComponent";
+import VotingCard from "./VotingCard";
 
 const { Title } = Typography;
-const { Meta } = Card;
 
 const VotingsList = ({ votings, loading, getAllVotings }) => {
   useEffect(() => {
@@ -19,22 +18,13 @@ const VotingsList = ({ votings, loading, getAllVotings }) => {
       <Title level={2}>List of all available votings</Title>
       {votings ? (
         <Row gutter={[16, 16]}>
-          {votings.map(({ title, description, _id }, i) => (
-            <Col key={i} span={24} md={8} lg={6}>
-              <Card
-                hoverable
-                actions={[<Link to={`/votings/${_id}`}>Go to voting</Link>]}
-              >
-                <Meta
-                  title={title}
-                  description={description}
-                  style={{ overflow: "hidden", height: 76 }}
-                />
-              </Card>
-            </Col>
+          {votings.map(({ title, description, _id }) => (
+            <VotingCard title={title} description={description} id={_id} />
           ))}
         </Row>
-      ) : null}
+      ) : (
+        <Empty />
+      )}
     </Loader>
   );
 };
