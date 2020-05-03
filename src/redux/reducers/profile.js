@@ -5,7 +5,6 @@ import {
   LOGIN,
   LOGOUT,
   REGISTER,
-  FORGOT_PASSWORD,
   RESET_PASSWORD,
   UPDATE_PROFILE,
 } from "../constants";
@@ -22,6 +21,7 @@ export default (state = initialState, action) => {
       return { ...state, loading: true };
     case PROFILE_LOADED:
       return { ...state, loading: false };
+    case REGISTER:
     case RESET_PASSWORD:
     case LOGIN:
       return {

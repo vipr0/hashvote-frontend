@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Table, Button, Tag, Popconfirm } from "antd";
-import API from "../../utils/api";
 import { connect } from "react-redux";
 import { getAllUsers } from "../../redux/actions/users";
 import { deleteUser } from "../../redux/actions/user";

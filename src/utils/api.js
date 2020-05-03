@@ -30,7 +30,8 @@ class API {
 
     let json = await res.json();
     if (json.status === "error") throw new Error(json.message);
-    if (json.result.length) json.result = this.addUniqueKeys(json.result);
+    if (json.result && json.result.length)
+      json.result = this.addUniqueKeys(json.result);
     return json;
   }
 
@@ -172,7 +173,7 @@ class API {
   async forgotPassword(body) {
     return await this.createRequest(`/users/forgot`, {
       method: "POST",
-      headers: {},
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
   }

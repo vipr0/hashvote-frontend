@@ -80,3 +80,12 @@ export const createUser = (data) => async (dispatch) => {
     dispatch(userLoaded());
   }
 };
+
+export const resetUserPassword = (email) => async (dispatch) => {
+  try {
+    const response = await API.forgotPassword({ email });
+    dispatch(showMessage("success", response.message));
+  } catch (error) {
+    dispatch(showMessage("error", error.message));
+  }
+};

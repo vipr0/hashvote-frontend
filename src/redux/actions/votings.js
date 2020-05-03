@@ -4,7 +4,6 @@ import {
   GET_ALL_VOTINGS,
   GET_VOTINGS_BY_USER,
   GET_ACTIVE_VOTINGS,
-  VOTING_LOADED,
 } from "../constants";
 import API from "../../utils/api";
 import { showError } from "./app";
