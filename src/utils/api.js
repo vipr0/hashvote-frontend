@@ -26,6 +26,8 @@ class API {
       ...parameters,
     });
 
+    console.log(res);
+
     if (res.status === 204) return null;
 
     let json = await res.json();
@@ -136,7 +138,7 @@ class API {
   }
 
   async addUsersToVoting(id, body) {
-    return await this.createRequest(`votings/${id}/users`, {
+    return await this.createRequest(`/votings/${id}/users`, {
       method: "POST",
       headers: { Authorization: `Bearer ${getAuthToken()}` },
       body,
@@ -157,7 +159,7 @@ class API {
   async login(body) {
     return await this.createRequest("/users/login", {
       method: "POST",
-      headers: {},
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
   }
@@ -165,7 +167,7 @@ class API {
   async finishRegister(token, body) {
     return await this.createRequest(`/users/signup/${token}`, {
       method: "POST",
-      headers: {},
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
   }
@@ -181,7 +183,7 @@ class API {
   async resetPassword(token, body) {
     return await this.createRequest(`/users/reset/${token}`, {
       method: "POST",
-      headers: {},
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     });
   }

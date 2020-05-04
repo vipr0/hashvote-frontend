@@ -87,17 +87,10 @@ export const getCurrentUser = () => {
   };
 };
 
-export const changeProfileData = (data) => async (dispatch) => {
+export const changeProfileData = (formData) => async (dispatch) => {
   try {
     dispatch(profileLoading());
-
-    let formData = new FormData();
-    if (data.photo)
-      formData.append("photo", data.photo.fileList[0].originFileObj);
-    formData.append("name", data.name);
-    formData.append("email", data.email);
     const response = await API.changeProfileData(formData);
-
     dispatch({ type: UPDATE_PROFILE, payload: response.result });
     dispatch(showMessage("success", response.message));
   } catch (error) {

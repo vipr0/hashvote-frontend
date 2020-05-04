@@ -10,7 +10,15 @@ const mapStateToProps = (state) => ({
 
 const mapDispathToProps = (dispatch) => ({
   changeProfileData: (data) => {
-    dispatch(changeProfileData(data));
+    let formData = new FormData();
+
+    if (data.photo)
+      formData.append("photo", data.photo.fileList[0].originFileObj);
+
+    formData.append("name", data.name);
+    formData.append("email", data.email);
+
+    dispatch(changeProfileData(formData));
   },
 });
 

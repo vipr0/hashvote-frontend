@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Form, Input } from "antd";
-import ModalWrapper from "../ModalWrapper";
 import { connect } from "react-redux";
+import ModalWrapper from "../ModalWrapper";
 import { createUser } from "../../redux/actions/user";
 
 const mapStateToProps = (state) => ({

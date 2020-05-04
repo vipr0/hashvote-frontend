@@ -7,6 +7,11 @@ import { logIn } from "../../redux/actions/profile";
 
 const { Title } = Typography;
 
+const mapStateToProps = (state) => ({ loading: state.app.loading });
+const mapDispatchToProps = (dispatch) => ({
+  login: (data) => dispatch(logIn(data)),
+});
+
 const Login = ({ login, loading }) => {
   return (
     <Card>
@@ -53,10 +58,5 @@ const Login = ({ login, loading }) => {
     </Card>
   );
 };
-
-const mapStateToProps = (state) => ({ loading: state.app.loading });
-const mapDispatchToProps = (dispatch) => ({
-  login: (data) => dispatch(logIn(data)),
-});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

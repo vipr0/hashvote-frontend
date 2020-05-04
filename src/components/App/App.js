@@ -12,6 +12,7 @@ import MyProfile from "../MyProfile";
 import VotingEditor from "../VotingEditor";
 import AdminDashboard from "../AdminDashboard";
 import UserEditor from "../UserEditor";
+import ErrorBoundry from "../ErrorBoundry";
 
 const App = ({ getCurrentUser, appMessage }) => {
   useEffect(() => {
@@ -22,22 +23,27 @@ const App = ({ getCurrentUser, appMessage }) => {
     if (appMessage.type) message[appMessage.type](appMessage.message);
   }, [appMessage]);
 
-
   return (
     <PageLayout>
-      <Switch>
-        <Route path="/votings" component={VotingsList} exact />
-        <Route path="/votings/:votingId" component={VotingDetails} exact />
-        <Route path="/admin" component={AdminDashboard} exact />
-        <Route path="/admin/votings/:votingId" component={VotingEditor} exact />
-        <Route path="/admin/users/:userId" component={UserEditor} exact />
-        <Route path="/me" exact component={MyProfile} />
-        <Route path="/login" component={Login} exact />
-        <Route path="/signup/:token" component={SignUp} exact />
-        <Route path="/forgot" component={ForgotPassword} exact />
-        <Route path="/reset/:token" component={ResetPassword} exact />
-        <Redirect to="/votings" />
-      </Switch>
+      <ErrorBoundry>
+        <Switch>
+          <Route path="/votings" component={VotingsList} exact />
+          <Route path="/votings/:votingId" component={VotingDetails} exact />
+          <Route path="/admin" component={AdminDashboard} exact />
+          <Route
+            path="/admin/votings/:votingId"
+            component={VotingEditor}
+            exact
+          />
+          <Route path="/admin/users/:userId" component={UserEditor} exact />
+          <Route path="/me" exact component={MyProfile} />
+          <Route path="/login" component={Login} exact />
+          <Route path="/signup/:token" component={SignUp} exact />
+          <Route path="/forgot" component={ForgotPassword} exact />
+          <Route path="/reset/:token" component={ResetPassword} exact />
+          <Redirect to="/votings" />
+        </Switch>
+      </ErrorBoundry>
     </PageLayout>
   );
 };

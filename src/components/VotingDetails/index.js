@@ -9,10 +9,26 @@ import VotingResult from "./VotingResult";
 import VotingInfo from "./VotingInfo";
 import { getVoting } from "../../redux/actions/voting";
 import protectedComponent from "../protectedComponent";
+import { showModal } from "../../redux/actions/modals";
 
 const { Title } = Typography;
 
-const VotingDetails = ({ getVoting, dataFromDB, dataFromContract }) => {
+const mapStateToProps = (state) => ({
+  dataFromDB: state.voting.dataFromDB,
+  dataFromContract: state.voting.dataFromContract,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  getVoting: (id) => dispatch(getVoting(id)),
+  openModal: () => dispatch(showModal("vote")),
+});
+
+const VotingDetails = ({
+  getVoting,
+  openModal,
+  dataFromDB,
+  dataFromContract,
+}) => {
   let { votingId } = useParams();
 
   useEffect(() => {
@@ -21,15 +37,15 @@ const VotingDetails = ({ getVoting, dataFromDB, dataFromContract }) => {
 
   return (
     <Loader loading={dataFromDB.loading && dataFromContract.loading}>
-      {/* <VoteModal /> */}
+      <VoteModal candidates={dataFromDB.candidates} votingId={votingId} />
 
       <Row gutter={[32, 32]}>
         <Col span={24} md={12}>
           <Title level={2}>{dataFromDB.title}</Title>
           <Button
-            disabled={dataFromDB.isStarted}
+            disabled={!dataFromDB.isStarted}
             type="primary"
-            // onClick={() => dispatch({type: 'SHOW', window: 'vote'})}
+            onClick={openModal}
           >
             Vote for candidate
           </Button>
@@ -50,7 +66,7 @@ const VotingDetails = ({ getVoting, dataFromDB, dataFromContract }) => {
         </Col>
         <Col span={24} md={12}>
           <VotingResult
-            loading={dataFromDB.loading && dataFromContract.loading}
+            loading={dataFromContract.loading}
             result={dataFromContract.voteResult}
             allVotes={dataFromContract.votersTotal}
           />
@@ -59,15 +75,6 @@ const VotingDetails = ({ getVoting, dataFromDB, dataFromContract }) => {
     </Loader>
   );
 };
-
-const mapStateToProps = (state) => ({
-  dataFromDB: state.voting.dataFromDB,
-  dataFromContract: state.voting.dataFromContract,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  getVoting: (id) => dispatch(getVoting(id)),
-});
 
 export default protectedComponent(
   connect(mapStateToProps, mapDispatchToProps)(VotingDetails)
