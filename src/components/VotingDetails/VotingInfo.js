@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Progress, Row, Col, Card, Statistic } from "antd";
+import { Typography, Progress, Row, Col, Card, Statistic, Empty } from "antd";
 
 const { Title } = Typography;
 const { Countdown } = Statistic;
@@ -14,7 +14,7 @@ const VotingInfo = ({
   if (!started) {
     return (
       <Card loading={loading}>
-        <Title level={4}>Voting is not yet started</Title>
+        <Empty description="Voting is not yet started" />
       </Card>
     );
   }

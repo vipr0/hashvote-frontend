@@ -7,6 +7,9 @@ import ActionButtons from "./ActionButtons";
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getUser } from "../../redux/actions/user";
+import compose from "../../utils/compose";
+import protectedComponent from "../protectedComponent";
+import adminComponent from "../adminComponent";
 
 const { Title } = Typography;
 
@@ -56,4 +59,8 @@ const UserEditor = ({ user, loading, getUser }) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserEditor);
+export default compose(
+  protectedComponent,
+  adminComponent,
+  connect(mapStateToProps, mapDispatchToProps)
+)(UserEditor);

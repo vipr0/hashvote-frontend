@@ -5,6 +5,7 @@ import Loader from "../Loader";
 import ChangePasswordCard from "./ChangePasswordCard";
 import ChangeDataCard from "./ChangeDataCard";
 import protectedComponent from "../protectedComponent";
+import compose from "../../utils/compose";
 
 const { Title } = Typography;
 
@@ -28,4 +29,4 @@ const MyProfile = ({ loading, user }) => {
   );
 };
 
-export default protectedComponent(connect(mapStateToProps)(MyProfile));
+export default compose(protectedComponent, connect(mapStateToProps))(MyProfile);

@@ -2,7 +2,7 @@ import { createBrowserHistory } from "history";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { cookiesMiddleware } from "./middlewares";
+import { cookiesMiddleware, hideErrorWhenRedirect } from "./middlewares";
 import { routerMiddleware } from "connected-react-router";
 import createRootReducer from "./reducers";
 
@@ -13,7 +13,12 @@ export default function configureStore(preloadedState) {
     createRootReducer(history),
     preloadedState,
     composeWithDevTools(
-      applyMiddleware(routerMiddleware(history), thunk, cookiesMiddleware)
+      applyMiddleware(
+        routerMiddleware(history),
+        thunk,
+        cookiesMiddleware,
+        hideErrorWhenRedirect
+      )
     )
   );
 

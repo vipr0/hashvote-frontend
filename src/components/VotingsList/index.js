@@ -6,6 +6,7 @@ import { getAllVotings } from "../../redux/actions/votings";
 import protectedComponent from "../protectedComponent";
 import VotingCard from "./VotingCard";
 import { v4 as uuidv4 } from "uuid";
+import compose from "../../utils/compose";
 
 const { Title } = Typography;
 
@@ -39,6 +40,7 @@ const mapDispatchToProps = (dispatch) => ({
   getAllVotings: () => dispatch(getAllVotings()),
 });
 
-export default protectedComponent(
-  connect(mapStateToProps, mapDispatchToProps)(VotingsList)
-);
+export default compose(
+  protectedComponent,
+  connect(mapStateToProps, mapDispatchToProps)
+)(VotingsList);

@@ -80,7 +80,7 @@ export const getCurrentUser = () => {
       const response = await API.getMe();
       dispatch({ type: GET_PROFILE, payload: response.result });
     } catch (error) {
-      dispatch(showError(error.message));
+      dispatch(showMessage("error", "You are not logged in"));
     } finally {
       dispatch(profileLoaded());
     }

@@ -10,6 +10,9 @@ import ActionButtons from "../VotingEditor/ActionButtons";
 import { connect } from "react-redux";
 import { getVoting } from "../../redux/actions/voting";
 import StartVotingModal from "../StartVotingModal";
+import compose from "../../utils/compose";
+import adminComponent from "../adminComponent";
+import protectedComponent from "../protectedComponent";
 
 const { Title } = Typography;
 
@@ -62,4 +65,8 @@ const VotingEditor = ({ loading, voting, getVoting }) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(VotingEditor);
+export default compose(
+  protectedComponent,
+  adminComponent,
+  connect(mapStateToProps, mapDispatchToProps)
+)(VotingEditor);

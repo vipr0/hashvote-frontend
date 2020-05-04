@@ -10,6 +10,7 @@ import VotingInfo from "./VotingInfo";
 import { getVoting } from "../../redux/actions/voting";
 import protectedComponent from "../protectedComponent";
 import { showModal } from "../../redux/actions/modals";
+import compose from "../../utils/compose";
 
 const { Title } = Typography;
 
@@ -35,6 +36,10 @@ const VotingDetails = ({
     getVoting(votingId);
   }, []);
 
+  if (dataFromDB.loading) {
+    return <Loader loading={dataFromDB.loading} />;
+  }
+
   return (
     <Loader loading={dataFromDB.loading && dataFromContract.loading}>
       <VoteModal candidates={dataFromDB.candidates} votingId={votingId} />
@@ -52,7 +57,7 @@ const VotingDetails = ({
         </Col>
         <Col span={24} md={12}>
           <VotingInfo
-            loading={dataFromDB.loading && dataFromContract.loading}
+            loading={dataFromContract.loading}
             started={dataFromDB.isStarted}
             endTime={dataFromDB.endTime}
             alreadyVoted={dataFromContract.alreadyVoted}
@@ -76,6 +81,7 @@ const VotingDetails = ({
   );
 };
 
-export default protectedComponent(
-  connect(mapStateToProps, mapDispatchToProps)(VotingDetails)
-);
+export default compose(
+  protectedComponent,
+  connect(mapStateToProps, mapDispatchToProps)
+)(VotingDetails);

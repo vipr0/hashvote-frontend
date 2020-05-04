@@ -1,26 +1,23 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Result, Button } from "antd";
-import { push } from "connected-react-router";
+import { goBack } from "connected-react-router";
 
-const mapStateToProps = (state) => ({
-  user: state.profile.data,
-});
-
+const mapStateToProps = (state) => ({ role: state.profile.data.role });
 const mapDispatchToProps = (dispatch) => ({
-  goToLoginPage: () => dispatch(push("/login")),
+  goBack: () => dispatch(goBack()),
 });
 
 export default (Component) => {
-  const Wrapper = ({ user, goToLoginPage }) => {
-    if (!user)
+  const Wrapper = ({ role, goBack }) => {
+    if (role !== "admin")
       return (
         <Result
           status="403"
-          title="You are not logged in"
+          title="This page is only for admins"
           extra={
-            <Button type="primary" onClick={goToLoginPage}>
-              Log In
+            <Button type="primary" onClick={goBack}>
+              Go back
             </Button>
           }
         />

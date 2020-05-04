@@ -8,6 +8,9 @@ import CreateUserModal from "../CreateUserModal";
 import { connect } from "react-redux";
 import { showModal } from "../../redux/actions/modals";
 import { setAdminTab } from "../../redux/actions/app";
+import compose from "../../utils/compose";
+import adminComponent from "../adminComponent";
+import protectedComponent from "../protectedComponent";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -70,4 +73,8 @@ const AdminDashboard = ({
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminDashboard);
+export default compose(
+  protectedComponent,
+  adminComponent,
+  connect(mapStateToProps, mapDispatchToProps)
+)(AdminDashboard);
