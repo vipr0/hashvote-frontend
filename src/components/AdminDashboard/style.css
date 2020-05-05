@@ -1,6 +1,5 @@
 [data-theme="compact"] .card-container > .ant-tabs-card > .ant-tabs-content,
 .card-container > .ant-tabs-card > .ant-tabs-content {
-  height: 120px;
   margin-top: -16px;
 }
 
