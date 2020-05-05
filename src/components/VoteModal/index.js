@@ -17,7 +17,7 @@ const mapDispatchToProps = (dispatch) => ({
   voteForCandidate: (id, data) => dispatch(voteForCandidate(id, data)),
 });
 
-const VoteModal = ({ modal, votingId, candidates, voteForCandidate }) => {
+const VoteModal = ({ modal, votingId, candidates = [], voteForCandidate }) => {
   return (
     <ModalWrapper
       modalName="vote"
