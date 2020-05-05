@@ -35,7 +35,7 @@ const VotingInfo = ({
         </Col>
         <Col span={12}>
           <Progress
-            percent={(alreadyVoted / votersTotal) * 100}
+            percent={Math.round((alreadyVoted / votersTotal) * 100)}
             strokeColor={{
               "0%": "#108ee9",
               "100%": "#87d068",

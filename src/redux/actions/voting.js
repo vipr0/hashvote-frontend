@@ -3,6 +3,7 @@ import {
   VOTING_LOADED,
   GET_VOTING_FROM_DB,
   GET_VOTING_FROM_CONTRACT,
+  UPDATE_VOTING,
   DELETE_VOTING,
   CREATE_VOTING,
   START_VOTING,
@@ -70,7 +71,12 @@ export const createVoting = (data) => async (dispatch) => {
       ...data,
       endTime: moment(data.endTime).valueOf(),
     });
-    dispatch(setModalResult("createVoting", response.message));
+    dispatch(
+      setModalResult(
+        "createVoting",
+        `${response.message}. Your admin token ${response.adminToken}`
+      )
+    );
     dispatch({ type: CREATE_VOTING, payload: response.result });
   } catch (error) {
     dispatch(setModalError("createVoting", error.message));
@@ -93,6 +99,7 @@ export const addUsersToVoting = (id, formData) => async (dispatch) => {
 export const changeVotingData = (id, data) => async (dispatch) => {
   try {
     const response = await API.updateVoting(id, data);
+    dispatch({ type: UPDATE_VOTING, payload: response.result });
     dispatch(showMessage("success", response.message));
   } catch (error) {
     dispatch(showMessage("error", error.message));
@@ -105,7 +112,7 @@ export const startVoting = (id, data) => async (dispatch) => {
     dispatch(loadingModal("startVoting"));
     const response = await API.startVoting(id, data);
     dispatch(setModalResult("startVoting", response.message));
-    dispatch({ type: START_VOTING, payload: response.result });
+    dispatch({ type: START_VOTING });
   } catch (error) {
     dispatch(setModalError("startVoting", error.message));
   } finally {
@@ -117,7 +124,7 @@ export const archiveVoting = (id) => async (dispatch) => {
   try {
     const response = await API.archiveVoting(id);
     dispatch(showMessage("success", response.message));
-    dispatch({ type: ARCHIVE_VOTING, payload: id });
+    dispatch({ type: ARCHIVE_VOTING, payload: response.result });
   } catch (error) {
     dispatch(showMessage("error", error.message));
   }
