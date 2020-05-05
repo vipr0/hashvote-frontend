@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography, Progress, Row, Col, Card, Statistic, Empty } from "antd";
 
-const { Title } = Typography;
+const { Text } = Typography;
 const { Countdown } = Statistic;
 
 const VotingInfo = ({
@@ -20,14 +20,18 @@ const VotingInfo = ({
   }
 
   return (
-    <Card loading={loading}>
-      <Row align="middle" justify="space-between">
-        <Title level={4}>Time to end</Title>
-        <Countdown value={endTime} format="HH:mm:ss" />
+    <Card loading={loading} title="Common information">
+      <Row align="middle" justify="space-between" style={{ marginBottom: 12 }}>
+        <Text strong>Time to end</Text>
+        <Countdown
+          value={endTime}
+          format="HH:mm:ss"
+          valueStyle={{ fontSize: 18 }}
+        />
       </Row>
-      <Row align="middle" justify="space-between">
+      <Row align="middle" justify="space-between" style={{ marginBottom: 12 }}>
         <Col span={12}>
-          <Title level={4}>Tournout</Title>
+          <Text strong>Tournout</Text>
         </Col>
         <Col span={12}>
           <Progress
