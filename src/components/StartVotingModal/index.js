@@ -23,7 +23,7 @@ const StartVotingModal = ({ modal, startVoting }) => {
       error={modal.error}
       title="Enter admin token to start voting"
     >
-      <Form onFinish={(data) => startVoting(votingId, data)}>
+      <Form layout="vertical" onFinish={(data) => startVoting(votingId, data)}>
         <Form.Item
           name="token"
           label="Admin Token"
@@ -31,7 +31,7 @@ const StartVotingModal = ({ modal, startVoting }) => {
         >
           <Input.Password />
         </Form.Item>
-        <Form.Item>
+        <Form.Item style={{ textAlign: "center" }}>
           <Button loading={modal.loading} type="primary" htmlType="submit">
             Confirm
           </Button>
