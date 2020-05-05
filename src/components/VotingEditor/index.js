@@ -13,6 +13,7 @@ import StartVotingModal from "../StartVotingModal";
 import compose from "../../utils/compose";
 import adminComponent from "../adminComponent";
 import protectedComponent from "../protectedComponent";
+import VotersList from "./VotersList";
 
 const { Title } = Typography;
 
@@ -35,7 +36,7 @@ const VotingEditor = ({ loading, voting, getVoting }) => {
     <Loader loading={loading}>
       <StartVotingModal votingId={votingId} />
 
-      <Row>
+      <Row gutter={[32, 32]}>
         <Col span={24} md={12}>
           <Title level={2}>{voting.title}</Title>
         </Col>
@@ -45,7 +46,14 @@ const VotingEditor = ({ loading, voting, getVoting }) => {
         </Col>
       </Row>
 
-      <VotingInfoCard voting={voting} />
+      <Row gutter={[32, 32]}>
+        <Col span={24} md={12}>
+          <VotingInfoCard voting={voting} />
+        </Col>
+        <Col span={24} md={12}>
+          <VotersList />
+        </Col>
+      </Row>
 
       <Row gutter={[32, 32]}>
         <Col span={24} lg={12}>
@@ -56,7 +64,6 @@ const VotingEditor = ({ loading, voting, getVoting }) => {
             }}
           />
         </Col>
-
         <Col span={24} lg={12} hidden={voting.isStarted}>
           <AddUsersCard />
         </Col>

@@ -1,10 +1,10 @@
 import React from "react";
-import { Descriptions } from "antd";
+import { Descriptions, Card } from "antd";
 import moment from "moment";
 
 const VotingInfoCard = ({ voting }) => {
   return (
-    <div>
+    <Card title="Information">
       <Descriptions className="voting-info" column={1}>
         <Descriptions.Item label="Created At">
           {moment(voting.createdAt).format("MMMM Do YYYY, HH:mm:ss")}
@@ -20,7 +20,7 @@ const VotingInfoCard = ({ voting }) => {
         </Descriptions.Item>
         <Descriptions.Item label="Creation Tx">{voting.tx}</Descriptions.Item>
       </Descriptions>
-    </div>
+    </Card>
   );
 };
 

@@ -1,13 +1,18 @@
 .voting-info {
-  margin: 32px 0;
+  height: 300px;
 }
 
 .buttons-box {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 .admin-token-input {
   margin-bottom: 24px;
+}
+
+.voters-list-container {
+  height: 300px;
+  overflow: auto;
 }
