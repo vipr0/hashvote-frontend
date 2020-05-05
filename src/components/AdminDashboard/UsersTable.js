@@ -4,6 +4,7 @@ import { Table, Button, Tag, Popconfirm } from "antd";
 import { connect } from "react-redux";
 import { getAllUsers } from "../../redux/actions/users";
 import { deleteUser } from "../../redux/actions/user";
+import getColumnSearchProps from "../../utils/getColumnSearchProps";
 
 const mapStateToProps = (state) => ({
   loading: state.users.loading,
@@ -18,7 +19,7 @@ const mapDispatchToProps = (dispatch) => ({
 const UsersTable = ({ getAllUsers, deleteUser, loading, users }) => {
   useEffect(() => {
     getAllUsers();
-  }, []);
+  }, [getAllUsers]);
 
   const columns = [
     {
@@ -26,15 +27,18 @@ const UsersTable = ({ getAllUsers, deleteUser, loading, users }) => {
       dataIndex: "name",
       key: "name",
       width: 150,
-      sorter: (a, b) => a.name.length - b.name.length,
+      sorter: (a, b) => a.name.localeCompare(b.name),
       render: (name, record) => (
         <Link to={`/admin/users/${record._id}`}>{name}</Link>
       ),
+      ...getColumnSearchProps("name"),
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
+      sorter: (a, b) => a.email.localeCompare(b.email),
+      ...getColumnSearchProps("email"),
     },
     {
       title: "Role",
@@ -52,7 +56,7 @@ const UsersTable = ({ getAllUsers, deleteUser, loading, users }) => {
         },
       ],
       onFilter: (value, user) => user.role.indexOf(value) === 0,
-      sorter: (a, b) => a.role.length - b.role.length,
+      sorter: (a, b) => a.role.localeCompare(b.role),
     },
     {
       title: "Verified",

@@ -28,7 +28,7 @@ const VotingsTable = ({ loading, votings, getAllVotings, deleteVoting }) => {
       dataIndex: "title",
       key: "title",
       width: 150,
-      sorter: (a, b) => a.title.length - b.title.length,
+      sorter: (a, b) => a.title.localeCompare(b.title),
       render: (title, record) => (
         <Link to={`/admin/votings/${record._id}`}>{title}</Link>
       ),
