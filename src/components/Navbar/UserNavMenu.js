@@ -14,7 +14,7 @@ const { SubMenu } = Menu;
 
 const UserNavMenu = ({ user, logout }) => {
   return (
-    <Menu theme="light" mode="horizontal" defaultSelectedKeys={["home"]}>
+    <Menu theme="light" mode="horizontal">
       <SubMenu
         style={{ float: "right" }}
         title={
