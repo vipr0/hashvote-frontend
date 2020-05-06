@@ -3,8 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 
 class API {
   constructor() {
-    this.url = "http://64.227.124.43:3000";
-    // this.url = "http://127.0.0.1:8080";
+    // this.url = "http://64.227.124.43:3000";
+    this.url = "http://127.0.0.1:8080";
   }
 
   addUniqueKeys(arr) {

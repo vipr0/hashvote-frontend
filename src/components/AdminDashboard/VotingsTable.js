@@ -42,13 +42,20 @@ const VotingsTable = ({ loading, votings, getAllVotings, deleteVoting }) => {
       ...getColumnSearchProps("description"),
     },
     {
-      title: "Created At",
+      title: "Created at",
       dataIndex: "createdAt",
       key: "createdAt",
       width: 100,
       render: (record) => moment(record).format("MMMM Do YYYY, HH:mm:ss"),
       sorter: (a, b) =>
         moment(a.createdAt).valueOf() - moment(b.createdAt).valueOf(),
+    },
+    {
+      title: "Number of voters",
+      dataIndex: "votersCount",
+      key: "votersCount",
+      width: 100,
+      sorter: (a, b) => a.votersCount - b.votersCount,
     },
     {
       title: "Action",
