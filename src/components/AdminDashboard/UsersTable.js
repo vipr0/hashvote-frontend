@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, Fragment } from "react";
 import { Link } from "react-router-dom";
-import { Table, Button, Tag, Popconfirm } from "antd";
 import { connect } from "react-redux";
-import { getAllUsers } from "../../redux/actions/users";
+import { Table, Button, Tag, Popconfirm, Row } from "antd";
+import { getAllUsers, deleteUsers } from "../../redux/actions/users";
 import { deleteUser } from "../../redux/actions/user";
 import getColumnSearchProps from "../../utils/getColumnSearchProps";
 
@@ -14,12 +14,33 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   getAllUsers: () => dispatch(getAllUsers()),
   deleteUser: (id) => dispatch(deleteUser(id)),
+  deleteUsers: (data) => dispatch(deleteUsers(data)),
 });
 
-const UsersTable = ({ getAllUsers, deleteUser, loading, users }) => {
+const UsersTable = ({
+  getAllUsers,
+  deleteUser,
+  deleteUsers,
+  loading,
+  users,
+}) => {
+  const [selectedRows, setSelectedRows] = useState([]);
   useEffect(() => {
     getAllUsers();
   }, [getAllUsers]);
+
+  const onSelectChange = (keys, rows) => {
+    setSelectedRows(rows);
+  };
+
+  const handleDeleteUsers = () => {
+    deleteUsers(selectedRows.map((row) => row._id));
+  };
+
+  const rowSelection = {
+    onChange: onSelectChange,
+    hideDefaultSelections: true,
+  };
 
   const columns = [
     {
@@ -97,12 +118,20 @@ const UsersTable = ({ getAllUsers, deleteUser, loading, users }) => {
   ];
 
   return (
-    <Table
-      dataSource={users}
-      columns={columns}
-      loading={loading}
-      scroll={{ x: 700 }}
-    />
+    <Fragment>
+      <Row className="selection-buttons" hidden={!selectedRows.length}>
+        <Button danger onClick={handleDeleteUsers}>
+          Delete selected users
+        </Button>
+      </Row>
+      <Table
+        rowSelection={rowSelection}
+        dataSource={users}
+        columns={columns}
+        loading={loading}
+        scroll={{ x: 700 }}
+      />
+    </Fragment>
   );
 };
 

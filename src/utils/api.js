@@ -67,6 +67,13 @@ class API {
     await this.createRequest(`/users/${id}`, { method: "DELETE" });
   }
 
+  async deleteUsers(users) {
+    await this.createRequest(`/users/`, {
+      method: "DELETE",
+      body: JSON.stringify({ users }),
+    });
+  }
+
   // ====================================
   // OWN ACCOUNT
   // ====================================

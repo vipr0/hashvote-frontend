@@ -1,6 +1,11 @@
-import { USERS_LOADING, USERS_LOADED, GET_ALL_USERS } from "../constants";
+import {
+  USERS_LOADING,
+  USERS_LOADED,
+  GET_ALL_USERS,
+  DELETE_USERS,
+} from "../constants";
 import API from "../../utils/api";
-import { showError } from "./app";
+import { showError, showMessage } from "./app";
 
 export const usersLoading = () => {
   return async (dispatch) => {
@@ -23,5 +28,15 @@ export const getAllUsers = () => async (dispatch) => {
     dispatch(showError(error.message));
   } finally {
     dispatch(usersLoaded());
+  }
+};
+
+export const deleteUsers = (users) => async (dispatch) => {
+  try {
+    await API.deleteUsers(users);
+    dispatch({ type: DELETE_USERS, payload: users });
+    dispatch(showMessage("success", "Succesfully deleted"));
+  } catch (error) {
+    dispatch(showMessage("error", error.message));
   }
 };

@@ -32,7 +32,6 @@ export const getUser = (id) => async (dispatch) => {
     dispatch(userLoading());
     const response = await API.getUser(id);
     dispatch({ type: GET_USER, payload: response.result });
-    dispatch(showMessage("success", response.message));
   } catch (error) {
     dispatch(showError(error.message));
   } finally {

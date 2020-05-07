@@ -4,6 +4,7 @@ import {
   GET_ALL_USERS,
   CREATE_USER,
   DELETE_USER,
+  DELETE_USERS,
 } from "../constants";
 
 const initialState = {
@@ -25,6 +26,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         data: state.data.filter((user) => user._id !== action.payload),
+      };
+    case DELETE_USERS:
+      return {
+        ...state,
+        data: state.data.filter((user) => !action.payload.includes(user._id)),
       };
     default:
       return state;
