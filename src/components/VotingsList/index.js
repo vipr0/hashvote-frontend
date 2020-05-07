@@ -10,7 +10,7 @@ import compose from "../../utils/compose";
 
 const { Title } = Typography;
 
-const VotingsList = ({ votings, loading, getAllVotings }) => {
+const VotingsList = ({ availableVotings = [], loading, getAllVotings }) => {
   useEffect(() => {
     getAllVotings();
   }, []);
@@ -18,10 +18,10 @@ const VotingsList = ({ votings, loading, getAllVotings }) => {
   return (
     <Loader loading={loading}>
       <Title level={2}>List of all available votings</Title>
-      {votings.length ? (
+      {availableVotings.length ? (
         <Row gutter={[16, 16]}>
-          {votings.map((voting) => (
-            <VotingCard voting={voting} key={uuidv4()} />
+          {availableVotings.map((voting) => (
+            <VotingCard voting={voting.voting} key={uuidv4()} />
           ))}
         </Row>
       ) : (
@@ -32,7 +32,7 @@ const VotingsList = ({ votings, loading, getAllVotings }) => {
 };
 
 const mapStateToProps = (state) => ({
-  votings: state.votings.data,
+  availableVotings: state.profile.data.votings,
   loading: state.votings.loading,
 });
 
