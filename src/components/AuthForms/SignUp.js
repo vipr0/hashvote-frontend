@@ -1,25 +1,14 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
-import { Row, Col, Card, Form, Typography, Input, Button, message } from "antd";
+import { useParams } from "react-router-dom";
+import { Row, Col, Card, Form, Typography, Input, Button } from "antd";
 import { LockOutlined } from "@ant-design/icons";
-import API from "../../utils/api";
+import { connect } from "react-redux";
+import { signUp } from "../../redux/actions/profile";
 
 const { Title } = Typography;
 
-const SignUp = ({ match }) => {
-  const history = useHistory();
-
-  const signup = async (data) => {
-    try {
-      message.loading({ content: "Please wait", key: "activate" });
-      const result = await API.finishRegister(match.params.token, data);
-      console.log(result);
-      message.success({ content: result.message, key: "activate" });
-      history.push("/votings");
-    } catch (err) {
-      message.error({ content: err.message, key: "activate" });
-    }
-  };
+const SignUp = ({ signUp }) => {
+  const { token } = useParams();
 
   return (
     <Row
@@ -36,7 +25,7 @@ const SignUp = ({ match }) => {
             initialValues={{
               remember: true,
             }}
-            onFinish={signup}
+            onFinish={(data) => signUp(token, data)}
             style={{ textAlign: "center" }}
           >
             <Title level={4}>Finish registration</Title>
@@ -82,4 +71,8 @@ const SignUp = ({ match }) => {
   );
 };
 
-export default SignUp;
+const mapDispatchToProps = (dispatch) => ({
+  signUp: (token, data) => dispatch(signUp(token, data)),
+});
+
+export default connect(null, mapDispatchToProps)(SignUp);

@@ -8,6 +8,7 @@ import {
   LOGOUT,
   RESET_PASSWORD,
   UPDATE_PROFILE,
+  REGISTER,
 } from "../constants";
 import { showMessage, showError } from "./app";
 
@@ -30,6 +31,22 @@ export const logIn = (data) => {
       const response = await API.login(data);
       dispatch(showMessage("success", response.message));
       dispatch({ type: LOGIN, payload: response.result });
+      dispatch(push("/votings"));
+    } catch (error) {
+      dispatch(showMessage("error", error.message));
+    } finally {
+      dispatch(profileLoaded());
+    }
+  };
+};
+
+export const signUp = (token, data) => {
+  return async (dispatch) => {
+    try {
+      dispatch(profileLoading());
+      const response = await API.finishRegister(token, data);
+      dispatch(showMessage("success", response.message));
+      dispatch({ type: REGISTER, payload: response.result });
       dispatch(push("/votings"));
     } catch (error) {
       dispatch(showMessage("error", error.message));
