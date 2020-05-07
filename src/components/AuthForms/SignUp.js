@@ -2,13 +2,14 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { Row, Col, Card, Form, Typography, Input, Button } from "antd";
 import { LockOutlined } from "@ant-design/icons";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { signUp } from "../../redux/actions/profile";
 
 const { Title } = Typography;
 
-const SignUp = ({ signUp }) => {
+const SignUp = () => {
   const { token } = useParams();
+  const dispatch = useDispatch();
 
   return (
     <Row
@@ -25,7 +26,7 @@ const SignUp = ({ signUp }) => {
             initialValues={{
               remember: true,
             }}
-            onFinish={(data) => signUp(token, data)}
+            onFinish={(data) => dispatch(signUp(token, data))}
             style={{ textAlign: "center" }}
           >
             <Title level={4}>Finish registration</Title>
@@ -71,8 +72,4 @@ const SignUp = ({ signUp }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  signUp: (token, data) => dispatch(signUp(token, data)),
-});
-
-export default connect(null, mapDispatchToProps)(SignUp);
+export default SignUp;

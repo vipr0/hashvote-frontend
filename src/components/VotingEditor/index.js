@@ -26,7 +26,7 @@ const mapDispatchToProps = (dispatch) => ({
   getVoting: (id) => dispatch(getVoting(id)),
 });
 
-const VotingEditor = ({ loading, voting, getVoting }) => {
+const VotingEditor = ({ loading, voting = {}, getVoting }) => {
   const { votingId } = useParams();
   useEffect(() => {
     getVoting(votingId);

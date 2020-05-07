@@ -9,7 +9,10 @@ const VotersList = () => {
   const voters = useSelector((state) => state.voting.dataFromDB.voters);
 
   return (
-    <Card title="List of voters" extra={`Total voters: ${voters.length}`}>
+    <Card
+      title="List of voters"
+      extra={`Total voters: ${voters.length ? voters.length : 0}`}
+    >
       <List
         className="voters-list-container"
         itemLayout="horizontal"
