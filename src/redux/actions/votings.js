@@ -1,12 +1,7 @@
-import {
-  VOTINGS_LOADING,
-  VOTINGS_LOADED,
-  GET_ALL_VOTINGS,
-  GET_VOTINGS_BY_USER,
-  GET_ACTIVE_VOTINGS,
-} from "../constants";
-import API from "../../utils/api";
+import { VOTINGS_LOADING, VOTINGS_LOADED, GET_ALL_VOTINGS } from "../constants";
+import { Voting } from "../../utils/api";
 import { showError } from "./app";
+import { addKeysToArray } from "../../utils/uniqueKeys";
 
 export const votingsLoading = () => {
   return async (dispatch) => {
@@ -23,8 +18,8 @@ export const votingsLoaded = () => {
 export const getAllVotings = () => async (dispatch) => {
   try {
     dispatch(votingsLoading());
-    const response = await API.getVotings();
-    dispatch({ type: GET_ALL_VOTINGS, payload: response.result });
+    const { body } = await Voting.getAll();
+    dispatch({ type: GET_ALL_VOTINGS, payload: addKeysToArray(body.result) });
   } catch (error) {
     dispatch(showError(error.message));
   } finally {

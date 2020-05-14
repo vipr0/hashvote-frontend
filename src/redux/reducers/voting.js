@@ -34,7 +34,6 @@ export default (state = initialState, action) => {
         ...state,
         dataFromDB: { ...state.dataFromDB, loading: false, isStarted: true },
       };
-    case ARCHIVE_VOTING:
     case UPDATE_VOTING:
     case GET_VOTING_FROM_DB:
       return { ...state, dataFromDB: { ...action.payload, loading: false } };

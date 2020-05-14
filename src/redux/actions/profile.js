@@ -1,5 +1,5 @@
 import { push } from "connected-react-router";
-import API from "../../utils/api";
+import { Profile } from "../../utils/api";
 import {
   PROFILE_LOADING,
   PROFILE_LOADED,
@@ -10,7 +10,7 @@ import {
   UPDATE_PROFILE,
   REGISTER,
 } from "../constants";
-import { showMessage, showError } from "./app";
+import { showMessage } from "./app";
 
 export const profileLoading = () => {
   return async (dispatch) => {
@@ -28,12 +28,12 @@ export const logIn = (data) => {
   return async (dispatch) => {
     try {
       dispatch(profileLoading());
-      const response = await API.login(data);
-      dispatch(showMessage("success", response.message));
-      dispatch({ type: LOGIN, payload: response.result });
+      const { body } = await Profile.login(data);
+      dispatch(showMessage("success", body.message));
+      dispatch({ type: LOGIN, payload: body.result });
       dispatch(push("/votings"));
-    } catch (error) {
-      dispatch(showMessage("error", error.message));
+    } catch ({ message }) {
+      dispatch(showMessage("error", message));
     } finally {
       dispatch(profileLoaded());
     }
@@ -44,12 +44,12 @@ export const signUp = (token, data) => {
   return async (dispatch) => {
     try {
       dispatch(profileLoading());
-      const response = await API.finishRegister(token, data);
-      dispatch(showMessage("success", response.message));
-      dispatch({ type: REGISTER, payload: response.result });
+      const { body } = await Profile.activate(token, data);
+      dispatch(showMessage("success", body.message));
+      dispatch({ type: REGISTER, payload: body.result });
       dispatch(push("/votings"));
-    } catch (error) {
-      dispatch(showMessage("error", error.message));
+    } catch ({ message }) {
+      dispatch(showMessage("error", message));
     } finally {
       dispatch(profileLoaded());
     }
@@ -59,10 +59,10 @@ export const signUp = (token, data) => {
 export const forgotPassword = (data) => async (dispatch) => {
   try {
     dispatch(profileLoading());
-    const response = await API.forgotPassword(data);
-    dispatch(showMessage("success", response.message));
-  } catch (error) {
-    dispatch(showMessage("error", error.message));
+    const { body } = await Profile.forgotPassword(data);
+    dispatch(showMessage("success", body.message));
+  } catch ({ message }) {
+    dispatch(showMessage("error", message));
   } finally {
     dispatch(profileLoaded());
   }
@@ -71,12 +71,12 @@ export const forgotPassword = (data) => async (dispatch) => {
 export const resetPassword = (token, data) => async (dispatch) => {
   try {
     dispatch(profileLoading());
-    const response = await API.resetPassword(token, data);
-    dispatch(showMessage("success", response.message));
-    dispatch({ type: RESET_PASSWORD, payload: response.result });
+    const { body } = await Profile.resetPassword(token, data);
+    dispatch(showMessage("success", body.message));
+    dispatch({ type: RESET_PASSWORD, payload: body.result });
     dispatch(push("/votings"));
-  } catch (error) {
-    dispatch(showMessage("error", error.message));
+  } catch ({ message }) {
+    dispatch(showMessage("error", message));
   } finally {
     dispatch(profileLoaded());
   }
@@ -94,9 +94,9 @@ export const getCurrentUser = () => {
   return async (dispatch) => {
     try {
       dispatch(profileLoading());
-      const response = await API.getMe();
-      dispatch({ type: GET_PROFILE, payload: response.result });
-    } catch (error) {
+      const { body } = await Profile.get();
+      dispatch({ type: GET_PROFILE, payload: body.result });
+    } catch ({ message }) {
       dispatch({ type: GET_PROFILE, payload: null });
     } finally {
       dispatch(profileLoaded());
@@ -107,11 +107,11 @@ export const getCurrentUser = () => {
 export const changeProfileData = (formData) => async (dispatch) => {
   try {
     dispatch(profileLoading());
-    const response = await API.changeProfileData(formData);
-    dispatch({ type: UPDATE_PROFILE, payload: response.result });
-    dispatch(showMessage("success", response.message));
-  } catch (error) {
-    dispatch(showMessage("error", error.message));
+    const { body } = await Profile.changeData(formData);
+    dispatch({ type: UPDATE_PROFILE, payload: body.result });
+    dispatch(showMessage("success", body.message));
+  } catch ({ message }) {
+    dispatch(showMessage("error", message));
   } finally {
     dispatch(profileLoaded());
   }
@@ -120,24 +120,11 @@ export const changeProfileData = (formData) => async (dispatch) => {
 export const changeProfilePassword = (data) => async (dispatch) => {
   try {
     dispatch(profileLoading());
-    const response = await API.changeProfilePassword(data);
-    dispatch({ type: UPDATE_PROFILE, payload: response.result });
-    dispatch(showMessage("success", response.message));
-  } catch (error) {
-    dispatch(showMessage("error", error.message));
-  } finally {
-    dispatch(profileLoaded());
-  }
-};
-
-export const changeAvatar = (data) => async (dispatch) => {
-  try {
-    dispatch(profileLoading());
-    const response = await API.changeAvatar(data);
-    dispatch({ type: UPDATE_PROFILE, payload: response.result });
-    dispatch(showMessage("success", response.message));
-  } catch (error) {
-    dispatch(showMessage("error", error.message));
+    const { body } = await Profile.changePassword(data);
+    dispatch({ type: UPDATE_PROFILE, payload: body.result });
+    dispatch(showMessage("success", body.message));
+  } catch ({ message }) {
+    dispatch(showMessage("error", message));
   } finally {
     dispatch(profileLoaded());
   }

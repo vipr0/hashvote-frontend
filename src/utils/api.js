@@ -1,196 +1,76 @@
 import { getAuthToken } from "./cookies";
-import { v4 as uuidv4 } from "uuid";
+import superagent from "superagent";
 
-class API {
-  constructor() {
-    this.url =  process.env.REACT_APP_API_URL;
+export const apiUrl = process.env.REACT_APP_API_URL;
+
+const withToken = (req) => {
+  if (getAuthToken()) {
+    req.set("Authorization", `Bearer ${getAuthToken()}`);
   }
+};
 
-  addUniqueKeys(arr) {
-    return arr.map((elem) => ({ ...elem, key: uuidv4() }));
-  }
+const errorMessage = (error) => {
+  throw Error(error.response.body.message);
+};
 
-  async createRequest(route, parameters = {}) {
-    const defaultParameters = {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${getAuthToken()}`,
-        "Content-Type": "application/json",
-      },
-      body: null,
-    };
+export const request = {
+  get: (route) =>
+    superagent
+      .get(`${apiUrl}/api/v1${route}`)
+      .use(withToken)
+      .catch(errorMessage),
+  del: (route, data) =>
+    superagent
+      .del(`${apiUrl}/api/v1${route}`)
+      .send(data)
+      .use(withToken)
+      .catch(errorMessage),
+  post: (route, data) =>
+    superagent
+      .post(`${apiUrl}/api/v1${route}`)
+      .send(data)
+      .use(withToken)
+      .catch(errorMessage),
+  patch: (route, data) =>
+    superagent
+      .patch(`${apiUrl}/api/v1${route}`)
+      .send(data)
+      .use(withToken)
+      .catch(errorMessage),
+};
 
-    const res = await fetch(`${this.url}/api/v1${route}`, {
-      ...defaultParameters,
-      ...parameters,
-    });
+export const Profile = {
+  get: async () => await request.get("/users/me"),
+  changeData: async (body) => await request.patch("/users/me/data", body),
+  changePassword: async (body) =>
+    await request.patch("/users/me/password", body),
+  login: async (body) => await request.post("/users/login", body),
+  activate: async (token, body) =>
+    await request.post(`/users/signup/${token}`, body),
+  forgotPassword: async (body) => await request.post("/users/forgot", body),
+  resetPassword: async (token, body) =>
+    await request.post(`/users/reset/${token}`, body),
+};
 
-    if (res.status === 204) return null;
+export const Voting = {
+  getAll: async () => await request.get("/votings"),
+  getOne: async (id) => await request.get(`/votings/${id}`),
+  getResult: async (id) => await request.get(`/votings/${id}/contractinfo`),
+  create: async (body) => await request.post(`/votings`, body),
+  update: async (id, body) => await request.patch(`/votings/${id}`, body),
+  start: async (id, body) => await request.post(`/votings/${id}/start`, body),
+  archive: async (id) => await request.post(`/votings/${id}/archive`),
+  delete: async (id) => await request.del(`/votings/${id}`),
+  vote: async (id, body) => await request.post(`/votings/${id}`, body),
+  addUsers: async (id, body) =>
+    await request.post(`/votings/${id}/users`, body),
+};
 
-    let json = await res.json();
-    if (json.status === "error") throw new Error(json.message);
-    if (json.result && json.result.length)
-      json.result = this.addUniqueKeys(json.result);
-    return json;
-  }
-
-  // ====================================
-  // USERS
-  // ====================================
-
-  async createUser(body) {
-    return await this.createRequest(`/users`, {
-      method: "POST",
-      body: JSON.stringify(body),
-    });
-  }
-
-  async getUsers() {
-    return await this.createRequest("/users");
-  }
-
-  async getUser(id) {
-    return await this.createRequest(`/users/${id}`);
-  }
-
-  async updateUser(id, body) {
-    return await this.createRequest(`/users/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify(body),
-    });
-  }
-
-  async deleteUser(id) {
-    await this.createRequest(`/users/${id}`, { method: "DELETE" });
-  }
-
-  async deleteUsers(users) {
-    await this.createRequest(`/users/`, {
-      method: "DELETE",
-      body: JSON.stringify({ users }),
-    });
-  }
-
-  // ====================================
-  // OWN ACCOUNT
-  // ====================================
-
-  async getMe() {
-    return await this.createRequest("/users/me");
-  }
-
-  async changeProfileData(body) {
-    return await this.createRequest(`/users/me/data`, {
-      method: "PATCH",
-      headers: { Authorization: `Bearer ${getAuthToken()}` },
-      body,
-    });
-  }
-
-  async changeProfilePassword(body) {
-    return await this.createRequest(`/users/me/password`, {
-      method: "PATCH",
-      body: JSON.stringify(body),
-    });
-  }
-
-  // ====================================
-  // VOTING
-  // ====================================
-
-  async getVotings() {
-    return await this.createRequest("/votings");
-  }
-
-  async getVotingDB(id) {
-    return await this.createRequest(`/votings/${id}`);
-  }
-
-  async getVotingContract(id) {
-    return await this.createRequest(`/votings/${id}/contractinfo`);
-  }
-
-  async voteForCandidate(votingID, body) {
-    return await this.createRequest(`/votings/${votingID}`, {
-      method: "POST",
-      body: JSON.stringify(body),
-    });
-  }
-
-  async createVoting(body) {
-    return await this.createRequest("/votings", {
-      method: "POST",
-      body: JSON.stringify(body),
-    });
-  }
-
-  async updateVoting(id, body) {
-    return await this.createRequest(`/votings/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify(body),
-    });
-  }
-
-  async archiveVoting(id) {
-    return await this.createRequest(`/votings/${id}/archive`, {
-      method: "POST",
-    });
-  }
-
-  async deleteVoting(id) {
-    await this.createRequest(`/votings/${id}`, { method: "DELETE" });
-  }
-
-  async addUsersToVoting(id, body) {
-    return await this.createRequest(`/votings/${id}/users`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${getAuthToken()}` },
-      body,
-    });
-  }
-
-  async startVoting(votingID, body) {
-    return await this.createRequest(`/votings/${votingID}/start`, {
-      method: "POST",
-      body: JSON.stringify(body),
-    });
-  }
-
-  // ====================================
-  // AUTHETICATION
-  // ====================================
-
-  async login(body) {
-    return await this.createRequest("/users/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-  }
-
-  async finishRegister(token, body) {
-    return await this.createRequest(`/users/signup/${token}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-  }
-
-  async forgotPassword(body) {
-    return await this.createRequest(`/users/forgot`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-  }
-
-  async resetPassword(token, body) {
-    return await this.createRequest(`/users/reset/${token}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-  }
-}
-
-export default new API();
+export const User = {
+  getAll: async () => await request.get("/users"),
+  getOne: async (id) => await request.get(`/users/${id}`),
+  create: async (body) => await request.post(`/users`, body),
+  update: async (id, body) => await request.patch(`/users/${id}`, body),
+  deleteOne: async (id) => await request.del(`/users/${id}`),
+  deleteMany: async (body) => await request.del(`/users`, body),
+};

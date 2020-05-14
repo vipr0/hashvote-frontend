@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { List, Avatar, Card } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import API from "../../utils/api";
+import { apiUrl } from "../../utils/api";
 
 const VotersList = () => {
   const voters = useSelector((state) => state.voting.dataFromDB.voters);
@@ -24,7 +24,7 @@ const VotersList = () => {
               avatar={
                 <Avatar
                   icon={<UserOutlined />}
-                  src={`${API.url}/img/users/${item.user.photo}`}
+                  src={`${apiUrl}/img/users/${item.user.photo}`}
                 />
               }
               title={

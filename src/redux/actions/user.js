@@ -6,7 +6,7 @@ import {
   UPDATE_USER,
   DELETE_USER,
 } from "../constants";
-import API from "../../utils/api";
+import { User, Profile } from "../../utils/api";
 import { showMessage, showError } from "./app";
 import {
   setModalResult,
@@ -14,6 +14,7 @@ import {
   loadingModal,
   loadedModal,
 } from "./modals";
+import { addKey } from "../../utils/uniqueKeys";
 
 export const userLoading = () => {
   return async (dispatch) => {
@@ -30,8 +31,8 @@ export const userLoaded = () => {
 export const getUser = (id) => async (dispatch) => {
   try {
     dispatch(userLoading());
-    const response = await API.getUser(id);
-    dispatch({ type: GET_USER, payload: response.result });
+    const { body } = await User.getOne(id);
+    dispatch({ type: GET_USER, payload: body.result });
   } catch (error) {
     dispatch(showError(error.message));
   } finally {
@@ -42,9 +43,9 @@ export const getUser = (id) => async (dispatch) => {
 export const updateUser = (id, data) => async (dispatch) => {
   try {
     dispatch(userLoading());
-    const response = await API.updateUser(id, data);
-    dispatch({ type: UPDATE_USER, payload: response.result });
-    dispatch(showMessage("success", response.message));
+    const { body } = await User.update(id, data);
+    dispatch({ type: UPDATE_USER, payload: body.result });
+    dispatch(showMessage("success", body.message));
   } catch (error) {
     dispatch(showMessage("error", error.message));
   } finally {
@@ -55,7 +56,7 @@ export const updateUser = (id, data) => async (dispatch) => {
 export const deleteUser = (id) => async (dispatch) => {
   try {
     dispatch(userLoading());
-    await API.deleteUser(id);
+    await User.deleteOne(id);
     dispatch({ type: DELETE_USER, payload: id });
     dispatch(showMessage("success", "Successfully deleted"));
   } catch (error) {
@@ -69,9 +70,9 @@ export const createUser = (data) => async (dispatch) => {
   try {
     dispatch(userLoading());
     dispatch(loadingModal("createUser"));
-    const response = await API.createUser(data);
-    dispatch(setModalResult("createUser", response.message));
-    dispatch({ type: CREATE_USER, payload: response.result });
+    const { body } = await User.create(data);
+    dispatch(setModalResult("createUser", body.message));
+    dispatch({ type: CREATE_USER, payload: addKey(body.result) });
   } catch (error) {
     dispatch(setModalError("createUser", error.message));
   } finally {
@@ -82,8 +83,8 @@ export const createUser = (data) => async (dispatch) => {
 
 export const resetUserPassword = (email) => async (dispatch) => {
   try {
-    const response = await API.forgotPassword({ email });
-    dispatch(showMessage("success", response.message));
+    const { body } = await Profile.forgotPassword({ email });
+    dispatch(showMessage("success", body.message));
   } catch (error) {
     dispatch(showMessage("error", error.message));
   }

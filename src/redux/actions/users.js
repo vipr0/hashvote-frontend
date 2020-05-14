@@ -4,8 +4,9 @@ import {
   GET_ALL_USERS,
   DELETE_USERS,
 } from "../constants";
-import API from "../../utils/api";
+import { User } from "../../utils/api";
 import { showError, showMessage } from "./app";
+import { addKeysToArray } from "../../utils/uniqueKeys";
 
 export const usersLoading = () => {
   return async (dispatch) => {
@@ -22,8 +23,8 @@ export const usersLoaded = () => {
 export const getAllUsers = () => async (dispatch) => {
   try {
     dispatch(usersLoading());
-    const response = await API.getUsers();
-    dispatch({ type: GET_ALL_USERS, payload: response.result });
+    const { body } = await User.getAll();
+    dispatch({ type: GET_ALL_USERS, payload: addKeysToArray(body.result) });
   } catch (error) {
     dispatch(showError(error.message));
   } finally {
@@ -33,7 +34,7 @@ export const getAllUsers = () => async (dispatch) => {
 
 export const deleteUsers = (users) => async (dispatch) => {
   try {
-    await API.deleteUsers(users);
+    await User.deleteMany({ users });
     dispatch({ type: DELETE_USERS, payload: users });
     dispatch(showMessage("success", "Succesfully deleted"));
   } catch (error) {

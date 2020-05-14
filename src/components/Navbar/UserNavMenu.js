@@ -6,7 +6,7 @@ import {
   LogoutOutlined,
   SecurityScanOutlined,
 } from "@ant-design/icons";
-import API from "../../utils/api";
+import { apiUrl } from "../../utils/api";
 import { connect } from "react-redux";
 import { logOut } from "../../redux/actions/profile";
 
@@ -21,7 +21,7 @@ const UserNavMenu = ({ user, logout }) => {
           <span>
             <Avatar
               icon={<UserOutlined />}
-              src={user.photo ? `${API.url}/img/users/${user.photo}` : null}
+              src={user.photo ? `${apiUrl}/img/users/${user.photo}` : null}
               style={{ marginRight: 12 }}
             />
             {user.name}
