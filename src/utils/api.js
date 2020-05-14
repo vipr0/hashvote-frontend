@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 class API {
   constructor() {
-    this.url = "https://api.evoting.online";
+    this.url =  process.env.REACT_APP_API_URL;
   }
 
   addUniqueKeys(arr) {
@@ -24,8 +24,6 @@ class API {
       ...defaultParameters,
       ...parameters,
     });
-
-    console.log(res);
 
     if (res.status === 204) return null;
 

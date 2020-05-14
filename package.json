@@ -21,8 +21,9 @@
     "uuid": "^8.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start:dev": "REACT_APP_API_URL=http://127.0.0.1:8080 react-scripts start",
+    "start:prod": "REACT_APP_API_URL=https://api.evoting.online react-scripts start",
+    "build": "REACT_APP_API_URL=https://api.evoting.online react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
