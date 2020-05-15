@@ -1,62 +1,57 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Form, Input, Button, Card, Typography } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { Form, Input, Button } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { connect } from "react-redux";
 import { logIn } from "../../redux/actions/profile";
+import "./style.css";
+import FormWrapper from "./authFormWrapper";
 
-const { Title } = Typography;
+const Login = () => {
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.app.loading);
 
-const mapStateToProps = (state) => ({ loading: state.app.loading });
-const mapDispatchToProps = (dispatch) => ({
-  login: (data) => dispatch(logIn(data)),
-});
-
-const Login = ({ login, loading }) => {
   return (
-    <Card>
-      <Form onFinish={login} style={{ textAlign: "center" }}>
-        <Title level={4}>Log In</Title>
-        <Form.Item
-          name="email"
-          rules={[
-            {
-              required: true,
-              message: "Please input your Username!",
-            },
-          ]}
-        >
-          <Input
-            prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Email"
-          />
-        </Form.Item>
-        <Form.Item
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "Please input your Password!",
-            },
-          ]}
-        >
-          <Input
-            prefix={<LockOutlined className="site-form-item-icon" />}
-            type="password"
-            placeholder="Password"
-          />
-        </Form.Item>
-        <Form.Item>
-          <Link to="/forgot">Forgot password</Link>
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading}>
-            Log in
-          </Button>
-        </Form.Item>
-      </Form>
-    </Card>
+    <FormWrapper fn={(data) => dispatch(logIn(data))} title="Log in">
+      <Form.Item
+        name="email"
+        rules={[
+          {
+            required: true,
+            message: "Please input your Username!",
+          },
+        ]}
+      >
+        <Input
+          prefix={<UserOutlined className="site-form-item-icon" />}
+          placeholder="Email"
+        />
+      </Form.Item>
+      <Form.Item
+        name="password"
+        rules={[
+          {
+            required: true,
+            message: "Please input your Password!",
+          },
+        ]}
+      >
+        <Input
+          prefix={<LockOutlined className="site-form-item-icon" />}
+          type="password"
+          placeholder="Password"
+        />
+      </Form.Item>
+      <Form.Item>
+        <Link to="/forgot">Forgot password</Link>
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" htmlType="submit" loading={loading}>
+          Log in
+        </Button>
+      </Form.Item>
+    </FormWrapper>
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;

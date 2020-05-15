@@ -1,63 +1,56 @@
 import React from "react";
-import { Form, Input, Button, Card, Typography } from "antd";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import { Form, Input, Button } from "antd";
 import { LockOutlined } from "@ant-design/icons";
-import { connect } from "react-redux";
 import { resetPassword } from "../../redux/actions/profile";
+import FormWrapper from "./authFormWrapper";
 
-const { Title } = Typography;
-
-const ResetPassword = ({ match, resetPassword }) => {
+const ResetPassword = () => {
+  const dispatch = useDispatch();
+  const { token } = useParams();
   return (
-    <Card>
-      <Form
-        onFinish={(data) => resetPassword(match.params.token, data)}
-        style={{ textAlign: "center" }}
+    <FormWrapper
+      fn={(data) => dispatch(resetPassword(token, data))}
+      title="Reset password"
+    >
+      <Form.Item
+        name="password"
+        rules={[
+          {
+            required: true,
+            message: "Please input your new password!",
+          },
+        ]}
       >
-        <Title level={4} style={{ marginBottom: 32 }}>
-          Reset your passowrd
-        </Title>
-        <Form.Item
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: "Please input your new password!",
-            },
-          ]}
-        >
-          <Input
-            prefix={<LockOutlined className="site-form-item-icon" />}
-            type="password"
-            placeholder="Your new password"
-          />
-        </Form.Item>
-        <Form.Item
-          name="passwordConfirm"
-          rules={[
-            {
-              required: true,
-              message: "Please input your new password again!",
-            },
-          ]}
-        >
-          <Input
-            prefix={<LockOutlined className="site-form-item-icon" />}
-            type="password"
-            placeholder="Your new password again"
-          />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Reset password
-          </Button>
-        </Form.Item>
-      </Form>
-    </Card>
+        <Input
+          prefix={<LockOutlined className="site-form-item-icon" />}
+          type="password"
+          placeholder="Your new password"
+        />
+      </Form.Item>
+      <Form.Item
+        name="passwordConfirm"
+        rules={[
+          {
+            required: true,
+            message: "Please input your new password again!",
+          },
+        ]}
+      >
+        <Input
+          prefix={<LockOutlined className="site-form-item-icon" />}
+          type="password"
+          placeholder="Your new password again"
+        />
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary" htmlType="submit">
+          Reset password
+        </Button>
+      </Form.Item>
+    </FormWrapper>
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  resetPassword: (token, data) => dispatch(resetPassword(token, data)),
-});
-
-export default connect(null, mapDispatchToProps)(ResetPassword);
+export default ResetPassword;

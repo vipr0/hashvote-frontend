@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import { Menu, Avatar } from "antd";
 import {
   UserOutlined,
@@ -7,7 +8,6 @@ import {
   SecurityScanOutlined,
 } from "@ant-design/icons";
 import { apiUrl } from "../../utils/api";
-import { connect } from "react-redux";
 import { logOut } from "../../redux/actions/profile";
 
 const { SubMenu } = Menu;
