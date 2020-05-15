@@ -38,7 +38,6 @@ export const getVoting = (id) => async (dispatch) => {
     const { body } = await Voting.getOne(id);
     dispatch({ type: GET_VOTING_FROM_DB, payload: body.result });
     const result = await Voting.getResult(id);
-    console.log(result);
     dispatch({ type: GET_VOTING_FROM_CONTRACT, payload: result.body.result });
   } catch (error) {
     dispatch(showError(error.message));
