@@ -14,7 +14,7 @@ import {
   loadingModal,
   loadedModal,
 } from "./modals";
-import { addKey } from "../../utils/uniqueKeys";
+import { addKey, addKeysToArray } from "../../utils/uniqueKeys";
 
 export const userLoading = () => {
   return async (dispatch) => {
@@ -72,7 +72,10 @@ export const createUser = (data) => async (dispatch) => {
     dispatch(loadingModal("createUser"));
     const { body } = await User.create(data);
     dispatch(setModalResult("createUser", body.message));
-    dispatch({ type: CREATE_USER, payload: addKey(body.result) });
+    dispatch({
+      type: CREATE_USER,
+      payload: addKeysToArray(body.result.newUsers),
+    });
   } catch (error) {
     dispatch(setModalError("createUser", error.message));
   } finally {

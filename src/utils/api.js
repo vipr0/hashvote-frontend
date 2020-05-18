@@ -70,6 +70,7 @@ export const User = {
   getAll: async () => await request.get("/users"),
   getOne: async (id) => await request.get(`/users/${id}`),
   create: async (body) => await request.post(`/users`, body),
+  import: async (body) => await request.post(`/users/upload`, body),
   update: async (id, body) => await request.patch(`/users/${id}`, body),
   deleteOne: async (id) => await request.del(`/users/${id}`),
   deleteMany: async (body) => await request.del(`/users`, body),

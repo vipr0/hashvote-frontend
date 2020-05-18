@@ -13,6 +13,7 @@ const initialState = {
   createVoting: {},
   startVoting: {},
   createUser: {},
+  importUsers: {},
   vote: {},
 };
 

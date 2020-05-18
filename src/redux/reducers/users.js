@@ -5,6 +5,7 @@ import {
   CREATE_USER,
   DELETE_USER,
   DELETE_USERS,
+  CREATE_USERS,
 } from "../constants";
 
 const initialState = {
@@ -21,7 +22,8 @@ export default (state = initialState, action) => {
     case GET_ALL_USERS:
       return { ...state, data: action.payload };
     case CREATE_USER:
-      return { ...state, data: [...state.data, action.payload] };
+    case CREATE_USERS:
+      return { ...state, data: [...state.data, ...action.payload] };
     case DELETE_USER:
       return {
         ...state,

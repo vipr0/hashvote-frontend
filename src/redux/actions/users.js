@@ -3,10 +3,17 @@ import {
   USERS_LOADED,
   GET_ALL_USERS,
   DELETE_USERS,
+  CREATE_USERS,
 } from "../constants";
 import { User } from "../../utils/api";
 import { showError, showMessage } from "./app";
 import { addKeysToArray } from "../../utils/uniqueKeys";
+import {
+  loadingModal,
+  setModalError,
+  setModalResult,
+  loadedModal,
+} from "./modals";
 
 export const usersLoading = () => {
   return async (dispatch) => {
@@ -28,6 +35,24 @@ export const getAllUsers = () => async (dispatch) => {
   } catch (error) {
     dispatch(showError(error.message));
   } finally {
+    dispatch(usersLoaded());
+  }
+};
+
+export const importUsers = (data) => async (dispatch) => {
+  try {
+    dispatch(usersLoading());
+    dispatch(loadingModal("importUsers"));
+    const { body } = await User.import(data);
+    dispatch(setModalResult("importUsers", body.message));
+    dispatch({
+      type: CREATE_USERS,
+      payload: addKeysToArray(body.result.newUsers),
+    });
+  } catch (error) {
+    dispatch(setModalError("importUsers", error.message));
+  } finally {
+    dispatch(loadedModal("importUsers"));
     dispatch(usersLoaded());
   }
 };
