@@ -38,6 +38,7 @@ const AdminDashboard = ({
 }) => {
   return (
     <div className="card-container">
+      <Title>Admin panel</Title>
       <Tabs
         defaultActiveKey={currentTab}
         type="card"
@@ -46,14 +47,14 @@ const AdminDashboard = ({
       >
         <TabPane tab="Votings" key="votings">
           <CreateVotingModal />
-          <Row align="middle">
+          <Row align="middle" gutter={[16, 16]}>
             <Col span={24} md={12}>
-              <Title>Table of votings</Title>
+              <Title level={3}>Table of all votings</Title>
             </Col>
 
             <Col span={24} md={12} align="end">
               <Button onClick={openCreateVotingModal} type="primary">
-                Create new voting
+                Add new voting
               </Button>
             </Col>
           </Row>
@@ -64,13 +65,13 @@ const AdminDashboard = ({
           <ImportUsersModal />
           <Row align="middle">
             <Col span={24} md={12}>
-              <Title>Table of users</Title>
+              <Title level={3}>Table of all users</Title>
             </Col>
             <Col span={24} md={12} align="end">
               <Row gutter={[16, 16]} justify="end">
                 <Col>
                   <Button onClick={openCreateUserModal} type="primary">
-                    Create new user
+                    Add new user
                   </Button>
                 </Col>
                 <Col>
@@ -84,7 +85,7 @@ const AdminDashboard = ({
           <UsersTable />
         </TabPane>
         <TabPane tab="Blockchain" key="blockchain">
-          <Title>Blockchain info</Title>
+          <Title level={3}>Blockchain info</Title>
           <Row gutter={[16, 16]}>
             <Col span={24} md={12}>
               <WalletInfoCard />
