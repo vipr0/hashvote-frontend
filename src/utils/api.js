@@ -75,3 +75,8 @@ export const User = {
   deleteOne: async (id) => await request.del(`/users/${id}`),
   deleteMany: async (body) => await request.del(`/users`, body),
 };
+
+export const Blockchain = {
+  getAccount: async () => await request.get("/blockchain/wallet"),
+  getContract: async () => await request.get("/blockchain/contract"),
+}
