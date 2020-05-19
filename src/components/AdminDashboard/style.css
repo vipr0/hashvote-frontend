@@ -41,3 +41,7 @@
 .selection-buttons {
   margin-bottom: 12px;
 }
+
+.info-card {
+  overflow: hidden;
+}

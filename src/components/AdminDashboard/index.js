@@ -7,11 +7,13 @@ import CreateVotingModal from "../CreateVotingModal";
 import CreateUserModal from "../CreateUserModal";
 import { connect } from "react-redux";
 import { showModal } from "../../redux/actions/modals";
-import { setAdminTab, showMessage } from "../../redux/actions/app";
+import { setAdminTab } from "../../redux/actions/app";
 import compose from "../../utils/compose";
 import adminComponent from "../adminComponent";
 import protectedComponent from "../protectedComponent";
 import ImportUsersModal from "../ImportUsersModal";
+import WalletInfoCard from "./WalletInfoCard";
+import ContractInfoCard from "./ContractInfoCard";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -80,6 +82,17 @@ const AdminDashboard = ({
             </Col>
           </Row>
           <UsersTable />
+        </TabPane>
+        <TabPane tab="Blockchain" key="blockchain">
+          <Title>Blockchain info</Title>
+          <Row gutter={[16, 16]}>
+            <Col span={24} md={12}>
+              <WalletInfoCard />
+            </Col>
+            <Col span={24} md={12}>
+              <ContractInfoCard />
+            </Col>
+          </Row>
         </TabPane>
       </Tabs>
     </div>
