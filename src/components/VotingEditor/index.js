@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Typography, Row, Col } from "antd";
+import { Typography, Row, Col, Tabs } from "antd";
 import { useParams } from "react-router-dom";
 import "./style.css";
 import Loader from "../Loader";
@@ -16,6 +16,7 @@ import protectedComponent from "../protectedComponent";
 import VotersList from "./VotersList";
 
 const { Title } = Typography;
+const { TabPane } = Tabs;
 
 const mapStateToProps = (state) => ({
   voting: state.voting.dataFromDB,
@@ -35,7 +36,6 @@ const VotingEditor = ({ loading, voting = {}, getVoting }) => {
   return (
     <Loader loading={loading}>
       <StartVotingModal votingId={votingId} />
-
       <Row gutter={[32, 32]}>
         <Col span={24} md={12}>
           <Title level={2}>{voting.title}</Title>
@@ -46,28 +46,36 @@ const VotingEditor = ({ loading, voting = {}, getVoting }) => {
         </Col>
       </Row>
 
-      <Row gutter={[32, 32]}>
-        <Col span={24} md={12}>
-          <VotingInfoCard voting={voting} />
-        </Col>
-        <Col span={24} md={12}>
-          <VotersList />
-        </Col>
-      </Row>
+      <div className="card-container">
+        <Tabs type="card">
+          <TabPane tab="Information" key="1">
+            <Row gutter={[32, 32]}>
+              <Col span={24} md={12}>
+                <VotingInfoCard voting={voting} />
+              </Col>
+              <Col span={24} md={12}>
+                <ChangeVotingDataCard
+                  initialValues={{
+                    title: voting.title,
+                    description: voting.description,
+                  }}
+                />
+              </Col>
+            </Row>
+          </TabPane>
+          <TabPane tab="Voters" key="2">
+            <Row gutter={[32, 32]}>
+              <Col span={24} lg={12}>
+                <VotersList />
+              </Col>
+              <Col span={24} lg={12} hidden={voting.isStarted}>
+                <AddUsersCard />
+              </Col>
+            </Row>
+          </TabPane>
 
-      <Row gutter={[32, 32]}>
-        <Col span={24} lg={12}>
-          <ChangeVotingDataCard
-            initialValues={{
-              title: voting.title,
-              description: voting.description,
-            }}
-          />
-        </Col>
-        <Col span={24} lg={12} hidden={voting.isStarted}>
-          <AddUsersCard />
-        </Col>
-      </Row>
+        </Tabs>
+      </div>
     </Loader>
   );
 };
