@@ -5,6 +5,8 @@ import { Table, Button, Tag, Popconfirm, Row } from "antd";
 import { getAllUsers, deleteUsers } from "../../redux/actions/users";
 import { deleteUser } from "../../redux/actions/user";
 import getColumnSearchProps from "../../utils/getColumnSearchProps";
+import compose from "../../utils/compose";
+import { withNamespaces } from "react-i18next";
 
 const mapStateToProps = (state) => ({
   loading: state.users.loading,
@@ -23,6 +25,7 @@ const UsersTable = ({
   deleteUsers,
   loading,
   users,
+  t,
 }) => {
   const [selectedRows, setSelectedRows] = useState([]);
   useEffect(() => {
@@ -44,7 +47,7 @@ const UsersTable = ({
 
   const columns = [
     {
-      title: "Name",
+      title: t("Name"),
       dataIndex: "name",
       key: "name",
       width: 150,
@@ -55,24 +58,24 @@ const UsersTable = ({
       ...getColumnSearchProps("name"),
     },
     {
-      title: "Email",
+      title: t("Email"),
       dataIndex: "email",
       key: "email",
       sorter: (a, b) => a.email.localeCompare(b.email),
       ...getColumnSearchProps("email"),
     },
     {
-      title: "Role",
+      title: t("Role"),
       dataIndex: "role",
       key: "role",
       width: 100,
       filters: [
         {
-          text: "Admin",
+          text: t("Admin"),
           value: "admin",
         },
         {
-          text: "Voter",
+          text: t("Voter"),
           value: "voter",
         },
       ],
@@ -80,7 +83,7 @@ const UsersTable = ({
       sorter: (a, b) => a.role.localeCompare(b.role),
     },
     {
-      title: "Verified",
+      title: t("Verified"),
       dataIndex: "isVerified",
       key: "isVerified",
       width: 100,
@@ -88,29 +91,29 @@ const UsersTable = ({
         value ? <Tag color="success">Yes</Tag> : <Tag color="error">No</Tag>,
       filters: [
         {
-          text: "Yes",
+          text: t("Yes"),
           value: true,
         },
         {
-          text: "No",
+          text: t("No"),
           value: false,
         },
       ],
       onFilter: (value, user) => user.isVerified === value,
     },
     {
-      title: "Action",
+      title: t("Action"),
       key: "action",
       width: 100,
       render: (text, record) => (
         <Popconfirm
-          title="Are you sure delete this task?"
+          title={t("Are you sure delete this task?")}
           onConfirm={() => deleteUser(record._id)}
-          okText="Yes"
-          cancelText="No"
+          okText={t("Yes")}
+          cancelText={t("No")}
         >
           <Button key="3" danger shape="round">
-            Delete
+            {t("Delete")}
           </Button>
         </Popconfirm>
       ),
@@ -121,7 +124,7 @@ const UsersTable = ({
     <Fragment>
       <Row className="selection-buttons" hidden={!selectedRows.length}>
         <Button danger onClick={handleDeleteUsers}>
-          Delete selected users
+          {t("Delete selected users")}
         </Button>
       </Row>
       <Table
@@ -135,4 +138,7 @@ const UsersTable = ({
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersTable);
+export default compose(
+  withNamespaces(),
+  connect(mapStateToProps, mapDispatchToProps)
+)(UsersTable);

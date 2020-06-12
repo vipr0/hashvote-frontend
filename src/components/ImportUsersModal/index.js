@@ -4,13 +4,14 @@ import { Button, Form, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import ModalWrapper from "../ModalWrapper";
 import { importUsers } from "../../redux/actions/users";
+import { withNamespaces } from "react-i18next";
 
 const formItemLayout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
 };
 
-const ImportUsersModal = () => {
+const ImportUsersModal = ({ t }) => {
   const dispatch = useDispatch();
   const modal = useSelector((state) => state.modals.importUsers);
 
@@ -26,10 +27,10 @@ const ImportUsersModal = () => {
       result={modal.result}
       visible={modal.visible}
       error={modal.error}
-      title="Import users"
+      title={t("Import users")}
     >
       <Form {...formItemLayout} onFinish={handleSubmit}>
-        <Form.Item name="file" label="File" valuePropName="file">
+        <Form.Item name="file" label={t("File")} valuePropName="file">
           <Upload
             name="file"
             multiple={false}
@@ -37,13 +38,13 @@ const ImportUsersModal = () => {
             accept=".csv"
           >
             <Button>
-              <UploadOutlined /> Click to select csv file
+              <UploadOutlined /> {t("Click to select csv file")}
             </Button>
           </Upload>
         </Form.Item>
         <Form.Item style={{ textAlign: "center" }}>
           <Button type="primary" htmlType="submit">
-            Submit
+            {t("Submit")}
           </Button>
         </Form.Item>
       </Form>
@@ -51,4 +52,4 @@ const ImportUsersModal = () => {
   );
 };
 
-export default ImportUsersModal;
+export default withNamespaces()(ImportUsersModal);

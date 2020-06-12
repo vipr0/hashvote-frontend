@@ -4,6 +4,8 @@ import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import ModalWrapper from "../ModalWrapper";
 import { connect } from "react-redux";
 import { createVoting } from "../../redux/actions/voting";
+import compose from "../../utils/compose";
+import { withNamespaces } from "react-i18next";
 
 const mapStateToProps = (state) => ({
   modal: state.modals.createVoting,
@@ -13,28 +15,28 @@ const mapDispatchToProps = (dispatch) => ({
   createVoting: (data) => dispatch(createVoting(data)),
 });
 
-const CreateVotingModal = ({ modal, createVoting }) => {
+const CreateVotingModal = ({ modal, createVoting, t }) => {
   return (
     <ModalWrapper
       modalName="createVoting"
       result={modal.result}
       visible={modal.visible}
       error={modal.error}
-      title="Create a new voting"
+      title={t("Create a new voting")}
     >
       <Form layout="vertical" onFinish={createVoting}>
         <Form.Item
           name="title"
-          label="Title"
-          rules={[{ required: true, message: "Please input title!" }]}
+          label={t("Title")}
+          rules={[{ required: true, message: t("Please input title!") }]}
         >
           <Input />
         </Form.Item>
 
         <Form.Item
           name="description"
-          label="Description"
-          rules={[{ required: true, message: "Please input description!" }]}
+          label={t("Description")}
+          rules={[{ required: true, message: t("Please input description!") }]}
         >
           <Input.TextArea />
         </Form.Item>
@@ -46,7 +48,7 @@ const CreateVotingModal = ({ modal, createVoting }) => {
                 {fields.map((field, index) => (
                   <Form.Item
                     key={field.key}
-                    label={index === 0 ? "Candidates" : ""}
+                    label={index === 0 ? t("Candidates") : ""}
                   >
                     <Form.Item
                       {...field}
@@ -55,8 +57,9 @@ const CreateVotingModal = ({ modal, createVoting }) => {
                         {
                           required: true,
                           whitespace: true,
-                          message:
-                            "Please input candidate's name or delete this field.",
+                          message: t(
+                            "Please input candidate's name or delete this field."
+                          ),
                         },
                       ]}
                       noStyle
@@ -76,7 +79,7 @@ const CreateVotingModal = ({ modal, createVoting }) => {
                 ))}
                 <Form.Item>
                   <Button type="dashed" onClick={() => add()}>
-                    <PlusOutlined /> Add candidate
+                    <PlusOutlined /> {t("Add candidate")}
                   </Button>
                 </Form.Item>
               </div>
@@ -86,8 +89,8 @@ const CreateVotingModal = ({ modal, createVoting }) => {
 
         <Form.Item
           name="endTime"
-          label="End Time"
-          rules={[{ required: true, message: "Please select end time!" }]}
+          label={t("End Time")}
+          rules={[{ required: true, message: t("Please select end time!") }]}
         >
           <DatePicker
             showTime={{ format: "HH:mm" }}
@@ -97,7 +100,7 @@ const CreateVotingModal = ({ modal, createVoting }) => {
 
         <Form.Item>
           <Button loading={modal.loading} type="primary" htmlType="submit">
-            Create
+            {t("Create")}
           </Button>
         </Form.Item>
       </Form>
@@ -105,4 +108,7 @@ const CreateVotingModal = ({ modal, createVoting }) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateVotingModal);
+export default compose(
+  withNamespaces(),
+  connect(mapStateToProps, mapDispatchToProps)
+)(CreateVotingModal);

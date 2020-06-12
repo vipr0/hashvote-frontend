@@ -6,6 +6,8 @@ import moment from "moment";
 import { deleteVoting } from "../../redux/actions/voting";
 import { getAllVotings } from "../../redux/actions/votings";
 import getColumnSearchProps from "../../utils/getColumnSearchProps";
+import compose from "../../utils/compose";
+import { withNamespaces } from "react-i18next";
 
 const mapStateToProps = (state) => ({
   loading: state.votings.loading,
@@ -17,14 +19,14 @@ const mapDispatchToProps = (dispatch) => ({
   deleteVoting: (id) => dispatch(deleteVoting(id)),
 });
 
-const VotingsTable = ({ loading, votings, getAllVotings, deleteVoting }) => {
+const VotingsTable = ({ loading, votings, getAllVotings, deleteVoting, t }) => {
   useEffect(() => {
     getAllVotings();
   }, []);
 
   const columns = [
     {
-      title: "Title",
+      title: t("Title"),
       dataIndex: "title",
       key: "title",
       width: 150,
@@ -35,14 +37,14 @@ const VotingsTable = ({ loading, votings, getAllVotings, deleteVoting }) => {
       ...getColumnSearchProps("title"),
     },
     {
-      title: "Description",
+      title: t("Description"),
       dataIndex: "description",
       key: "description",
       width: 300,
       ...getColumnSearchProps("description"),
     },
     {
-      title: "Created at",
+      title: t("Created at"),
       dataIndex: "createdAt",
       key: "createdAt",
       width: 100,
@@ -51,25 +53,25 @@ const VotingsTable = ({ loading, votings, getAllVotings, deleteVoting }) => {
         moment(a.createdAt).valueOf() - moment(b.createdAt).valueOf(),
     },
     {
-      title: "Number of voters",
+      title: t("Number of voters"),
       dataIndex: "votersCount",
       key: "votersCount",
       width: 100,
       sorter: (a, b) => a.votersCount - b.votersCount,
     },
     {
-      title: "Action",
+      title: t("Action"),
       key: "action",
       width: 100,
       render: (text, record) => (
         <Popconfirm
-          title="Are you sure delete this voting?"
+          title={t("Are you sure delete this voting?")}
           onConfirm={() => deleteVoting(record._id)}
-          okText="Yes"
-          cancelText="No"
+          okText={t("Yes")}
+          cancelText={t("No")}
         >
           <Button key="3" danger shape="round">
-            Delete
+            {t("Delete")}
           </Button>
         </Popconfirm>
       ),
@@ -86,4 +88,7 @@ const VotingsTable = ({ loading, votings, getAllVotings, deleteVoting }) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(VotingsTable);
+export default compose(
+  withNamespaces(),
+  connect(mapStateToProps, mapDispatchToProps)
+)(VotingsTable);

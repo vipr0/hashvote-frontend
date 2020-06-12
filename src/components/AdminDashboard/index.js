@@ -14,6 +14,7 @@ import protectedComponent from "../protectedComponent";
 import ImportUsersModal from "../ImportUsersModal";
 import WalletInfoCard from "./WalletInfoCard";
 import ContractInfoCard from "./ContractInfoCard";
+import { withNamespaces } from "react-i18next";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -35,48 +36,49 @@ const AdminDashboard = ({
   openImportUsersModal,
   changeAdminTab,
   currentTab,
+  t
 }) => {
   return (
     <div className="card-container">
-      <Title>Admin panel</Title>
+      <Title>{t("Admin panel")}</Title>
       <Tabs
         defaultActiveKey={currentTab}
         type="card"
         size="large"
         onChange={changeAdminTab}
       >
-        <TabPane tab="Votings" key="votings">
+        <TabPane tab={t("Votings")} key="votings">
           <CreateVotingModal />
           <Row align="middle" gutter={[16, 16]}>
             <Col span={24} md={12}>
-              <Title level={3}>Table of all votings</Title>
+              <Title level={3}>{t("Table of all votings")}</Title>
             </Col>
 
             <Col span={24} md={12} align="end">
               <Button onClick={openCreateVotingModal} type="primary">
-                Add new voting
+                {t("Add new voting")}
               </Button>
             </Col>
           </Row>
           <VotingsTable />
         </TabPane>
-        <TabPane tab="Users" key="users">
+        <TabPane tab={t("Users")} key="users">
           <CreateUserModal />
           <ImportUsersModal />
           <Row align="middle">
             <Col span={24} md={12}>
-              <Title level={3}>Table of all users</Title>
+              <Title level={3}>{t("Table of all users")}</Title>
             </Col>
             <Col span={24} md={12} align="end">
               <Row gutter={[16, 16]} justify="end">
                 <Col>
                   <Button onClick={openCreateUserModal} type="primary">
-                    Add new user
+                    {t("Add new user")}
                   </Button>
                 </Col>
                 <Col>
                   <Button onClick={openImportUsersModal} type="ghost">
-                    Import from .csv
+                    {t("Import from .csv")}
                   </Button>
                 </Col>
               </Row>
@@ -84,8 +86,8 @@ const AdminDashboard = ({
           </Row>
           <UsersTable />
         </TabPane>
-        <TabPane tab="Blockchain" key="blockchain">
-          <Title level={3}>Blockchain info</Title>
+        <TabPane tab={t("Blockchain")} key="blockchain">
+          <Title level={3}>{t("Blockchain info")}</Title>
           <Row gutter={[16, 16]}>
             <Col span={24} md={12}>
               <WalletInfoCard />
@@ -103,5 +105,6 @@ const AdminDashboard = ({
 export default compose(
   protectedComponent,
   adminComponent,
+  withNamespaces(),
   connect(mapStateToProps, mapDispatchToProps)
 )(AdminDashboard);

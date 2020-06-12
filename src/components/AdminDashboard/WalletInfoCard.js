@@ -2,11 +2,12 @@ import React, { useEffect } from "react";
 import { Card, Typography } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { getWalletInfo } from "../../redux/actions/blockchain";
-import './style.css'
+import "./style.css";
+import { withNamespaces } from "react-i18next";
 
 const { Title } = Typography;
 
-const WalletInfoCard = () => {
+const WalletInfoCard = ({ t }) => {
   const { loading, account, balance } = useSelector(
     (state) => state.blockchain.wallet
   );
@@ -18,20 +19,22 @@ const WalletInfoCard = () => {
 
   return (
     <Card
-      title="Wallet"
+      title={t("Wallet")}
       loading={loading}
       extra={
-        <a href={"https://kovan.etherscan.io/address/" + account}>More info</a>
+        <a href={"https://kovan.etherscan.io/address/" + account}>
+          {t("More info")}
+        </a>
       }
       className="info-card"
     >
-      <Title level={4}>Address</Title>
+      <Title level={4}>{t("Address")}</Title>
       <p>{account}</p>
-      <Title level={4}>Balance (ETH)</Title>
+      <Title level={4}>{t("Balance (ETH)")}</Title>
       <p>{balance}</p>
-      <a href="https://faucet.kovan.network/">Recharge</a>
+      <a href="https://faucet.kovan.network/">{t("Recharge")}</a>
     </Card>
   );
 };
 
-export default WalletInfoCard;
+export default withNamespaces()(WalletInfoCard);
