@@ -8,6 +8,7 @@ import {
   CREATE_VOTING,
   START_VOTING,
   ARCHIVE_VOTING,
+  GET_VOTING_EVENTS,
 } from "../constants";
 import { Voting } from "../../utils/api";
 import { showError, showMessage } from "./app";
@@ -35,10 +36,12 @@ export const votingLoaded = () => {
 export const getVoting = (id) => async (dispatch) => {
   try {
     dispatch(votingLoading());
-    const { body } = await Voting.getOne(id);
-    dispatch({ type: GET_VOTING_FROM_DB, payload: body.result });
+    const data = await Voting.getOne(id);
+    dispatch({ type: GET_VOTING_FROM_DB, payload: data.body.result });
     const result = await Voting.getResult(id);
     dispatch({ type: GET_VOTING_FROM_CONTRACT, payload: result.body.result });
+    const events = await Voting.getEvents(id);
+    dispatch({ type: GET_VOTING_EVENTS, payload: events.body.result });
   } catch (error) {
     dispatch(showError(error.message));
   } finally {

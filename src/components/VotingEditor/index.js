@@ -14,6 +14,7 @@ import compose from "../../utils/compose";
 import adminComponent from "../adminComponent";
 import protectedComponent from "../protectedComponent";
 import VotersList from "./VotersList";
+import EventsList from "../EventsList";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -73,7 +74,9 @@ const VotingEditor = ({ loading, voting = {}, getVoting }) => {
               </Col>
             </Row>
           </TabPane>
-
+          <TabPane tab="Events" key="3">
+            <EventsList/>
+          </TabPane>
         </Tabs>
       </div>
     </Loader>

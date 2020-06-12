@@ -55,6 +55,7 @@ export const Profile = {
 export const Voting = {
   getAll: async () => await request.get("/votings"),
   getOne: async (id) => await request.get(`/votings/${id}`),
+  getEvents: async (id) => await request.get(`/votings/${id}/events`),
   getResult: async (id) => await request.get(`/votings/${id}/contractinfo`),
   create: async (body) => await request.post(`/votings`, body),
   update: async (id, body) => await request.patch(`/votings/${id}`, body),
