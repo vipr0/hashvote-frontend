@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { withNamespaces } from "react-i18next";
 import { connect } from "react-redux";
 import { Menu, Avatar } from "antd";
 import {
@@ -9,10 +10,11 @@ import {
 } from "@ant-design/icons";
 import { apiUrl } from "../../utils/api";
 import { logOut } from "../../redux/actions/profile";
+import compose from "../../utils/compose";
 
 const { SubMenu } = Menu;
 
-const UserNavMenu = ({ user, logout }) => {
+const UserNavMenu = ({ user, logout, t }) => {
   return (
     <Menu theme="light" mode="horizontal">
       <SubMenu
@@ -32,7 +34,7 @@ const UserNavMenu = ({ user, logout }) => {
           <Menu.Item key="admin">
             <Link to="/admin">
               <SecurityScanOutlined />
-              Admin Panel
+              {t("Admin panel")}
             </Link>
           </Menu.Item>
         )}
@@ -40,12 +42,12 @@ const UserNavMenu = ({ user, logout }) => {
         <Menu.Item key="profile">
           <Link to="/me">
             <UserOutlined />
-            My Profile
+            {t("My Profile")}
           </Link>
         </Menu.Item>
         <Menu.Item onClick={logout} key="logout">
           <LogoutOutlined />
-          Log Out
+          {t("Log Out")}
         </Menu.Item>
       </SubMenu>
     </Menu>
@@ -56,4 +58,7 @@ const mapDispatchToProps = (dispatch) => ({
   logout: () => dispatch(logOut()),
 });
 
-export default connect(null, mapDispatchToProps)(UserNavMenu);
+export default compose(
+  withNamespaces(),
+  connect(null, mapDispatchToProps)
+)(UserNavMenu);
