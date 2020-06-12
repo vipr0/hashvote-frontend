@@ -11,6 +11,7 @@ import { getVoting } from "../../redux/actions/voting";
 import protectedComponent from "../protectedComponent";
 import { showModal } from "../../redux/actions/modals";
 import compose from "../../utils/compose";
+import { withNamespaces } from "react-i18next";
 
 const { Title } = Typography;
 
@@ -29,6 +30,7 @@ const VotingDetails = ({
   openModal,
   dataFromDB,
   dataFromContract,
+  t,
 }) => {
   let { votingId } = useParams();
 
@@ -52,7 +54,7 @@ const VotingDetails = ({
             type="primary"
             onClick={openModal}
           >
-            Vote for candidate
+            {t("Vote for candidate")}
           </Button>
         </Col>
         <Col span={24} md={12}>
@@ -83,5 +85,6 @@ const VotingDetails = ({
 
 export default compose(
   protectedComponent,
+  withNamespaces(),
   connect(mapStateToProps, mapDispatchToProps)
 )(VotingDetails);

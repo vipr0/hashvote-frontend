@@ -10,5 +10,20 @@
   "Not started": "Not started",
   "Active": "Active",
   "Finished": "Finished",
-  "No votings": "No votings"
+  "No votings": "No votings",
+  "Go to voting": "Go to voting",
+  "Vote for candidate": "Vote for candidate",
+  "Choose you candidate and enter your token": "Choose you candidate and enter your token",
+  "Vote for a candiate": "Vote for a candiate",
+  "Candidate": "Candidate",
+  "Please select your candidate!": "Please select your candidate!",
+  "Please select a candidate": "Please select a candidate",
+  "Your token": "Your token",
+  "Please enter your token!": "Please enter your token!",
+  "Description": "Description",
+  "Voting is not yet started": "Voting is not yet started",
+  "Common information": "Common information",
+  "Time to end": "Time to end",
+  "Tournout": "Tournout",
+  "Options": "Options"
 }

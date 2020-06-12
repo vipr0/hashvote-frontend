@@ -1,4 +1,5 @@
 import React from "react";
+import { withNamespaces } from "react-i18next";
 import { Typography, Progress, Row, Col, Card, Statistic, Empty } from "antd";
 
 const { Text } = Typography;
@@ -10,19 +11,20 @@ const VotingInfo = ({
   endTime,
   alreadyVoted,
   votersTotal,
+  t,
 }) => {
   if (!started) {
     return (
       <Card loading={loading}>
-        <Empty description="Voting is not yet started" />
+        <Empty description={t("Voting is not yet started")} />
       </Card>
     );
   }
 
   return (
-    <Card loading={loading} title="Common information">
+    <Card loading={loading} title={t("Common information")}>
       <Row align="middle" justify="space-between" style={{ marginBottom: 12 }}>
-        <Text strong>Time to end</Text>
+        <Text strong>{t("Time to end")}</Text>
         <Countdown
           value={endTime}
           format="HH:mm:ss"
@@ -31,7 +33,7 @@ const VotingInfo = ({
       </Row>
       <Row align="middle" justify="space-between" style={{ marginBottom: 12 }}>
         <Col span={12}>
-          <Text strong>Tournout</Text>
+          <Text strong>{t("Tournout")}</Text>
         </Col>
         <Col span={12}>
           <Progress
@@ -47,4 +49,4 @@ const VotingInfo = ({
   );
 };
 
-export default VotingInfo;
+export default withNamespaces()(VotingInfo);

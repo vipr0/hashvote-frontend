@@ -1,11 +1,12 @@
 import React from "react";
 import { Typography, Progress, Card } from "antd";
+import { withNamespaces } from "react-i18next";
 
 const { Text } = Typography;
 
-const VotingResult = ({ loading, result, allVotes }) => {
+const VotingResult = ({ loading, result, allVotes, t }) => {
   return (
-    <Card loading={loading} title="Candidates">
+    <Card loading={loading} title={t("Options")}>
       {result &&
         result.map((candidate, i) => (
           <div key={i} style={{ marginBottom: 20 }}>
@@ -20,4 +21,4 @@ const VotingResult = ({ loading, result, allVotes }) => {
   );
 };
 
-export default VotingResult;
+export default withNamespaces()(VotingResult);
