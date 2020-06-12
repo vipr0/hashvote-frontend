@@ -3,6 +3,8 @@ import { Form, Input, Button, Card, Upload } from "antd";
 import { connect } from "react-redux";
 import { changeProfileData } from "../../redux/actions/profile";
 import { UploadOutlined } from "@ant-design/icons";
+import compose from "../../utils/compose";
+import { withNamespaces } from "react-i18next";
 
 const mapStateToProps = (state) => ({
   loading: state.app.loading,
@@ -22,30 +24,30 @@ const mapDispathToProps = (dispatch) => ({
   },
 });
 
-const ChangeDataCard = ({ name, email, changeProfileData, loading }) => {
+const ChangeDataCard = ({ name, email, changeProfileData, loading, t }) => {
   return (
-    <Card title="Change your data" bordered={false}>
+    <Card title={t("Change your data")} bordered={false}>
       <Form
         onFinish={changeProfileData}
         initialValues={{ name, email }}
         layout="vertical"
       >
         <Form.Item name="name" label="Your name">
-          <Input placeholder="Please input your name" />
+          <Input placeholder={t("Please input your name")} />
         </Form.Item>
         <Form.Item
           name="email"
-          label="Your email"
+          label={t("Your email")}
           rules={[
             {
               type: "email",
-              message: "The input is not valid E-mail!",
+              message: t("The input is not valid E-mail!"),
             },
           ]}
         >
-          <Input placeholder="Please input your email" />
+          <Input placeholder={t("Please input your email")} />
         </Form.Item>
-        <Form.Item name="photo" label="Avatar" valuePropName="photo">
+        <Form.Item name="photo" label={t("Avatar")} valuePropName="photo">
           <Upload
             name="photo"
             listType="picture"
@@ -54,13 +56,13 @@ const ChangeDataCard = ({ name, email, changeProfileData, loading }) => {
             accept="image/*"
           >
             <Button>
-              <UploadOutlined /> Click to select photo
+              <UploadOutlined /> {t("Click to select photo")}
             </Button>
           </Upload>
         </Form.Item>
         <Form.Item style={{ textAlign: "center" }}>
           <Button loading={loading} type="primary" htmlType="submit">
-            Update Data
+            {t("Update Data")}
           </Button>
         </Form.Item>
       </Form>
@@ -68,4 +70,7 @@ const ChangeDataCard = ({ name, email, changeProfileData, loading }) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispathToProps)(ChangeDataCard);
+export default compose(
+  withNamespaces(),
+  connect(mapStateToProps, mapDispathToProps)
+)(ChangeDataCard);

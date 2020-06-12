@@ -1,4 +1,5 @@
 import React from "react";
+import { withNamespaces } from "react-i18next";
 import { Typography, Row, Col } from "antd";
 import { connect } from "react-redux";
 import Loader from "../Loader";
@@ -13,10 +14,12 @@ const mapStateToProps = (state) => ({
   user: state.profile.data,
 });
 
-const MyProfile = ({ loading, user }) => {
+const MyProfile = ({ loading, user, t }) => {
   return (
     <Loader loading={loading}>
-      <Title>Hello, {user.name}</Title>
+      <Title>
+        {t("Hello")}, {user.name}
+      </Title>
       <Row gutter={[32, 16]}>
         <Col span={24} sm={12}>
           <ChangeDataCard name={user.name} email={user.email} />
@@ -29,4 +32,8 @@ const MyProfile = ({ loading, user }) => {
   );
 };
 
-export default compose(protectedComponent, connect(mapStateToProps))(MyProfile);
+export default compose(
+  protectedComponent,
+  withNamespaces(),
+  connect(mapStateToProps)
+)(MyProfile);
