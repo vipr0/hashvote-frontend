@@ -1,4 +1,5 @@
 import React from "react";
+import { withNamespaces } from "react-i18next";
 import { Typography, Row, Col, Empty, Button, Menu, Dropdown } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from "uuid";
@@ -12,7 +13,7 @@ import moment from "moment";
 
 const { Title } = Typography;
 
-const VotingsList = ({ availableVotings = [], loading }) => {
+const VotingsList = ({ availableVotings = [], loading, t }) => {
   const [votings, filterVotings] = useState(availableVotings);
 
   const handleFilter = ({ key }) => {
@@ -45,10 +46,10 @@ const VotingsList = ({ availableVotings = [], loading }) => {
 
   const filterMenu = (
     <Menu onClick={handleFilter}>
-      <Menu.Item key="all">All</Menu.Item>
-      <Menu.Item key="notstarted">Not started</Menu.Item>
-      <Menu.Item key="active">Active</Menu.Item>
-      <Menu.Item key="finished">Finished</Menu.Item>
+      <Menu.Item key="all">{t("All")}</Menu.Item>
+      <Menu.Item key="notstarted">{t("Not started")}</Menu.Item>
+      <Menu.Item key="active">{t("Active")}</Menu.Item>
+      <Menu.Item key="finished">{t("Finished")}</Menu.Item>
     </Menu>
   );
 
@@ -56,12 +57,12 @@ const VotingsList = ({ availableVotings = [], loading }) => {
     <Loader loading={loading}>
       <Row justify="space-between" gutter={[16, 16]}>
         <Col>
-          <Title level={3}>List of all available votings</Title>
+          <Title level={3}>{t("List of all available votings")}</Title>
         </Col>
         <Col>
           <Dropdown overlay={filterMenu} trigger={["click"]}>
             <Button ghost type="primary">
-              Filter <DownOutlined />
+              {t("Filter")} <DownOutlined />
             </Button>
           </Dropdown>
         </Col>
@@ -74,7 +75,7 @@ const VotingsList = ({ availableVotings = [], loading }) => {
           ))}
         </Row>
       ) : (
-        <Empty description="No votings" />
+        <Empty description={t("No votings")} />
       )}
     </Loader>
   );
@@ -87,5 +88,6 @@ const mapStateToProps = (state) => ({
 
 export default compose(
   protectedComponent,
+  withNamespaces(),
   connect(mapStateToProps)
 )(VotingsList);
