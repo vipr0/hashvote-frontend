@@ -2,9 +2,11 @@ import React from "react";
 import { Descriptions, Card } from "antd";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
-const VotingInfoCard = ({ voting, t }) => {
+const VotingInfoCard = ({ voting }) => {
+  const { t } = useTranslation();
+
   return (
     <Card title={t("Information")}>
       <Descriptions className="voting-info" column={1}>
@@ -31,4 +33,4 @@ const VotingInfoCard = ({ voting, t }) => {
   );
 };
 
-export default withNamespaces()(VotingInfoCard);
+export default VotingInfoCard;

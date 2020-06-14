@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { Table, Button, Popconfirm } from "antd";
 import moment from "moment";
 import { deleteVoting } from "../../redux/actions/voting";
 import { getAllVotings } from "../../redux/actions/votings";
 import getColumnSearchProps from "../../utils/getColumnSearchProps";
-import compose from "../../utils/compose";
-import { withNamespaces } from "react-i18next";
 
 const mapStateToProps = (state) => ({
   loading: state.votings.loading,
@@ -19,7 +18,9 @@ const mapDispatchToProps = (dispatch) => ({
   deleteVoting: (id) => dispatch(deleteVoting(id)),
 });
 
-const VotingsTable = ({ loading, votings, getAllVotings, deleteVoting, t }) => {
+const VotingsTable = ({ loading, votings, getAllVotings, deleteVoting }) => {
+  const { t } = useTranslation();
+
   useEffect(() => {
     getAllVotings();
   }, []);
@@ -88,7 +89,4 @@ const VotingsTable = ({ loading, votings, getAllVotings, deleteVoting, t }) => {
   );
 };
 
-export default compose(
-  withNamespaces(),
-  connect(mapStateToProps, mapDispatchToProps)
-)(VotingsTable);
+export default connect(mapStateToProps, mapDispatchToProps)(VotingsTable);

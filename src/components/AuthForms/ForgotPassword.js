@@ -4,11 +4,12 @@ import { UserOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { forgotPassword } from "../../redux/actions/profile";
 import FormWrapper from "./authFormWrapper";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
-const ForgotPassword = ({ t }) => {
+const ForgotPassword = () => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.app.loading);
+  const { t } = useTranslation();
 
   return (
     <FormWrapper
@@ -41,4 +42,4 @@ const ForgotPassword = ({ t }) => {
   );
 };
 
-export default withNamespaces()(ForgotPassword);
+export default ForgotPassword;

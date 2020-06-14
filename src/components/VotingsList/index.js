@@ -1,5 +1,5 @@
 import React from "react";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Typography, Row, Col, Empty, Button, Menu, Dropdown } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from "uuid";
@@ -13,8 +13,9 @@ import moment from "moment";
 
 const { Title } = Typography;
 
-const VotingsList = ({ availableVotings = [], loading, t }) => {
+const VotingsList = ({ availableVotings = [], loading }) => {
   const [votings, filterVotings] = useState(availableVotings);
+  const { t } = useTranslation();
 
   const handleFilter = ({ key }) => {
     switch (key) {
@@ -88,6 +89,5 @@ const mapStateToProps = (state) => ({
 
 export default compose(
   protectedComponent,
-  withNamespaces(),
   connect(mapStateToProps)
 )(VotingsList);

@@ -5,11 +5,12 @@ import { LockOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import { signUp } from "../../redux/actions/profile";
 import FormWrapper from "./authFormWrapper";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
-const SignUp = ({ t }) => {
+const SignUp = () => {
   const { token } = useParams();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   return (
     <FormWrapper
@@ -55,4 +56,4 @@ const SignUp = ({ t }) => {
   );
 };
 
-export default withNamespaces()(SignUp);
+export default SignUp;

@@ -3,8 +3,7 @@ import { Form, Input, Button, Card, Upload } from "antd";
 import { connect } from "react-redux";
 import { changeProfileData } from "../../redux/actions/profile";
 import { UploadOutlined } from "@ant-design/icons";
-import compose from "../../utils/compose";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const mapStateToProps = (state) => ({
   loading: state.app.loading,
@@ -24,7 +23,9 @@ const mapDispathToProps = (dispatch) => ({
   },
 });
 
-const ChangeDataCard = ({ name, email, changeProfileData, loading, t }) => {
+const ChangeDataCard = ({ name, email, changeProfileData, loading }) => {
+  const { t } = useTranslation();
+
   return (
     <Card title={t("Change your data")} bordered={false}>
       <Form
@@ -70,7 +71,4 @@ const ChangeDataCard = ({ name, email, changeProfileData, loading, t }) => {
   );
 };
 
-export default compose(
-  withNamespaces(),
-  connect(mapStateToProps, mapDispathToProps)
-)(ChangeDataCard);
+export default connect(mapStateToProps, mapDispathToProps)(ChangeDataCard);

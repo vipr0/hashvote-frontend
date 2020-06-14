@@ -11,7 +11,7 @@ import { getVoting } from "../../redux/actions/voting";
 import protectedComponent from "../protectedComponent";
 import { showModal } from "../../redux/actions/modals";
 import compose from "../../utils/compose";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const { Title } = Typography;
 
@@ -30,9 +30,9 @@ const VotingDetails = ({
   openModal,
   dataFromDB,
   dataFromContract,
-  t,
 }) => {
   let { votingId } = useParams();
+  const { t } = useTranslation();
 
   useEffect(() => {
     getVoting(votingId);
@@ -85,6 +85,5 @@ const VotingDetails = ({
 
 export default compose(
   protectedComponent,
-  withNamespaces(),
   connect(mapStateToProps, mapDispatchToProps)
 )(VotingDetails);

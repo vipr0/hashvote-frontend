@@ -6,11 +6,12 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { logIn } from "../../redux/actions/profile";
 import "./style.css";
 import FormWrapper from "./authFormWrapper";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
-const Login = ({ t }) => {
+const Login = () => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.app.loading);
+  const { t } = useTranslation();
 
   return (
     <FormWrapper fn={(data) => dispatch(logIn(data))} title={t("Log in")}>
@@ -55,4 +56,4 @@ const Login = ({ t }) => {
   );
 };
 
-export default withNamespaces()(Login);
+export default Login;

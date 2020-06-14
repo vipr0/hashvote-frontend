@@ -1,5 +1,5 @@
 import React from "react";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Typography, Progress, Row, Col, Card, Statistic, Empty } from "antd";
 
 const { Text } = Typography;
@@ -11,8 +11,9 @@ const VotingInfo = ({
   endTime,
   alreadyVoted,
   votersTotal,
-  t,
 }) => {
+  const { t } = useTranslation();
+
   if (!started) {
     return (
       <Card loading={loading}>
@@ -49,4 +50,4 @@ const VotingInfo = ({
   );
 };
 
-export default withNamespaces()(VotingInfo);
+export default VotingInfo;

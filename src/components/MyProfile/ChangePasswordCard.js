@@ -1,15 +1,16 @@
 import React from "react";
 import { Form, Input, Button, Card } from "antd";
 import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { changeProfilePassword } from "../../redux/actions/profile";
-import compose from "../../utils/compose";
-import { withNamespaces } from "react-i18next";
 
 const mapDispatchToProps = (dispatch) => ({
   changeProfilePassword: (data) => dispatch(changeProfilePassword(data)),
 });
 
-const ChangePasswordCard = ({ changeProfilePassword, t }) => {
+const ChangePasswordCard = ({ changeProfilePassword }) => {
+  const { t } = useTranslation();
+
   return (
     <Card title={t("Change your password")} bordered={false}>
       <Form onFinish={changeProfilePassword} layout="vertical">
@@ -60,7 +61,4 @@ const ChangePasswordCard = ({ changeProfilePassword, t }) => {
   );
 };
 
-export default compose(
-  withNamespaces(),
-  connect(null, mapDispatchToProps)
-)(ChangePasswordCard);
+export default connect(null, mapDispatchToProps)(ChangePasswordCard);

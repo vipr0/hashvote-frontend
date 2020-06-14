@@ -5,7 +5,7 @@ import { FileAddOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { addUsersToVoting } from "../../redux/actions/voting";
 import compose from "../../utils/compose";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const { Dragger } = Upload;
 
@@ -18,8 +18,10 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-const AddUsersCard = ({ addUsersToVoting, t }) => {
+const AddUsersCard = ({ addUsersToVoting }) => {
   const { votingId } = useParams();
+  const { t } = useTranslation();
+
   return (
     <Card title={t("Add users to voting")} bordered={false}>
       <Form
@@ -75,7 +77,4 @@ const AddUsersCard = ({ addUsersToVoting, t }) => {
   );
 };
 
-export default compose(
-  withNamespaces(),
-  connect(null, mapDispatchToProps)
-)(AddUsersCard);
+export default connect(null, mapDispatchToProps)(AddUsersCard);

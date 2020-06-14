@@ -1,31 +1,28 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { Menu, Avatar } from "antd";
+import { Menu } from "antd";
 import {
   UserOutlined,
   LogoutOutlined,
   SecurityScanOutlined,
 } from "@ant-design/icons";
-import { apiUrl } from "../../utils/api";
 import { logOut } from "../../redux/actions/profile";
-import compose from "../../utils/compose";
+import UserAvatar from "../UserAvatar";
 
 const { SubMenu } = Menu;
 
-const UserNavMenu = ({ user, logout, t }) => {
+const UserNavMenu = ({ user, logout }) => {
+  const { t } = useTranslation();
+
   return (
     <Menu theme="light" mode="horizontal">
       <SubMenu
         style={{ float: "right" }}
         title={
           <span>
-            <Avatar
-              icon={<UserOutlined />}
-              src={user.photo ? `${apiUrl}/img/users/${user.photo}` : null}
-              style={{ marginRight: 12 }}
-            />
+            <UserAvatar user={user} />
             {user.name}
           </span>
         }
@@ -58,7 +55,4 @@ const mapDispatchToProps = (dispatch) => ({
   logout: () => dispatch(logOut()),
 });
 
-export default compose(
-  withNamespaces(),
-  connect(null, mapDispatchToProps)
-)(UserNavMenu);
+export default connect(null, mapDispatchToProps)(UserNavMenu);

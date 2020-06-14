@@ -1,12 +1,11 @@
 import React, { Fragment } from "react";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Layout, Button } from "antd";
 import Logo from "../../assets/logo.svg";
 import "./style.css";
 import UserNavMenu from "./UserNavMenu";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import compose from "../../utils/compose";
 
 const { Header } = Layout;
 
@@ -32,7 +31,9 @@ const autenticatedLayout = (user, t) => (
   </Fragment>
 );
 
-const Navbar = ({ user, t }) => {
+const Navbar = ({ user }) => {
+  const { t } = useTranslation();
+
   return (
     <Header className="site-header">
       {user ? autenticatedLayout(user, t) : notAuthenticatedLayout(t)}
@@ -40,4 +41,4 @@ const Navbar = ({ user, t }) => {
   );
 };
 
-export default compose(withNamespaces(), connect(mapStateToProps))(Navbar);
+export default connect(mapStateToProps)(Navbar);

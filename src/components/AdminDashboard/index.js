@@ -14,7 +14,7 @@ import protectedComponent from "../protectedComponent";
 import ImportUsersModal from "../ImportUsersModal";
 import WalletInfoCard from "./WalletInfoCard";
 import ContractInfoCard from "./ContractInfoCard";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -36,8 +36,8 @@ const AdminDashboard = ({
   openImportUsersModal,
   changeAdminTab,
   currentTab,
-  t
 }) => {
+  const { t } = useTranslation();
   return (
     <div className="card-container">
       <Title>{t("Admin panel")}</Title>
@@ -105,6 +105,5 @@ const AdminDashboard = ({
 export default compose(
   protectedComponent,
   adminComponent,
-  withNamespaces(),
   connect(mapStateToProps, mapDispatchToProps)
 )(AdminDashboard);

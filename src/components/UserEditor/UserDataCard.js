@@ -1,9 +1,11 @@
 import React from "react";
 import moment from "moment";
 import { Descriptions, Card } from "antd";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
-const UserDataCard = ({ user, t }) => {
+const UserDataCard = ({ user }) => {
+  const { t } = useTranslation();
+
   return (
     <Card title={t("User data")}>
       <Descriptions column={1} bordered>
@@ -20,4 +22,4 @@ const UserDataCard = ({ user, t }) => {
   );
 };
 
-export default withNamespaces()(UserDataCard);
+export default UserDataCard;

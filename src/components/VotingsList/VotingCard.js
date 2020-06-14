@@ -1,12 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { Card, Col } from "antd";
 
 const { Meta } = Card;
 
-const VotingCard = ({ voting, t }) => {
+const VotingCard = ({ voting }) => {
   const { title, description, _id } = voting;
+  const { t } = useTranslation();
   return (
     <Col span={24} md={8} lg={6}>
       <Card
@@ -23,4 +24,4 @@ const VotingCard = ({ voting, t }) => {
   );
 };
 
-export default withNamespaces()(VotingCard);
+export default VotingCard;

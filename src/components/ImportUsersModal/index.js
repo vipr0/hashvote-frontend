@@ -4,16 +4,17 @@ import { Button, Form, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import ModalWrapper from "../ModalWrapper";
 import { importUsers } from "../../redux/actions/users";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const formItemLayout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
 };
 
-const ImportUsersModal = ({ t }) => {
+const ImportUsersModal = () => {
   const dispatch = useDispatch();
   const modal = useSelector((state) => state.modals.importUsers);
+  const { t } = useTranslation();
 
   const handleSubmit = (data) => {
     const formData = new FormData();
@@ -52,4 +53,4 @@ const ImportUsersModal = ({ t }) => {
   );
 };
 
-export default withNamespaces()(ImportUsersModal);
+export default ImportUsersModal;

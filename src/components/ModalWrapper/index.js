@@ -2,8 +2,7 @@ import React from "react";
 import { Button, Result, Modal } from "antd";
 import { connect } from "react-redux";
 import { hideModal, removeModalError } from "../../redux/actions/modals";
-import compose from "../../utils/compose";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const mapDispatchToProps = (dispatch) => ({
   hideModal: (name) => dispatch(hideModal(name)),
@@ -19,8 +18,9 @@ const ModalWrapper = ({
   title,
   hideModal,
   removeModalError,
-  t,
 }) => {
+  const { t } = useTranslation();
+
   if (error) {
     return (
       <Modal
@@ -65,7 +65,4 @@ const ModalWrapper = ({
   );
 };
 
-export default compose(
-  withNamespaces(),
-  connect(null, mapDispatchToProps)
-)(ModalWrapper);
+export default connect(null, mapDispatchToProps)(ModalWrapper);

@@ -3,8 +3,7 @@ import { Button, Form, Input } from "antd";
 import { connect } from "react-redux";
 import ModalWrapper from "../ModalWrapper";
 import { createUser } from "../../redux/actions/user";
-import { withNamespaces } from "react-i18next";
-import compose from "../../utils/compose";
+import { useTranslation } from "react-i18next";
 
 const mapStateToProps = (state) => ({
   modal: state.modals.createUser,
@@ -19,7 +18,9 @@ const formItemLayout = {
   wrapperCol: { span: 16 },
 };
 
-const CreateUserModal = ({ modal, createUser, t }) => {
+const CreateUserModal = ({ modal, createUser }) => {
+  const { t } = useTranslation();
+
   return (
     <ModalWrapper
       modalName="createUser"
@@ -55,7 +56,4 @@ const CreateUserModal = ({ modal, createUser, t }) => {
   );
 };
 
-export default compose(
-  withNamespaces(),
-  connect(mapStateToProps, mapDispatchToProps)
-)(CreateUserModal);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateUserModal);

@@ -141,5 +141,7 @@
   "Please input your new password again!": "Please input your new password again!",
   "Your new password again": "Your new password again",
   "Activate account": "Activate account",
-  "Sign up": "Sign up"
+  "Sign up": "Sign up",
+  "Change data": "Change data",
+  "Change password": "Change password"
 }

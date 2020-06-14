@@ -3,8 +3,7 @@ import { Form, Input, Button, Card, Select } from "antd";
 import { connect } from "react-redux";
 import { updateUser } from "../../redux/actions/user";
 import { useParams } from "react-router-dom";
-import compose from "../../utils/compose";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const { Option } = Select;
 
@@ -12,8 +11,9 @@ const mapDispatchToProps = (dispatch) => ({
   updateUserData: (id, data) => dispatch(updateUser(id, data)),
 });
 
-const EditDataCard = ({ initialValues, updateUserData, t }) => {
+const EditDataCard = ({ initialValues, updateUserData }) => {
   const { userId } = useParams();
+  const { t } = useTranslation();
 
   return (
     <Card title={t("Edit user data")}>
@@ -44,7 +44,4 @@ const EditDataCard = ({ initialValues, updateUserData, t }) => {
   );
 };
 
-export default compose(
-  withNamespaces(),
-  connect(null, mapDispatchToProps)
-)(EditDataCard);
+export default connect(null, mapDispatchToProps)(EditDataCard);

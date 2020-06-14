@@ -15,7 +15,7 @@ import adminComponent from "../adminComponent";
 import protectedComponent from "../protectedComponent";
 import VotersList from "./VotersList";
 import EventsList from "../EventsList";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -29,8 +29,10 @@ const mapDispatchToProps = (dispatch) => ({
   getVoting: (id) => dispatch(getVoting(id)),
 });
 
-const VotingEditor = ({ loading, voting = {}, getVoting, t }) => {
+const VotingEditor = ({ loading, voting = {}, getVoting }) => {
   const { votingId } = useParams();
+  const { t } = useTranslation();
+
   useEffect(() => {
     getVoting(votingId);
   }, []);
@@ -76,7 +78,7 @@ const VotingEditor = ({ loading, voting = {}, getVoting, t }) => {
             </Row>
           </TabPane>
           <TabPane tab={t("Events")} key="3">
-            <EventsList/>
+            <EventsList />
           </TabPane>
         </Tabs>
       </div>
@@ -87,6 +89,5 @@ const VotingEditor = ({ loading, voting = {}, getVoting, t }) => {
 export default compose(
   protectedComponent,
   adminComponent,
-  withNamespaces(),
   connect(mapStateToProps, mapDispatchToProps)
 )(VotingEditor);

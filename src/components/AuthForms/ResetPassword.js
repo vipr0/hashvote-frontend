@@ -5,11 +5,13 @@ import { Form, Input, Button } from "antd";
 import { LockOutlined } from "@ant-design/icons";
 import { resetPassword } from "../../redux/actions/profile";
 import FormWrapper from "./authFormWrapper";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
-const ResetPassword = ({ t }) => {
+const ResetPassword = () => {
   const dispatch = useDispatch();
   const { token } = useParams();
+  const { t } = useTranslation();
+
   return (
     <FormWrapper
       fn={(data) => dispatch(resetPassword(token, data))}
@@ -54,4 +56,4 @@ const ResetPassword = ({ t }) => {
   );
 };
 
-export default withNamespaces()(ResetPassword);
+export default ResetPassword;

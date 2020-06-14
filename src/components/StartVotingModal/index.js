@@ -4,8 +4,7 @@ import { connect } from "react-redux";
 import ModalWrapper from "../ModalWrapper";
 import { startVoting } from "../../redux/actions/voting";
 import { useParams } from "react-router-dom";
-import compose from "../../utils/compose";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const mapStateToProps = (state) => ({
   modal: state.modals.startVoting,
@@ -15,8 +14,10 @@ const mapDispatchToProps = (dispatch) => ({
   startVoting: (id, data) => dispatch(startVoting(id, data)),
 });
 
-const StartVotingModal = ({ modal, startVoting, t }) => {
+const StartVotingModal = ({ modal, startVoting }) => {
   const { votingId } = useParams();
+  const { t } = useTranslation();
+
   return (
     <ModalWrapper
       modalName="startVoting"
@@ -43,7 +44,4 @@ const StartVotingModal = ({ modal, startVoting, t }) => {
   );
 };
 
-export default compose(
-  withNamespaces(),
-  connect(mapStateToProps, mapDispatchToProps)
-)(StartVotingModal);
+export default connect(mapStateToProps, mapDispatchToProps)(StartVotingModal);

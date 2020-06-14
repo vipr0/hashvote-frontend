@@ -2,8 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Result, Button } from "antd";
 import { push } from "connected-react-router";
-import compose from "../../utils/compose";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const mapStateToProps = (state) => ({
   user: state.profile.data,
@@ -14,7 +13,9 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default (Component) => {
-  const Wrapper = ({ user, goToLoginPage, t }) => {
+  const Wrapper = ({ user, goToLoginPage }) => {
+    const { t } = useTranslation();
+
     if (!user)
       return (
         <Result
@@ -30,8 +31,5 @@ export default (Component) => {
     return <Component />;
   };
 
-  return compose(
-    withNamespaces(),
-    connect(mapStateToProps, mapDispatchToProps)
-  )(Wrapper);
+  return connect(mapStateToProps, mapDispatchToProps)(Wrapper);
 };

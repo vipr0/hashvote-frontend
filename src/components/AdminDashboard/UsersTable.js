@@ -1,12 +1,11 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { Table, Button, Tag, Popconfirm, Row } from "antd";
 import { getAllUsers, deleteUsers } from "../../redux/actions/users";
 import { deleteUser } from "../../redux/actions/user";
 import getColumnSearchProps from "../../utils/getColumnSearchProps";
-import compose from "../../utils/compose";
-import { withNamespaces } from "react-i18next";
 
 const mapStateToProps = (state) => ({
   loading: state.users.loading,
@@ -25,9 +24,10 @@ const UsersTable = ({
   deleteUsers,
   loading,
   users,
-  t,
 }) => {
   const [selectedRows, setSelectedRows] = useState([]);
+  const { t } = useTranslation();
+
   useEffect(() => {
     getAllUsers();
   }, [getAllUsers]);
@@ -138,7 +138,4 @@ const UsersTable = ({
   );
 };
 
-export default compose(
-  withNamespaces(),
-  connect(mapStateToProps, mapDispatchToProps)
-)(UsersTable);
+export default connect(mapStateToProps, mapDispatchToProps)(UsersTable);

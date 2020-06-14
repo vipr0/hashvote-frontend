@@ -4,10 +4,11 @@ import { Link } from "react-router-dom";
 import { List, Avatar, Card } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { apiUrl } from "../../utils/api";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
-const VotersList = ({ t }) => {
+const VotersList = () => {
   const voters = useSelector((state) => state.voting.dataFromDB.voters);
+  const { t } = useTranslation();
 
   return (
     <Card
@@ -42,4 +43,4 @@ const VotersList = ({ t }) => {
   );
 };
 
-export default withNamespaces()(VotersList);
+export default VotersList;

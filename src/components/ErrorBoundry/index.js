@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Result } from "antd";
 import { showError, hideError } from "../../redux/actions/app";
 import compose from "../../utils/compose";
-import { withNamespaces } from "react-i18next";
+import { withTranslation } from "react-i18next";
 
 const mapStateToProps = (state) => ({
   error: state.app.error,
@@ -45,6 +45,6 @@ class ErrorBoundry extends Component {
 }
 
 export default compose(
-  withNamespaces(),
+  withTranslation(),
   connect(mapStateToProps, mapDispatchToProps)
 )(ErrorBoundry);

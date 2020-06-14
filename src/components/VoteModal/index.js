@@ -5,8 +5,7 @@ import ModalWrapper from "../ModalWrapper";
 import RaiseHand from "../../assets/raise-hand.svg";
 import "./style.css";
 import { voteForCandidate } from "../../redux/actions/voting";
-import compose from "../../utils/compose";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -19,13 +18,9 @@ const mapDispatchToProps = (dispatch) => ({
   voteForCandidate: (id, data) => dispatch(voteForCandidate(id, data)),
 });
 
-const VoteModal = ({
-  modal,
-  votingId,
-  candidates = [],
-  voteForCandidate,
-  t,
-}) => {
+const VoteModal = ({ modal, votingId, candidates = [], voteForCandidate }) => {
+  const { t } = useTranslation();
+
   return (
     <ModalWrapper
       modalName="vote"
@@ -76,7 +71,4 @@ const VoteModal = ({
   );
 };
 
-export default compose(
-  withNamespaces(),
-  connect(mapStateToProps, mapDispatchToProps)
-)(VoteModal);
+export default connect(mapStateToProps, mapDispatchToProps)(VoteModal);

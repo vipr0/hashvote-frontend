@@ -1,39 +1,38 @@
 import React from "react";
-import { withNamespaces } from "react-i18next";
-import { Typography, Row, Col } from "antd";
-import { connect } from "react-redux";
-import Loader from "../Loader";
+import { useTranslation } from "react-i18next";
+import { Typography, Row, Col, Tabs } from "antd";
+import { useSelector } from "react-redux";
 import ChangePasswordCard from "./ChangePasswordCard";
 import ChangeDataCard from "./ChangeDataCard";
 import protectedComponent from "../protectedComponent";
-import compose from "../../utils/compose";
+import UserAvatar from "../UserAvatar";
 
 const { Title } = Typography;
+const { TabPane } = Tabs;
 
-const mapStateToProps = (state) => ({
-  user: state.profile.data,
-});
-
-const MyProfile = ({ loading, user, t }) => {
+const MyProfile = () => {
+  const user = useSelector((state) => state.profile.data);
+  const { t } = useTranslation();
   return (
-    <Loader loading={loading}>
-      <Title>
-        {t("Hello")}, {user.name}
-      </Title>
-      <Row gutter={[32, 16]}>
-        <Col span={24} sm={12}>
-          <ChangeDataCard name={user.name} email={user.email} />
+    <div>
+      <Row>
+        <Col>
+          <UserAvatar user={user} size="large" />
         </Col>
-        <Col span={24} sm={12}>
-          <ChangePasswordCard />
+        <Col>
+          <Title level={3}>{user.name}</Title>
         </Col>
       </Row>
-    </Loader>
+      <Tabs>
+        <TabPane tab={t("Change data")} key="data">
+          <ChangeDataCard name={user.name} email={user.email} />
+        </TabPane>
+        <TabPane tab={t("Change password")} key="password">
+          <ChangePasswordCard />
+        </TabPane>
+      </Tabs>
+    </div>
   );
 };
 
-export default compose(
-  protectedComponent,
-  withNamespaces(),
-  connect(mapStateToProps)
-)(MyProfile);
+export default protectedComponent(MyProfile);

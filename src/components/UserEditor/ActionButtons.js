@@ -1,10 +1,9 @@
 import React from "react";
 import { Button, Space } from "antd";
 import { connect } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { push } from "connected-react-router";
 import { deleteUser, resetUserPassword } from "../../redux/actions/user";
-import compose from "../../utils/compose";
-import { withNamespaces } from "react-i18next";
 
 const mapStateToProps = (state) => ({
   email: state.user.data.email,
@@ -21,7 +20,9 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-const ActionButtons = ({ email, userId, resetPassword, deleteUser, t }) => {
+const ActionButtons = ({ email, userId, resetPassword, deleteUser }) => {
+  const { t } = useTranslation();
+
   return (
     <Space
       size="middle"
@@ -45,7 +46,4 @@ const ActionButtons = ({ email, userId, resetPassword, deleteUser, t }) => {
   );
 };
 
-export default compose(
-  withNamespaces(),
-  connect(mapStateToProps, mapDispatchToProps)
-)(ActionButtons);
+export default connect(mapStateToProps, mapDispatchToProps)(ActionButtons);

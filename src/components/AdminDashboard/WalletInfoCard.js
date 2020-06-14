@@ -3,15 +3,16 @@ import { Card, Typography } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { getWalletInfo } from "../../redux/actions/blockchain";
 import "./style.css";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const { Title } = Typography;
 
-const WalletInfoCard = ({ t }) => {
+const WalletInfoCard = () => {
   const { loading, account, balance } = useSelector(
     (state) => state.blockchain.wallet
   );
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     dispatch(getWalletInfo());
@@ -37,4 +38,4 @@ const WalletInfoCard = ({ t }) => {
   );
 };
 
-export default withNamespaces()(WalletInfoCard);
+export default WalletInfoCard;

@@ -4,8 +4,7 @@ import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import ModalWrapper from "../ModalWrapper";
 import { connect } from "react-redux";
 import { createVoting } from "../../redux/actions/voting";
-import compose from "../../utils/compose";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const mapStateToProps = (state) => ({
   modal: state.modals.createVoting,
@@ -15,7 +14,9 @@ const mapDispatchToProps = (dispatch) => ({
   createVoting: (data) => dispatch(createVoting(data)),
 });
 
-const CreateVotingModal = ({ modal, createVoting, t }) => {
+const CreateVotingModal = ({ modal, createVoting }) => {
+  const { t } = useTranslation();
+
   return (
     <ModalWrapper
       modalName="createVoting"
@@ -108,7 +109,4 @@ const CreateVotingModal = ({ modal, createVoting, t }) => {
   );
 };
 
-export default compose(
-  withNamespaces(),
-  connect(mapStateToProps, mapDispatchToProps)
-)(CreateVotingModal);
+export default connect(mapStateToProps, mapDispatchToProps)(CreateVotingModal);

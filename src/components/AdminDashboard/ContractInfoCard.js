@@ -2,16 +2,17 @@ import React, { useEffect } from "react";
 import { Card, Typography } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { getContractInfo } from "../../redux/actions/blockchain";
+import { useTranslation } from "react-i18next";
 import "./style.css";
-import { withNamespaces } from "react-i18next";
 
 const { Title } = Typography;
 
-const ContractInfoCard = ({ t }) => {
+const ContractInfoCard = () => {
   const { loading, address } = useSelector(
     (state) => state.blockchain.contract
   );
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   useEffect(() => {
     dispatch(getContractInfo());
@@ -22,7 +23,7 @@ const ContractInfoCard = ({ t }) => {
       title={t("Smart Contract")}
       loading={loading}
       extra={
-        <a href={"https://kovan.etherscan.io/address/" + address}>
+        <a href={"https://rinkeby.etherscan.io/address/" + address}>
           {t("More info")}
         </a>
       }
@@ -34,4 +35,4 @@ const ContractInfoCard = ({ t }) => {
   );
 };
 
-export default withNamespaces()(ContractInfoCard);
+export default ContractInfoCard;

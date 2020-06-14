@@ -1,10 +1,11 @@
 import React from "react";
 import { Typography } from "antd";
-import { withNamespaces } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const { Title, Paragraph } = Typography;
 
-const VotingDecription = ({ description, t }) => {
+const VotingDecription = ({ description }) => {
+  const { t } = useTranslation();
   return (
     <div>
       <Title level={2}>{t("Description")}</Title>
@@ -13,4 +14,4 @@ const VotingDecription = ({ description, t }) => {
   );
 };
 
-export default withNamespaces()(VotingDecription);
+export default VotingDecription;
