@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Result, Button } from "antd";
+import { Result } from "antd";
 import { showError, hideError } from "../../redux/actions/app";
+import compose from "../../utils/compose";
+import { withNamespaces } from "react-i18next";
 
 const mapStateToProps = (state) => ({
   error: state.app.error,
@@ -32,7 +34,7 @@ class ErrorBoundry extends Component {
       return (
         <Result
           status="404"
-          title="Oops, there is an error"
+          title={this.props.t("Oops, there is an error")}
           subTitle={this.state.error}
         />
       );
@@ -42,4 +44,7 @@ class ErrorBoundry extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ErrorBoundry);
+export default compose(
+  withNamespaces(),
+  connect(mapStateToProps, mapDispatchToProps)
+)(ErrorBoundry);

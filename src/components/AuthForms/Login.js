@@ -6,25 +6,26 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { logIn } from "../../redux/actions/profile";
 import "./style.css";
 import FormWrapper from "./authFormWrapper";
+import { withNamespaces } from "react-i18next";
 
-const Login = () => {
+const Login = ({ t }) => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.app.loading);
 
   return (
-    <FormWrapper fn={(data) => dispatch(logIn(data))} title="Log in">
+    <FormWrapper fn={(data) => dispatch(logIn(data))} title={t("Log in")}>
       <Form.Item
         name="email"
         rules={[
           {
             required: true,
-            message: "Please input your Username!",
+            message: t("Please input your Username!"),
           },
         ]}
       >
         <Input
           prefix={<UserOutlined className="site-form-item-icon" />}
-          placeholder="Email"
+          placeholder={t("Email")}
         />
       </Form.Item>
       <Form.Item
@@ -32,26 +33,26 @@ const Login = () => {
         rules={[
           {
             required: true,
-            message: "Please input your Password!",
+            message: t("Please input your Password!"),
           },
         ]}
       >
         <Input
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
-          placeholder="Password"
+          placeholder={t("Password")}
         />
       </Form.Item>
       <Form.Item>
-        <Link to="/forgot">Forgot password</Link>
+        <Link to="/forgot">{t("Forgot password?")}</Link>
       </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit" loading={loading}>
-          Log in
+          {t("Log in")}
         </Button>
       </Form.Item>
     </FormWrapper>
   );
 };
 
-export default Login;
+export default withNamespaces()(Login);

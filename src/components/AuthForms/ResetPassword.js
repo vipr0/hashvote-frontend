@@ -5,28 +5,29 @@ import { Form, Input, Button } from "antd";
 import { LockOutlined } from "@ant-design/icons";
 import { resetPassword } from "../../redux/actions/profile";
 import FormWrapper from "./authFormWrapper";
+import { withNamespaces } from "react-i18next";
 
-const ResetPassword = () => {
+const ResetPassword = ({ t }) => {
   const dispatch = useDispatch();
   const { token } = useParams();
   return (
     <FormWrapper
       fn={(data) => dispatch(resetPassword(token, data))}
-      title="Reset password"
+      title={t("Reset password")}
     >
       <Form.Item
         name="password"
         rules={[
           {
             required: true,
-            message: "Please input your new password!",
+            message: t("Please input your new password!"),
           },
         ]}
       >
         <Input
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
-          placeholder="Your new password"
+          placeholder={t("Your new password")}
         />
       </Form.Item>
       <Form.Item
@@ -34,23 +35,23 @@ const ResetPassword = () => {
         rules={[
           {
             required: true,
-            message: "Please input your new password again!",
+            message: t("Please input your new password again!"),
           },
         ]}
       >
         <Input
           prefix={<LockOutlined className="site-form-item-icon" />}
           type="password"
-          placeholder="Your new password again"
+          placeholder={t("Your new password again")}
         />
       </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit">
-          Reset password
+          {t("Reset password")}
         </Button>
       </Form.Item>
     </FormWrapper>
   );
 };
 
-export default ResetPassword;
+export default withNamespaces()(ResetPassword);

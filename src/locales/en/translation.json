@@ -124,5 +124,22 @@
   "Update User`s Data": "Update User`s Data",
   "User data": "User data",
   "Last password change": "Last password change",
-  "You are not logged in": "You are not logged in"
+  "You are not logged in": "You are not logged in",
+  "This page is only for admins": "This page is only for admins",
+  "Go back": "Go back",
+  "Forgot password?": "Forgot password?",
+  "Please fill in the email that you used to register.": "Please fill in the email that you used to register.",
+  "You will be sent an email with instructions on how to reset your password.": "You will be sent an email with instructions on how to reset your password.",
+  "Please input your email!": "Please input your email!",
+  "Send email": "Send email",
+  "Log in": "Log in",
+  "Please input your Username!": "Please input your Username!",
+  "Please input your Password!": "Please input your Password!",
+  "Password": "Password",
+  "Please input your new password!": "Please input your new password!",
+  "Your new password": "Your new password",
+  "Please input your new password again!": "Please input your new password again!",
+  "Your new password again": "Your new password again",
+  "Activate account": "Activate account",
+  "Sign up": "Sign up"
 }
