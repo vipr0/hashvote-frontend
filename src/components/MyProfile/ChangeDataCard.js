@@ -1,16 +1,16 @@
 import React from "react";
 import { Form, Input, Button, Card, Upload } from "antd";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { changeProfileData } from "../../redux/actions/profile";
 import { UploadOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 
-const mapStateToProps = (state) => ({
-  loading: state.app.loading,
-});
+const ChangeDataCard = ({ name, email }) => {
+  const { t } = useTranslation();
+  const loading = useSelector(({ app }) => app.loading);
+  const dispatch = useDispatch();
 
-const mapDispathToProps = (dispatch) => ({
-  changeProfileData: (data) => {
+  const handleSubmit = (data) => {
     let formData = new FormData();
 
     if (data.photo)
@@ -20,16 +20,12 @@ const mapDispathToProps = (dispatch) => ({
     formData.append("email", data.email);
 
     dispatch(changeProfileData(formData));
-  },
-});
-
-const ChangeDataCard = ({ name, email, changeProfileData, loading }) => {
-  const { t } = useTranslation();
+  };
 
   return (
     <Card title={t("Change your data")} bordered={false}>
       <Form
-        onFinish={changeProfileData}
+        onFinish={handleSubmit}
         initialValues={{ name, email }}
         layout="vertical"
       >
@@ -71,4 +67,4 @@ const ChangeDataCard = ({ name, email, changeProfileData, loading }) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispathToProps)(ChangeDataCard);
+export default ChangeDataCard;

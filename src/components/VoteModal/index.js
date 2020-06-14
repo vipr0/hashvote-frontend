@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Form, Select, Input, Typography } from "antd";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ModalWrapper from "../ModalWrapper";
 import RaiseHand from "../../assets/raise-hand.svg";
 import "./style.css";
@@ -10,16 +10,10 @@ import { useTranslation } from "react-i18next";
 const { Option } = Select;
 const { Title } = Typography;
 
-const mapStateToProps = (state) => ({
-  modal: state.modals.vote,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  voteForCandidate: (id, data) => dispatch(voteForCandidate(id, data)),
-});
-
-const VoteModal = ({ modal, votingId, candidates = [], voteForCandidate }) => {
+const VoteModal = ({ votingId, candidates = [] }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const modal = useSelector(({ modals }) => modals.vote);
 
   return (
     <ModalWrapper
@@ -36,7 +30,7 @@ const VoteModal = ({ modal, votingId, candidates = [], voteForCandidate }) => {
             {t("Choose you candidate and enter your token")}
           </Title>
         </div>
-        <Form onFinish={(data) => voteForCandidate(votingId, data)}>
+        <Form onFinish={(data) => dispatch(voteForCandidate(votingId, data))}>
           <Form.Item
             name="candidate"
             label={t("Candidate")}
@@ -71,4 +65,4 @@ const VoteModal = ({ modal, votingId, candidates = [], voteForCandidate }) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(VoteModal);
+export default VoteModal;

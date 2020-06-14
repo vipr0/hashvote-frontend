@@ -1,43 +1,29 @@
 import React, { useEffect, useState, Fragment } from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Table, Button, Tag, Popconfirm, Row } from "antd";
 import { getAllUsers, deleteUsers } from "../../redux/actions/users";
 import { deleteUser } from "../../redux/actions/user";
 import getColumnSearchProps from "../../utils/getColumnSearchProps";
 
-const mapStateToProps = (state) => ({
-  loading: state.users.loading,
-  users: state.users.data,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  getAllUsers: () => dispatch(getAllUsers()),
-  deleteUser: (id) => dispatch(deleteUser(id)),
-  deleteUsers: (data) => dispatch(deleteUsers(data)),
-});
-
-const UsersTable = ({
-  getAllUsers,
-  deleteUser,
-  deleteUsers,
-  loading,
-  users,
-}) => {
+const UsersTable = () => {
   const [selectedRows, setSelectedRows] = useState([]);
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const loading = useSelector(({ users }) => users.loading);
+  const users = useSelector(({ users }) => users.data);
 
   useEffect(() => {
-    getAllUsers();
-  }, [getAllUsers]);
+    dispatch(getAllUsers());
+  }, []);
 
   const onSelectChange = (keys, rows) => {
     setSelectedRows(rows);
   };
 
   const handleDeleteUsers = () => {
-    deleteUsers(selectedRows.map((row) => row._id));
+    dispatch(deleteUsers(selectedRows.map((row) => row._id)));
   };
 
   const rowSelection = {
@@ -107,8 +93,8 @@ const UsersTable = ({
       width: 100,
       render: (text, record) => (
         <Popconfirm
-          title={t("Are you sure delete this task?")}
-          onConfirm={() => deleteUser(record._id)}
+          title={t("Are you sure delete this user?")}
+          onConfirm={() => dispatch(deleteUser(record._id))}
           okText={t("Yes")}
           cancelText={t("No")}
         >
@@ -138,4 +124,4 @@ const UsersTable = ({
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersTable);
+export default UsersTable;

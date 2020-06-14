@@ -1,13 +1,8 @@
 import React from "react";
 import { Button, Result, Modal } from "antd";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { hideModal, removeModalError } from "../../redux/actions/modals";
 import { useTranslation } from "react-i18next";
-
-const mapDispatchToProps = (dispatch) => ({
-  hideModal: (name) => dispatch(hideModal(name)),
-  removeModalError: (name) => dispatch(removeModalError(name)),
-});
 
 const ModalWrapper = ({
   modalName,
@@ -16,17 +11,16 @@ const ModalWrapper = ({
   error,
   children,
   title,
-  hideModal,
-  removeModalError,
 }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   if (error) {
     return (
       <Modal
         visible={visible}
         title={title}
-        onCancel={() => hideModal(modalName)}
+        onCancel={() => dispatch(hideModal(modalName))}
         footer={null}
       >
         <Result
@@ -34,7 +28,9 @@ const ModalWrapper = ({
           title={t("Oops, there is an error")}
           subTitle={error}
         />
-        <Button onClick={() => removeModalError(modalName)}>Retry</Button>
+        <Button onClick={() => dispatch(removeModalError(modalName))}>
+          Retry
+        </Button>
       </Modal>
     );
   }
@@ -44,11 +40,11 @@ const ModalWrapper = ({
       <Modal
         visible={visible}
         title={title}
-        onCancel={() => hideModal(modalName)}
+        onCancel={() => dispatch(hideModal(modalName))}
         footer={null}
       >
         <Result status="success" title="Success!" subTitle={result} />
-        <Button onClick={() => hideModal(modalName)}>Close</Button>
+        <Button onClick={() => dispatch(hideModal(modalName))}>Close</Button>
       </Modal>
     );
   }
@@ -57,7 +53,7 @@ const ModalWrapper = ({
     <Modal
       visible={visible}
       title={title}
-      onCancel={() => hideModal(modalName)}
+      onCancel={() => dispatch(hideModal(modalName))}
       footer={null}
     >
       {children}
@@ -65,4 +61,4 @@ const ModalWrapper = ({
   );
 };
 
-export default connect(null, mapDispatchToProps)(ModalWrapper);
+export default ModalWrapper;

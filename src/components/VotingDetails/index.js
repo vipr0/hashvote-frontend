@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Typography, Button, Row, Col } from "antd";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Loader from "../Loader";
 import VoteModal from "../VoteModal";
@@ -10,72 +10,59 @@ import VotingInfo from "./VotingInfo";
 import { getVoting } from "../../redux/actions/voting";
 import protectedComponent from "../protectedComponent";
 import { showModal } from "../../redux/actions/modals";
-import compose from "../../utils/compose";
 import { useTranslation } from "react-i18next";
 
 const { Title } = Typography;
 
-const mapStateToProps = (state) => ({
-  dataFromDB: state.voting.dataFromDB,
-  dataFromContract: state.voting.dataFromContract,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  getVoting: (id) => dispatch(getVoting(id)),
-  openModal: () => dispatch(showModal("vote")),
-});
-
-const VotingDetails = ({
-  getVoting,
-  openModal,
-  dataFromDB,
-  dataFromContract,
-}) => {
+const VotingDetails = () => {
   let { votingId } = useParams();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const voting = useSelector(({ voting }) => voting.dataFromDB);
+  const results = useSelector(({ voting }) => voting.dataFromContract);
 
   useEffect(() => {
-    getVoting(votingId);
+    dispatch(getVoting(votingId));
   }, []);
 
-  if (dataFromDB.loading) {
-    return <Loader loading={dataFromDB.loading} />;
+  if (voting.loading) {
+    return <Loader loading={voting.loading} />;
   }
 
   return (
-    <Loader loading={dataFromDB.loading && dataFromContract.loading}>
-      <VoteModal candidates={dataFromDB.candidates} votingId={votingId} />
+    <Loader loading={voting.loading && results.loading}>
+      <VoteModal candidates={voting.candidates} votingId={votingId} />
 
       <Row gutter={[32, 32]}>
         <Col span={24} md={12}>
-          <Title level={2}>{dataFromDB.title}</Title>
+          <Title level={2}>{voting.title}</Title>
           <Button
-            disabled={!dataFromDB.isStarted}
+            disabled={!voting.isStarted}
             type="primary"
-            onClick={openModal}
+            onClick={() => dispatch(showModal("vote"))}
           >
             {t("Vote for candidate")}
           </Button>
         </Col>
         <Col span={24} md={12}>
           <VotingInfo
-            loading={dataFromContract.loading}
-            started={dataFromDB.isStarted}
-            endTime={dataFromDB.endTime}
-            alreadyVoted={dataFromContract.alreadyVoted}
-            votersTotal={dataFromContract.votersTotal}
+            loading={results.loading}
+            started={voting.isStarted}
+            endTime={voting.endTime}
+            alreadyVoted={results.alreadyVoted}
+            votersTotal={results.votersTotal}
           />
         </Col>
       </Row>
       <Row gutter={[32, 32]}>
         <Col span={24} md={12}>
-          <VotingDecription description={dataFromDB.description} />
+          <VotingDecription description={voting.description} />
         </Col>
         <Col span={24} md={12}>
           <VotingResult
-            loading={dataFromContract.loading}
-            result={dataFromContract.voteResult}
-            allVotes={dataFromContract.votersTotal}
+            loading={results.loading}
+            result={results.voteResult}
+            allVotes={results.votersTotal}
           />
         </Col>
       </Row>
@@ -83,7 +70,4 @@ const VotingDetails = ({
   );
 };
 
-export default compose(
-  protectedComponent,
-  connect(mapStateToProps, mapDispatchToProps)
-)(VotingDetails);
+export default protectedComponent(VotingDetails);

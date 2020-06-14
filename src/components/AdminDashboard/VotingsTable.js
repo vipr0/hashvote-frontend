@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { Table, Button, Popconfirm } from "antd";
 import moment from "moment";
@@ -8,21 +8,14 @@ import { deleteVoting } from "../../redux/actions/voting";
 import { getAllVotings } from "../../redux/actions/votings";
 import getColumnSearchProps from "../../utils/getColumnSearchProps";
 
-const mapStateToProps = (state) => ({
-  loading: state.votings.loading,
-  votings: state.votings.data,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  getAllVotings: () => dispatch(getAllVotings()),
-  deleteVoting: (id) => dispatch(deleteVoting(id)),
-});
-
-const VotingsTable = ({ loading, votings, getAllVotings, deleteVoting }) => {
+const VotingsTable = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const loading = useSelector(({ votings }) => votings.loading);
+  const votings = useSelector(({ votings }) => votings.data);
 
   useEffect(() => {
-    getAllVotings();
+    dispatch(getAllVotings());
   }, []);
 
   const columns = [
@@ -67,7 +60,7 @@ const VotingsTable = ({ loading, votings, getAllVotings, deleteVoting }) => {
       render: (text, record) => (
         <Popconfirm
           title={t("Are you sure delete this voting?")}
-          onConfirm={() => deleteVoting(record._id)}
+          onConfirm={() => dispatch(deleteVoting(record._id))}
           okText={t("Yes")}
           cancelText={t("No")}
         >
@@ -89,4 +82,4 @@ const VotingsTable = ({ loading, votings, getAllVotings, deleteVoting }) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(VotingsTable);
+export default VotingsTable;

@@ -1,19 +1,19 @@
 import React from "react";
 import { Form, Input, Button, Card } from "antd";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { changeProfilePassword } from "../../redux/actions/profile";
 
-const mapDispatchToProps = (dispatch) => ({
-  changeProfilePassword: (data) => dispatch(changeProfilePassword(data)),
-});
-
-const ChangePasswordCard = ({ changeProfilePassword }) => {
+const ChangePasswordCard = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   return (
     <Card title={t("Change your password")} bordered={false}>
-      <Form onFinish={changeProfilePassword} layout="vertical">
+      <Form
+        onFinish={(data) => dispatch(changeProfilePassword(data))}
+        layout="vertical"
+      >
         <Form.Item
           name="password"
           label={t("Current password")}
@@ -61,4 +61,4 @@ const ChangePasswordCard = ({ changeProfilePassword }) => {
   );
 };
 
-export default connect(null, mapDispatchToProps)(ChangePasswordCard);
+export default ChangePasswordCard;

@@ -9,7 +9,7 @@ const { Title } = Typography;
 
 const WalletInfoCard = () => {
   const { loading, account, balance } = useSelector(
-    (state) => state.blockchain.wallet
+    ({ blockchain }) => blockchain.wallet
   );
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -23,7 +23,7 @@ const WalletInfoCard = () => {
       title={t("Wallet")}
       loading={loading}
       extra={
-        <a href={"https://kovan.etherscan.io/address/" + account}>
+        <a href={"https://rinkeby.etherscan.io/address/" + account}>
           {t("More info")}
         </a>
       }
@@ -33,7 +33,7 @@ const WalletInfoCard = () => {
       <p>{account}</p>
       <Title level={4}>{t("Balance (ETH)")}</Title>
       <p>{balance}</p>
-      <a href="https://faucet.kovan.network/">{t("Recharge")}</a>
+      <a href="https://faucet.rinkeby.io/">{t("Recharge")}</a>
     </Card>
   );
 };

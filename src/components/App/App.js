@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Switch, Redirect, Route } from "react-router-dom";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { message } from "antd";
 import "./App.css";
 import { getCurrentUser } from "../../redux/actions/profile";
@@ -15,9 +15,13 @@ import UserEditor from "../UserEditor";
 import ErrorBoundry from "../ErrorBoundry";
 import Loader from "../Loader";
 
-const App = ({ getCurrentUser, appMessage, loading }) => {
+const App = () => {
+  const dispatch = useDispatch();
+  const loading = useSelector(({ profile }) => profile.loading);
+  const appMessage = useSelector(({ app }) => app.message);
+
   useEffect(() => {
-    getCurrentUser();
+    dispatch(getCurrentUser());
   }, []);
 
   useEffect(() => {
@@ -51,13 +55,4 @@ const App = ({ getCurrentUser, appMessage, loading }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  appMessage: state.app.message,
-  loading: state.profile.loading,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  getCurrentUser: () => dispatch(getCurrentUser()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

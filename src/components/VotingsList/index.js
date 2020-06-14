@@ -3,19 +3,20 @@ import { useTranslation } from "react-i18next";
 import { Typography, Row, Col, Empty, Button, Menu, Dropdown } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { v4 as uuidv4 } from "uuid";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import protectedComponent from "../protectedComponent";
 import Loader from "../Loader";
 import VotingCard from "./VotingCard";
-import compose from "../../utils/compose";
 import { useState } from "react";
 import moment from "moment";
 
 const { Title } = Typography;
 
-const VotingsList = ({ availableVotings = [], loading }) => {
-  const [votings, filterVotings] = useState(availableVotings);
+const VotingsList = () => {
   const { t } = useTranslation();
+  const loading = useSelector(({ votings }) => votings.loading);
+  const availableVotings = useSelector(({ profile }) => profile.data.votings);
+  const [votings, filterVotings] = useState(availableVotings);
 
   const handleFilter = ({ key }) => {
     switch (key) {
@@ -82,12 +83,4 @@ const VotingsList = ({ availableVotings = [], loading }) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  availableVotings: state.profile.data.votings,
-  loading: state.votings.loading,
-});
-
-export default compose(
-  protectedComponent,
-  connect(mapStateToProps)
-)(VotingsList);
+export default protectedComponent(VotingsList);

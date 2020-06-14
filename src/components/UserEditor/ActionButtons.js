@@ -1,27 +1,20 @@
 import React from "react";
 import { Button, Space } from "antd";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { push } from "connected-react-router";
 import { deleteUser, resetUserPassword } from "../../redux/actions/user";
 
-const mapStateToProps = (state) => ({
-  email: state.user.data.email,
-  userId: state.user.data._id,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  resetPassword: (email) => {
-    dispatch(resetUserPassword(email));
-  },
-  deleteUser: (id) => {
-    dispatch(deleteUser(id));
-    dispatch(push("/admin"));
-  },
-});
-
-const ActionButtons = ({ email, userId, resetPassword, deleteUser }) => {
+const ActionButtons = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const email = useSelector(({ user }) => user.data.email);
+  const userId = useSelector(({ user }) => user.data._id);
+
+  const handleDelete = () => {
+    dispatch(deleteUser(userId));
+    dispatch(push("/admin"));
+  };
 
   return (
     <Space
@@ -35,15 +28,15 @@ const ActionButtons = ({ email, userId, resetPassword, deleteUser }) => {
       <Button
         key="reset-password"
         type="primary"
-        onClick={() => resetPassword(email)}
+        onClick={() => dispatch(resetUserPassword(email))}
       >
         {t("Reset password")}
       </Button>
-      <Button key="delete" type="danger" onClick={() => deleteUser(userId)}>
+      <Button key="delete" type="danger" onClick={handleDelete}>
         {t("Delete")}
       </Button>
     </Space>
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ActionButtons);
+export default ActionButtons;

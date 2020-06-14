@@ -1,10 +1,9 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { List, Avatar, Card } from "antd";
-import { UserOutlined } from "@ant-design/icons";
-import { apiUrl } from "../../utils/api";
 import { useTranslation } from "react-i18next";
+import { List, Card } from "antd";
+import UserAvatar from "../UserAvatar";
 
 const VotersList = () => {
   const voters = useSelector((state) => state.voting.dataFromDB.voters);
@@ -23,12 +22,7 @@ const VotersList = () => {
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta
-              avatar={
-                <Avatar
-                  icon={<UserOutlined />}
-                  src={`${apiUrl}/img/users/${item.user.photo}`}
-                />
-              }
+              avatar={<UserAvatar photo={item.user.photo} />}
               title={
                 <Link to={`/admin/users/${item.user.id}`}>
                   {item.user.name}

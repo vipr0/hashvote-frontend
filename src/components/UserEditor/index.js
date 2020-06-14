@@ -4,7 +4,7 @@ import { Typography, Row, Col } from "antd";
 import EditDataCard from "./EditDataCard";
 import UserDataCard from "./UserDataCard";
 import ActionButtons from "./ActionButtons";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getUser } from "../../redux/actions/user";
 import compose from "../../utils/compose";
@@ -13,20 +13,14 @@ import adminComponent from "../adminComponent";
 
 const { Title } = Typography;
 
-const mapStateToProps = (state) => ({
-  user: state.user.data,
-  loading: state.user.loading,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  getUser: (id) => dispatch(getUser(id)),
-});
-
-const UserEditor = ({ user, loading, getUser }) => {
+const UserEditor = () => {
   const { userId } = useParams();
+  const user = useSelector(({ user }) => user.data);
+  const loading = useSelector(({ user }) => user.loading);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    getUser(userId);
+    dispatch(getUser(userId));
   }, []);
 
   return (
@@ -59,8 +53,4 @@ const UserEditor = ({ user, loading, getUser }) => {
   );
 };
 
-export default compose(
-  protectedComponent,
-  adminComponent,
-  connect(mapStateToProps, mapDispatchToProps)
-)(UserEditor);
+export default compose(protectedComponent, adminComponent)(UserEditor);

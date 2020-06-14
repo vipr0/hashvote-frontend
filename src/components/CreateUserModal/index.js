@@ -1,24 +1,18 @@
 import React from "react";
 import { Button, Form, Input } from "antd";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ModalWrapper from "../ModalWrapper";
 import { createUser } from "../../redux/actions/user";
 import { useTranslation } from "react-i18next";
-
-const mapStateToProps = (state) => ({
-  modal: state.modals.createUser,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  createUser: (data) => dispatch(createUser(data)),
-});
 
 const formItemLayout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
 };
 
-const CreateUserModal = ({ modal, createUser }) => {
+const CreateUserModal = () => {
+  const dispatch = useDispatch();
+  const modal = useSelector(({ modals }) => modals.createUser);
   const { t } = useTranslation();
 
   return (
@@ -29,7 +23,7 @@ const CreateUserModal = ({ modal, createUser }) => {
       error={modal.error}
       title={t("Create a new user")}
     >
-      <Form {...formItemLayout} onFinish={createUser}>
+      <Form {...formItemLayout} onFinish={(data) => dispatch(createUser(data))}>
         <Form.Item
           name="name"
           label={t("Name")}
@@ -56,4 +50,4 @@ const CreateUserModal = ({ modal, createUser }) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateUserModal);
+export default CreateUserModal;

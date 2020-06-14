@@ -2,32 +2,27 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { Input, Upload, Form, Button, Card } from "antd";
 import { FileAddOutlined } from "@ant-design/icons";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addUsersToVoting } from "../../redux/actions/voting";
-import compose from "../../utils/compose";
 import { useTranslation } from "react-i18next";
 
 const { Dragger } = Upload;
 
-const mapDispatchToProps = (dispatch) => ({
-  addUsersToVoting: (id, data) => {
+const AddUsersCard = () => {
+  const { votingId } = useParams();
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  const handleSubmit = (data) => {
     let formData = new FormData();
     formData.append("adminToken", data.adminToken);
     formData.append("file", data.file.fileList[0].originFileObj);
-    dispatch(addUsersToVoting(id, formData));
-  },
-});
-
-const AddUsersCard = ({ addUsersToVoting }) => {
-  const { votingId } = useParams();
-  const { t } = useTranslation();
+    dispatch(addUsersToVoting(votingId, formData));
+  };
 
   return (
     <Card title={t("Add users to voting")} bordered={false}>
-      <Form
-        onFinish={(data) => addUsersToVoting(votingId, data)}
-        layout="vertical"
-      >
+      <Form onFinish={handleSubmit} layout="vertical">
         <Form.Item
           name="adminToken"
           label={t("Admin token")}
@@ -77,4 +72,4 @@ const AddUsersCard = ({ addUsersToVoting }) => {
   );
 };
 
-export default connect(null, mapDispatchToProps)(AddUsersCard);
+export default AddUsersCard;

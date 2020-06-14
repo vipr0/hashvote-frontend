@@ -5,11 +5,9 @@ import Logo from "../../assets/logo.svg";
 import "./style.css";
 import UserNavMenu from "./UserNavMenu";
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 
 const { Header } = Layout;
-
-const mapStateToProps = (state) => ({ user: state.profile.data });
 
 const notAuthenticatedLayout = (t) => (
   <div className="login-button">
@@ -31,8 +29,9 @@ const autenticatedLayout = (user, t) => (
   </Fragment>
 );
 
-const Navbar = ({ user }) => {
+const Navbar = () => {
   const { t } = useTranslation();
+  const user = useSelector(({ profile }) => profile.data);
 
   return (
     <Header className="site-header">
@@ -41,4 +40,4 @@ const Navbar = ({ user }) => {
   );
 };
 
-export default connect(mapStateToProps)(Navbar);
+export default Navbar;

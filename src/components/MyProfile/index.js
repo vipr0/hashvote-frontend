@@ -13,11 +13,12 @@ const { TabPane } = Tabs;
 const MyProfile = () => {
   const user = useSelector((state) => state.profile.data);
   const { t } = useTranslation();
+
   return (
     <div>
       <Row>
         <Col>
-          <UserAvatar user={user} size="large" />
+          <UserAvatar photo={user.photo} size="large" />
         </Col>
         <Col>
           <Title level={3}>{user.name}</Title>

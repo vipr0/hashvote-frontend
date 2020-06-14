@@ -2,20 +2,14 @@ import React from "react";
 import { Button, Form, Input, DatePicker } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import ModalWrapper from "../ModalWrapper";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createVoting } from "../../redux/actions/voting";
 import { useTranslation } from "react-i18next";
 
-const mapStateToProps = (state) => ({
-  modal: state.modals.createVoting,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  createVoting: (data) => dispatch(createVoting(data)),
-});
-
-const CreateVotingModal = ({ modal, createVoting }) => {
+const CreateVotingModal = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const modal = useSelector(({ modals }) => modals.createVoting);
 
   return (
     <ModalWrapper
@@ -25,7 +19,7 @@ const CreateVotingModal = ({ modal, createVoting }) => {
       error={modal.error}
       title={t("Create a new voting")}
     >
-      <Form layout="vertical" onFinish={createVoting}>
+      <Form layout="vertical" onFinish={(data) => dispatch(createVoting(data))}>
         <Form.Item
           name="title"
           label={t("Title")}
@@ -109,4 +103,4 @@ const CreateVotingModal = ({ modal, createVoting }) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateVotingModal);
+export default CreateVotingModal;

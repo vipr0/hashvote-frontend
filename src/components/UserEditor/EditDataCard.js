@@ -1,24 +1,21 @@
 import React from "react";
 import { Form, Input, Button, Card, Select } from "antd";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { updateUser } from "../../redux/actions/user";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 const { Option } = Select;
 
-const mapDispatchToProps = (dispatch) => ({
-  updateUserData: (id, data) => dispatch(updateUser(id, data)),
-});
-
-const EditDataCard = ({ initialValues, updateUserData }) => {
+const EditDataCard = ({ initialValues }) => {
   const { userId } = useParams();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   return (
     <Card title={t("Edit user data")}>
       <Form
-        onFinish={(data) => updateUserData(userId, data)}
+        onFinish={(data) => dispatch(updateUser(userId, data))}
         initialValues={initialValues}
         layout="vertical"
       >
@@ -44,4 +41,4 @@ const EditDataCard = ({ initialValues, updateUserData }) => {
   );
 };
 
-export default connect(null, mapDispatchToProps)(EditDataCard);
+export default EditDataCard;

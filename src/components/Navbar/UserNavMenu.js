@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Menu } from "antd";
 import {
   UserOutlined,
@@ -13,8 +13,9 @@ import UserAvatar from "../UserAvatar";
 
 const { SubMenu } = Menu;
 
-const UserNavMenu = ({ user, logout }) => {
+const UserNavMenu = ({ user }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   return (
     <Menu theme="light" mode="horizontal">
@@ -22,7 +23,7 @@ const UserNavMenu = ({ user, logout }) => {
         style={{ float: "right" }}
         title={
           <span>
-            <UserAvatar user={user} />
+            <UserAvatar photo={user.photo} />
             {user.name}
           </span>
         }
@@ -42,7 +43,7 @@ const UserNavMenu = ({ user, logout }) => {
             {t("My Profile")}
           </Link>
         </Menu.Item>
-        <Menu.Item onClick={logout} key="logout">
+        <Menu.Item onClick={() => dispatch(logOut())} key="logout">
           <LogoutOutlined />
           {t("Log Out")}
         </Menu.Item>
@@ -51,8 +52,4 @@ const UserNavMenu = ({ user, logout }) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  logout: () => dispatch(logOut()),
-});
-
-export default connect(null, mapDispatchToProps)(UserNavMenu);
+export default UserNavMenu;

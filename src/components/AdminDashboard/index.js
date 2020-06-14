@@ -5,7 +5,7 @@ import VotingsTable from "./VotingsTable";
 import UsersTable from "./UsersTable";
 import CreateVotingModal from "../CreateVotingModal";
 import CreateUserModal from "../CreateUserModal";
-import { connect } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { showModal } from "../../redux/actions/modals";
 import { setAdminTab } from "../../redux/actions/app";
 import compose from "../../utils/compose";
@@ -19,25 +19,11 @@ import { useTranslation } from "react-i18next";
 const { Title } = Typography;
 const { TabPane } = Tabs;
 
-const mapStateToProps = (state) => ({
-  currentTab: state.app.adminTab,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  openCreateVotingModal: () => dispatch(showModal("createVoting")),
-  openCreateUserModal: () => dispatch(showModal("createUser")),
-  openImportUsersModal: () => dispatch(showModal("importUsers")),
-  changeAdminTab: (tabName) => dispatch(setAdminTab(tabName)),
-});
-
-const AdminDashboard = ({
-  openCreateVotingModal,
-  openCreateUserModal,
-  openImportUsersModal,
-  changeAdminTab,
-  currentTab,
-}) => {
+const AdminDashboard = () => {
   const { t } = useTranslation();
+  const currentTab = useSelector(({ app }) => app.adminTab);
+  const dispatch = useDispatch();
+
   return (
     <div className="card-container">
       <Title>{t("Admin panel")}</Title>
@@ -45,7 +31,7 @@ const AdminDashboard = ({
         defaultActiveKey={currentTab}
         type="card"
         size="large"
-        onChange={changeAdminTab}
+        onChange={(tabName) => dispatch(setAdminTab(tabName))}
       >
         <TabPane tab={t("Votings")} key="votings">
           <CreateVotingModal />
@@ -55,7 +41,10 @@ const AdminDashboard = ({
             </Col>
 
             <Col span={24} md={12} align="end">
-              <Button onClick={openCreateVotingModal} type="primary">
+              <Button
+                onClick={() => dispatch(showModal("createVoting"))}
+                type="primary"
+              >
                 {t("Add new voting")}
               </Button>
             </Col>
@@ -72,12 +61,18 @@ const AdminDashboard = ({
             <Col span={24} md={12} align="end">
               <Row gutter={[16, 16]} justify="end">
                 <Col>
-                  <Button onClick={openCreateUserModal} type="primary">
+                  <Button
+                    onClick={() => dispatch(showModal("createUser"))}
+                    type="primary"
+                  >
                     {t("Add new user")}
                   </Button>
                 </Col>
                 <Col>
-                  <Button onClick={openImportUsersModal} type="ghost">
+                  <Button
+                    onClick={() => dispatch(showModal("importUsers"))}
+                    type="ghost"
+                  >
                     {t("Import from .csv")}
                   </Button>
                 </Col>
@@ -102,8 +97,4 @@ const AdminDashboard = ({
   );
 };
 
-export default compose(
-  protectedComponent,
-  adminComponent,
-  connect(mapStateToProps, mapDispatchToProps)
-)(AdminDashboard);
+export default compose(protectedComponent, adminComponent)(AdminDashboard);

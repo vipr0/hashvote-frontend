@@ -9,7 +9,7 @@ const { Title } = Typography;
 
 const ContractInfoCard = () => {
   const { loading, address } = useSelector(
-    (state) => state.blockchain.contract
+    ({ blockchain }) => blockchain.contract
   );
   const dispatch = useDispatch();
   const { t } = useTranslation();

@@ -7,7 +7,7 @@ import AddUsersCard from "./AddUsersCard";
 import ChangeVotingDataCard from "./ChangeVotingDataCard";
 import VotingInfoCard from "./VotingInfoCard";
 import ActionButtons from "../VotingEditor/ActionButtons";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getVoting } from "../../redux/actions/voting";
 import StartVotingModal from "../StartVotingModal";
 import compose from "../../utils/compose";
@@ -20,21 +20,15 @@ import { useTranslation } from "react-i18next";
 const { Title } = Typography;
 const { TabPane } = Tabs;
 
-const mapStateToProps = (state) => ({
-  voting: state.voting.dataFromDB,
-  loading: state.voting.dataFromDB.loading,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  getVoting: (id) => dispatch(getVoting(id)),
-});
-
-const VotingEditor = ({ loading, voting = {}, getVoting }) => {
+const VotingEditor = () => {
   const { votingId } = useParams();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const voting = useSelector(({ voting }) => voting.dataFromDB);
+  const loading = useSelector(({ voting }) => voting.dataFromDB.loading);
 
   useEffect(() => {
-    getVoting(votingId);
+    dispatch(getVoting(votingId));
   }, []);
 
   return (
@@ -86,8 +80,4 @@ const VotingEditor = ({ loading, voting = {}, getVoting }) => {
   );
 };
 
-export default compose(
-  protectedComponent,
-  adminComponent,
-  connect(mapStateToProps, mapDispatchToProps)
-)(VotingEditor);
+export default compose(protectedComponent, adminComponent)(VotingEditor);
