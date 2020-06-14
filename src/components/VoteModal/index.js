@@ -32,7 +32,7 @@ const VoteModal = ({
       result={modal.result}
       visible={modal.visible}
       error={modal.error}
-      title={t("Vote for a candiate")}
+      title={t("Vote for a candidate")}
     >
       <div>
         <div className="modal-description">
