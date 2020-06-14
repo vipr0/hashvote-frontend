@@ -4,6 +4,8 @@ import { Input, Upload, Form, Button, Card } from "antd";
 import { FileAddOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import { addUsersToVoting } from "../../redux/actions/voting";
+import compose from "../../utils/compose";
+import { withNamespaces } from "react-i18next";
 
 const { Dragger } = Upload;
 
@@ -16,33 +18,33 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-const AddUsersCard = ({ addUsersToVoting }) => {
+const AddUsersCard = ({ addUsersToVoting, t }) => {
   const { votingId } = useParams();
   return (
-    <Card title="Add users to voting" bordered={false}>
+    <Card title={t("Add users to voting")} bordered={false}>
       <Form
         onFinish={(data) => addUsersToVoting(votingId, data)}
         layout="vertical"
       >
         <Form.Item
           name="adminToken"
-          label="Admin token"
+          label={t("Admin token")}
           rules={[
             {
               required: true,
-              message: "Please input your admin token",
+              message: t("Please input your admin token"),
             },
           ]}
         >
-          <Input.Password placeholder="Enter admin token first" />
+          <Input.Password placeholder={t("Enter admin token first")} />
         </Form.Item>
         <Form.Item
           name="file"
-          label="CSV file"
+          label={t("CSV file")}
           rules={[
             {
               required: true,
-              message: "Please add csv file with users emails",
+              message: t("Please add csv file with users emails"),
             },
           ]}
         >
@@ -56,16 +58,16 @@ const AddUsersCard = ({ addUsersToVoting }) => {
               <FileAddOutlined />
             </p>
             <p className="ant-upload-text">
-              Click or drag .csv file to this area to upload data
+              {t("Click or drag .csv file to this area to upload data")}
             </p>
             <p className="ant-upload-hint">
-              Rows must contain only emails. See example file below
+              {t("Rows must contain only emails. See example file below")}
             </p>
           </Dragger>
         </Form.Item>
         <Form.Item style={{ textAlign: "center" }}>
           <Button type="primary" htmlType="submit">
-            Add users to voting
+            {t("Add users to voting")}
           </Button>
         </Form.Item>
       </Form>
@@ -73,4 +75,7 @@ const AddUsersCard = ({ addUsersToVoting }) => {
   );
 };
 
-export default connect(null, mapDispatchToProps)(AddUsersCard);
+export default compose(
+  withNamespaces(),
+  connect(null, mapDispatchToProps)
+)(AddUsersCard);

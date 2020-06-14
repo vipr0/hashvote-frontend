@@ -4,6 +4,8 @@ import { connect } from "react-redux";
 import ModalWrapper from "../ModalWrapper";
 import { startVoting } from "../../redux/actions/voting";
 import { useParams } from "react-router-dom";
+import compose from "../../utils/compose";
+import { withNamespaces } from "react-i18next";
 
 const mapStateToProps = (state) => ({
   modal: state.modals.startVoting,
@@ -13,7 +15,7 @@ const mapDispatchToProps = (dispatch) => ({
   startVoting: (id, data) => dispatch(startVoting(id, data)),
 });
 
-const StartVotingModal = ({ modal, startVoting }) => {
+const StartVotingModal = ({ modal, startVoting, t }) => {
   const { votingId } = useParams();
   return (
     <ModalWrapper
@@ -21,19 +23,19 @@ const StartVotingModal = ({ modal, startVoting }) => {
       result={modal.result}
       visible={modal.visible}
       error={modal.error}
-      title="Enter admin token to start voting"
+      title={t("Enter admin token to start voting")}
     >
       <Form layout="vertical" onFinish={(data) => startVoting(votingId, data)}>
         <Form.Item
           name="token"
-          label="Admin Token"
-          rules={[{ required: true, message: "Please input admin token!" }]}
+          label={t("Admin Token")}
+          rules={[{ required: true, message: t("Please input admin token!") }]}
         >
           <Input.Password />
         </Form.Item>
         <Form.Item style={{ textAlign: "center" }}>
           <Button loading={modal.loading} type="primary" htmlType="submit">
-            Confirm
+            {t("Confirm")}
           </Button>
         </Form.Item>
       </Form>
@@ -41,4 +43,7 @@ const StartVotingModal = ({ modal, startVoting }) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(StartVotingModal);
+export default compose(
+  withNamespaces(),
+  connect(mapStateToProps, mapDispatchToProps)
+)(StartVotingModal);

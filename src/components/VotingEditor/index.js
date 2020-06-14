@@ -15,6 +15,7 @@ import adminComponent from "../adminComponent";
 import protectedComponent from "../protectedComponent";
 import VotersList from "./VotersList";
 import EventsList from "../EventsList";
+import { withNamespaces } from "react-i18next";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -28,7 +29,7 @@ const mapDispatchToProps = (dispatch) => ({
   getVoting: (id) => dispatch(getVoting(id)),
 });
 
-const VotingEditor = ({ loading, voting = {}, getVoting }) => {
+const VotingEditor = ({ loading, voting = {}, getVoting, t }) => {
   const { votingId } = useParams();
   useEffect(() => {
     getVoting(votingId);
@@ -49,7 +50,7 @@ const VotingEditor = ({ loading, voting = {}, getVoting }) => {
 
       <div className="card-container">
         <Tabs type="card">
-          <TabPane tab="Information" key="1">
+          <TabPane tab={t("Information")} key="1">
             <Row gutter={[32, 32]}>
               <Col span={24} md={12}>
                 <VotingInfoCard voting={voting} />
@@ -64,7 +65,7 @@ const VotingEditor = ({ loading, voting = {}, getVoting }) => {
               </Col>
             </Row>
           </TabPane>
-          <TabPane tab="Voters" key="2">
+          <TabPane tab={t("Voters")} key="2">
             <Row gutter={[32, 32]}>
               <Col span={24} lg={12}>
                 <VotersList />
@@ -74,7 +75,7 @@ const VotingEditor = ({ loading, voting = {}, getVoting }) => {
               </Col>
             </Row>
           </TabPane>
-          <TabPane tab="Events" key="3">
+          <TabPane tab={t("Events")} key="3">
             <EventsList/>
           </TabPane>
         </Tabs>
@@ -86,5 +87,6 @@ const VotingEditor = ({ loading, voting = {}, getVoting }) => {
 export default compose(
   protectedComponent,
   adminComponent,
+  withNamespaces(),
   connect(mapStateToProps, mapDispatchToProps)
 )(VotingEditor);

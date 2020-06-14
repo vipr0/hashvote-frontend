@@ -1,12 +1,13 @@
 import React from "react";
 import { List, Card } from "antd";
 import { useSelector } from "react-redux";
+import { withNamespaces } from "react-i18next";
 
-const EventsList = () => {
+const EventsList = ({ t }) => {
   const events = useSelector((state) => state.voting.events.values);
 
   return (
-    <Card title="Voting events">
+    <Card title={t("Voting events")}>
       <List
         className="voters-list-container"
         itemLayout="horizontal"
@@ -25,4 +26,4 @@ const EventsList = () => {
   );
 };
 
-export default EventsList;
+export default withNamespaces()(EventsList);

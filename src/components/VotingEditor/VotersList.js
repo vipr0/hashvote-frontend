@@ -4,14 +4,15 @@ import { Link } from "react-router-dom";
 import { List, Avatar, Card } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { apiUrl } from "../../utils/api";
+import { withNamespaces } from "react-i18next";
 
-const VotersList = () => {
+const VotersList = ({ t }) => {
   const voters = useSelector((state) => state.voting.dataFromDB.voters);
 
   return (
     <Card
-      title="List of voters"
-      extra={`Total voters: ${voters.length ? voters.length : 0}`}
+      title={t("List of voters")}
+      extra={`${t("Total voters")}: ${voters.length ? voters.length : 0}`}
     >
       <List
         className="voters-list-container"
@@ -41,4 +42,4 @@ const VotersList = () => {
   );
 };
 
-export default VotersList;
+export default withNamespaces()(VotersList);
