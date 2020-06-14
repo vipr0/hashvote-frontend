@@ -2,6 +2,8 @@ import React from "react";
 import { connect } from "react-redux";
 import { Result, Button } from "antd";
 import { push } from "connected-react-router";
+import compose from "../../utils/compose";
+import { withNamespaces } from "react-i18next";
 
 const mapStateToProps = (state) => ({
   user: state.profile.data,
@@ -12,12 +14,12 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default (Component) => {
-  const Wrapper = ({ user, goToLoginPage }) => {
+  const Wrapper = ({ user, goToLoginPage, t }) => {
     if (!user)
       return (
         <Result
           status="403"
-          title="You are not logged in"
+          title={t("You are not logged in")}
           extra={
             <Button type="primary" onClick={goToLoginPage}>
               Log In
@@ -28,5 +30,8 @@ export default (Component) => {
     return <Component />;
   };
 
-  return connect(mapStateToProps, mapDispatchToProps)(Wrapper);
+  return compose(
+    withNamespaces(),
+    connect(mapStateToProps, mapDispatchToProps)
+  )(Wrapper);
 };

@@ -1,17 +1,18 @@
 import React from "react";
 import moment from "moment";
 import { Descriptions, Card } from "antd";
+import { withNamespaces } from "react-i18next";
 
-const UserDataCard = ({ user }) => {
+const UserDataCard = ({ user, t }) => {
   return (
-    <Card title="User data">
+    <Card title={t("User data")}>
       <Descriptions column={1} bordered>
         <Descriptions.Item label="ID">{user._id}</Descriptions.Item>
-        <Descriptions.Item label="Verified">
-          {user.isVerified ? "Yes" : "No"}
+        <Descriptions.Item label={t("Verified")}>
+          {user.isVerified ? t("Yes") : t("No")}
         </Descriptions.Item>
-        <Descriptions.Item label="Role">{user.role}</Descriptions.Item>
-        <Descriptions.Item label="Last password change">
+        <Descriptions.Item label={t("Role")}>{user.role}</Descriptions.Item>
+        <Descriptions.Item label={t("Last password change")}>
           {moment(user.passwordChangedAt).fromNow()}
         </Descriptions.Item>
       </Descriptions>
@@ -19,4 +20,4 @@ const UserDataCard = ({ user }) => {
   );
 };
 
-export default UserDataCard;
+export default withNamespaces()(UserDataCard);

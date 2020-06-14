@@ -115,5 +115,14 @@
   "Please add csv file with users emails": "Please add csv file with users emails",
   "Click or drag .csv file to this area to upload data": "Click or drag .csv file to this area to upload data",
   "Rows must contain only emails. See example file below": "Rows must contain only emails. See example file below",
-  "Voting events": "Voting events"
+  "Voting events": "Voting events",
+  "Reset password": "Reset password",
+  "Edit user data": "Edit user data",
+  "Please input user`s name": "Please input user`s name",
+  "Please input user`s email": "Please input user`s email",
+  "Select a role": "Select a role",
+  "Update User`s Data": "Update User`s Data",
+  "User data": "User data",
+  "Last password change": "Last password change",
+  "You are not logged in": "You are not logged in"
 }

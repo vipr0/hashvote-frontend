@@ -3,6 +3,8 @@ import { Button, Space } from "antd";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { deleteUser, resetUserPassword } from "../../redux/actions/user";
+import compose from "../../utils/compose";
+import { withNamespaces } from "react-i18next";
 
 const mapStateToProps = (state) => ({
   email: state.user.data.email,
@@ -19,7 +21,7 @@ const mapDispatchToProps = (dispatch) => ({
   },
 });
 
-const ActionButtons = ({ email, userId, resetPassword, deleteUser }) => {
+const ActionButtons = ({ email, userId, resetPassword, deleteUser, t }) => {
   return (
     <Space
       size="middle"
@@ -34,13 +36,16 @@ const ActionButtons = ({ email, userId, resetPassword, deleteUser }) => {
         type="primary"
         onClick={() => resetPassword(email)}
       >
-        Reset password
+        {t("Reset password")}
       </Button>
       <Button key="delete" type="danger" onClick={() => deleteUser(userId)}>
-        Delete
+        {t("Delete")}
       </Button>
     </Space>
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ActionButtons);
+export default compose(
+  withNamespaces(),
+  connect(mapStateToProps, mapDispatchToProps)
+)(ActionButtons);
