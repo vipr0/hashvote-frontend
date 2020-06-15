@@ -2,7 +2,7 @@
   "Log In": "Log In",
   "Home": "Home",
   "Admin panel": "Admin panel",
-  "My Profile": "My Profile",
+  "My Profile": "My Settings",
   "Log Out": "Log Out",
   "List of all available votings": "List of all available votings",
   "Filter": "Filter",
@@ -144,4 +144,5 @@
   "Sign up": "Sign up",
   "Change data": "Change data",
   "Change password": "Change password"
+
 }

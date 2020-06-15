@@ -6,6 +6,7 @@ import ChangePasswordCard from "./ChangePasswordCard";
 import ChangeDataCard from "./ChangeDataCard";
 import protectedComponent from "../protectedComponent";
 import UserAvatar from "../UserAvatar";
+import OtherCard from "./OtherCard";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -30,6 +31,9 @@ const MyProfile = () => {
         </TabPane>
         <TabPane tab={t("Change password")} key="password">
           <ChangePasswordCard />
+        </TabPane>
+        <TabPane tab="Other" key="other">
+          <OtherCard />
         </TabPane>
       </Tabs>
     </div>

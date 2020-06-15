@@ -49,6 +49,7 @@ const UserNavMenu = ({ user }) => {
             {t("My Profile")}
           </Link>
         </Menu.Item>
+
         <Menu.Item onClick={handleLogout} key="logout">
           <LogoutOutlined />
           {t("Log Out")}
