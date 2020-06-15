@@ -1,14 +1,14 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Result, Button } from "antd";
-import { push } from "connected-react-router";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 
 export default (Component) => {
   const Wrapper = () => {
     const { t } = useTranslation();
     const user = useSelector(({ profile }) => profile.data);
-    const dispatch = useDispatch();
+    const history = useHistory();
 
     if (!user)
       return (
@@ -16,7 +16,7 @@ export default (Component) => {
           status="403"
           title={t("You are not logged in")}
           extra={
-            <Button type="primary" onClick={() => dispatch(push("/login"))}>
+            <Button type="primary" onClick={() => history.push("/login")}>
               {t("Log In")}
             </Button>
           }

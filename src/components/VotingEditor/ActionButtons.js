@@ -3,14 +3,15 @@ import { Button, Space, Popconfirm } from "antd";
 import { useDispatch } from "react-redux";
 import { showModal } from "../../redux/actions/modals";
 import { archiveVoting, deleteVoting } from "../../redux/actions/voting";
-import { push } from "connected-react-router";
+import { useHistory } from "react-router-dom";
 
 const ActionButtons = ({ voting }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleDelete = () => {
     dispatch(deleteVoting(voting._id));
-    dispatch(push("/admin"));
+    history.push("/admin");
   };
 
   return (

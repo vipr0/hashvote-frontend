@@ -1,6 +1,6 @@
 import React from "react";
-import { useParams } from "react-router-dom";
-import { Form, Input, Button } from "antd";
+import { useParams, useHistory } from "react-router-dom";
+import { Form, Input, Button, message } from "antd";
 import { LockOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import { signUp } from "../../redux/actions/profile";
@@ -11,12 +11,20 @@ const SignUp = () => {
   const { token } = useParams();
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const history = useHistory();
+
+  const handleSignUp = async (data) => {
+    try {
+      await dispatch(signUp(token, data));
+      message.success("Succesfully signed up");
+      history.push("/votings");
+    } catch (error) {
+      message.error(error);
+    }
+  };
 
   return (
-    <FormWrapper
-      fn={(data) => dispatch(signUp(token, data))}
-      title={t("Activate account")}
-    >
+    <FormWrapper fn={handleSignUp} title={t("Activate account")}>
       <Form.Item
         name="password"
         rules={[

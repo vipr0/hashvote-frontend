@@ -1,18 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import './i18n';
-import { ConnectedRouter } from "connected-react-router";
+import "./i18n";
 import { Provider } from "react-redux";
 import App from "./components/App/App";
-import configureStore, { history } from "./redux/store";
+import configureStore from "./redux/store";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const store = configureStore();
 
 ReactDOM.render(
   <Provider store={store}>
-    <ConnectedRouter history={history}>
+    <Router>
       <App />
-    </ConnectedRouter>
+    </Router>
   </Provider>,
   document.getElementById("root")
 );

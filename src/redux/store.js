@@ -14,7 +14,7 @@ export default function configureStore(preloadedState) {
     preloadedState,
     composeWithDevTools(
       applyMiddleware(
-        routerMiddleware(history),
+        // routerMiddleware(history),
         thunk,
         cookiesMiddleware,
         hideErrorWhenRedirect

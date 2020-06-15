@@ -2,18 +2,19 @@ import React from "react";
 import { Button, Space } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { push } from "connected-react-router";
 import { deleteUser, resetUserPassword } from "../../redux/actions/user";
+import { useHistory } from "react-router-dom";
 
 const ActionButtons = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const email = useSelector(({ user }) => user.data.email);
   const userId = useSelector(({ user }) => user.data._id);
+  const history = useHistory();
 
   const handleDelete = () => {
     dispatch(deleteUser(userId));
-    dispatch(push("/admin"));
+    history.push("/admin");
   };
 
   return (

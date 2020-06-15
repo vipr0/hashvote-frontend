@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import { forgotPassword } from "../../redux/actions/profile";
@@ -11,11 +11,17 @@ const ForgotPassword = () => {
   const loading = useSelector((state) => state.app.loading);
   const { t } = useTranslation();
 
+  const handleRequest = async (data) => {
+    try {
+      await dispatch(forgotPassword(data));
+      message.success("Message with instructions will be sent to your email");
+    } catch (error) {
+      message.error(error);
+    }
+  };
+
   return (
-    <FormWrapper
-      title={t("Forgot password?")}
-      fn={(data) => dispatch(forgotPassword(data))}
-    >
+    <FormWrapper title={t("Forgot password?")} fn={handleRequest}>
       <p>{t("Please fill in the email that you used to register.")}</p>
       <p>
         {t(

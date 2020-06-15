@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Menu } from "antd";
@@ -16,6 +16,12 @@ const { SubMenu } = Menu;
 const UserNavMenu = ({ user }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  const handleLogout = () => {
+    dispatch(logOut());
+    history.push("/login");
+  };
 
   return (
     <Menu theme="light" mode="horizontal">
@@ -43,7 +49,7 @@ const UserNavMenu = ({ user }) => {
             {t("My Profile")}
           </Link>
         </Menu.Item>
-        <Menu.Item onClick={() => dispatch(logOut())} key="logout">
+        <Menu.Item onClick={handleLogout} key="logout">
           <LogoutOutlined />
           {t("Log Out")}
         </Menu.Item>

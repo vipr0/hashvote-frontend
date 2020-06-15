@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { Form, Input, Button } from "antd";
+import { useParams, useHistory } from "react-router-dom";
+import { Form, Input, Button, message } from "antd";
 import { LockOutlined } from "@ant-design/icons";
 import { resetPassword } from "../../redux/actions/profile";
 import FormWrapper from "./authFormWrapper";
@@ -11,12 +11,20 @@ const ResetPassword = () => {
   const dispatch = useDispatch();
   const { token } = useParams();
   const { t } = useTranslation();
+  const history = useHistory();
+
+  const handleReset = async (data) => {
+    try {
+      await dispatch(resetPassword(token, data));
+      message.success("Succesfully reset password");
+      history.push("/votings");
+    } catch (error) {
+      message.error(error);
+    }
+  };
 
   return (
-    <FormWrapper
-      fn={(data) => dispatch(resetPassword(token, data))}
-      title={t("Reset password")}
-    >
+    <FormWrapper fn={handleReset} title={t("Reset password")}>
       <Form.Item
         name="password"
         rules={[

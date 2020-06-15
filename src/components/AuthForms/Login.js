@@ -1,7 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { logIn } from "../../redux/actions/profile";
 import "./style.css";
@@ -12,9 +12,20 @@ const Login = () => {
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.app.loading);
   const { t } = useTranslation();
+  const history = useHistory();
+
+  const handleLogin = async (data) => {
+    try {
+      await dispatch(logIn(data));
+      message.success('Succesfully logged in');
+      history.push("/votings");
+    } catch (error) {
+      message.error(error);
+    }
+  };
 
   return (
-    <FormWrapper fn={(data) => dispatch(logIn(data))} title={t("Log in")}>
+    <FormWrapper fn={handleLogin} title={t("Log in")}>
       <Form.Item
         name="email"
         rules={[

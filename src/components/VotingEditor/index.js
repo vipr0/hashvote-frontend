@@ -31,6 +31,8 @@ const VotingEditor = () => {
     dispatch(getVoting(votingId));
   }, []);
 
+  if(!voting) return <Loader loading={true}/>
+
   return (
     <Loader loading={loading}>
       <StartVotingModal votingId={votingId} />

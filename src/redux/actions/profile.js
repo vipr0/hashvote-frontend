@@ -1,4 +1,3 @@
-import { push } from "connected-react-router";
 import { Profile } from "../../utils/api";
 import {
   PROFILE_LOADING,
@@ -29,11 +28,9 @@ export const logIn = (data) => {
     try {
       dispatch(profileLoading());
       const { body } = await Profile.login(data);
-      dispatch(showMessage("success", body.message));
       dispatch({ type: LOGIN, payload: body.result });
-      dispatch(push("/votings"));
     } catch ({ message }) {
-      dispatch(showMessage("error", message));
+      throw message;
     } finally {
       dispatch(profileLoaded());
     }
@@ -45,11 +42,9 @@ export const signUp = (token, data) => {
     try {
       dispatch(profileLoading());
       const { body } = await Profile.activate(token, data);
-      dispatch(showMessage("success", body.message));
       dispatch({ type: REGISTER, payload: body.result });
-      dispatch(push("/votings"));
     } catch ({ message }) {
-      dispatch(showMessage("error", message));
+      throw message;
     } finally {
       dispatch(profileLoaded());
     }
@@ -59,10 +54,9 @@ export const signUp = (token, data) => {
 export const forgotPassword = (data) => async (dispatch) => {
   try {
     dispatch(profileLoading());
-    const { body } = await Profile.forgotPassword(data);
-    dispatch(showMessage("success", body.message));
+    await Profile.forgotPassword(data);
   } catch ({ message }) {
-    dispatch(showMessage("error", message));
+    throw message;
   } finally {
     dispatch(profileLoaded());
   }
@@ -72,11 +66,9 @@ export const resetPassword = (token, data) => async (dispatch) => {
   try {
     dispatch(profileLoading());
     const { body } = await Profile.resetPassword(token, data);
-    dispatch(showMessage("success", body.message));
     dispatch({ type: RESET_PASSWORD, payload: body.result });
-    dispatch(push("/votings"));
   } catch ({ message }) {
-    dispatch(showMessage("error", message));
+    throw message;
   } finally {
     dispatch(profileLoaded());
   }
@@ -85,8 +77,6 @@ export const resetPassword = (token, data) => async (dispatch) => {
 export const logOut = () => {
   return (dispatch) => {
     dispatch({ type: LOGOUT });
-    dispatch(push("/login"));
-    dispatch(showMessage("success", "Successfully logged out"));
   };
 };
 
