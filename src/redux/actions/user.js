@@ -33,8 +33,8 @@ export const getUser = (id) => async (dispatch) => {
     dispatch(userLoading());
     const { body } = await User.getOne(id);
     dispatch({ type: GET_USER, payload: body.result });
-  } catch (error) {
-    dispatch(showError(error.message));
+  } catch ({ message }) {
+    throw new Error(message);
   } finally {
     dispatch(userLoaded());
   }

@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Typography, Row, Col, Tabs } from "antd";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import "./style.css";
 import Loader from "../Loader";
 import AddUsersCard from "./AddUsersCard";
@@ -16,6 +16,7 @@ import protectedComponent from "../protectedComponent";
 import VotersList from "./VotersList";
 import EventsList from "../EventsList";
 import { useTranslation } from "react-i18next";
+import ErrorIndicator from "../ErrorIndicator";
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
@@ -25,16 +26,31 @@ const VotingEditor = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const voting = useSelector(({ voting }) => voting.dataFromDB);
-  const loading = useSelector(({ voting }) => voting.dataFromDB.loading);
+  const [error, setError] = useState(null);
+  const history = useHistory();
 
   useEffect(() => {
-    dispatch(getVoting(votingId));
+    dispatch(getVoting(votingId)).catch(() => {
+      setError("No voting with that ID");
+    });
   }, []);
 
-  if(!voting) return <Loader loading={true}/>
+  if (error) {
+    return (
+      <ErrorIndicator
+        error={error}
+        hideError={() => {
+          setError(null);
+          history.push("/admin");
+        }}
+      />
+    );
+  }
+
+  if (voting.loading) return <Loader loading={true} />;
 
   return (
-    <Loader loading={loading}>
+    <div>
       <StartVotingModal votingId={votingId} />
       <Row gutter={[32, 32]}>
         <Col span={24} md={12}>
@@ -78,7 +94,7 @@ const VotingEditor = () => {
           </TabPane>
         </Tabs>
       </div>
-    </Loader>
+    </div>
   );
 };
 

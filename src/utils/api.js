@@ -10,7 +10,7 @@ const withToken = (req) => {
 };
 
 const errorMessage = (error) => {
-  throw Error(error.response.body.message);
+  throw new Error(error.response.body.message);
 };
 
 export const request = {

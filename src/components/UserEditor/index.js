@@ -1,15 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Loader from "../Loader";
 import { Typography, Row, Col } from "antd";
 import EditDataCard from "./EditDataCard";
 import UserDataCard from "./UserDataCard";
 import ActionButtons from "./ActionButtons";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { getUser } from "../../redux/actions/user";
 import compose from "../../utils/compose";
 import protectedComponent from "../protectedComponent";
 import adminComponent from "../adminComponent";
+import ErrorIndicator from "../ErrorIndicator";
 
 const { Title } = Typography;
 
@@ -18,10 +19,24 @@ const UserEditor = () => {
   const user = useSelector(({ user }) => user.data);
   const loading = useSelector(({ user }) => user.loading);
   const dispatch = useDispatch();
+  const history = useHistory();
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    dispatch(getUser(userId));
+    dispatch(getUser(userId)).catch(() => setError("No user with that ID"));
   }, []);
+
+  if (error) {
+    return (
+      <ErrorIndicator
+        error={error}
+        hideError={() => {
+          setError(null);
+          history.push("/admin");
+        }}
+      />
+    );
+  }
 
   return (
     <Loader loading={loading}>

@@ -43,7 +43,9 @@ export const getVoting = (id) => async (dispatch) => {
     const events = await Voting.getEvents(id);
     dispatch({ type: GET_VOTING_EVENTS, payload: events.body.result });
   } catch (error) {
-    dispatch(showError(error.message));
+    console.log(error);
+    throw new Error(error);
+    // dispatch(showError(error.message));
   } finally {
     dispatch(votingLoaded());
   }

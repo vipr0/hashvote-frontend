@@ -3,9 +3,12 @@ import { Descriptions, Card } from "antd";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import Loader from "../Loader";
 
 const VotingInfoCard = ({ voting }) => {
   const { t } = useTranslation();
+
+  if (!voting.createdBy) return <Loader loading={true} />;
 
   return (
     <Card title={t("Information")}>

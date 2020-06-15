@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Typography, Button, Row, Col } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import Loader from "../Loader";
 import VoteModal from "../VoteModal";
 import VotingDecription from "./VotingDecription";
@@ -11,6 +11,7 @@ import { getVoting } from "../../redux/actions/voting";
 import protectedComponent from "../protectedComponent";
 import { showModal } from "../../redux/actions/modals";
 import { useTranslation } from "react-i18next";
+import ErrorIndicator from "../ErrorIndicator";
 
 const { Title } = Typography;
 
@@ -18,16 +19,30 @@ const VotingDetails = () => {
   let { votingId } = useParams();
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const history = useHistory();
   const voting = useSelector(({ voting }) => voting.dataFromDB);
   const results = useSelector(({ voting }) => voting.dataFromContract);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    dispatch(getVoting(votingId));
+    dispatch(getVoting(votingId)).catch(() =>
+      setError("No voting with this ID")
+    );
   }, []);
 
-  if (voting.loading) {
-    return <Loader loading={voting.loading} />;
+  if (error) {
+    return (
+      <ErrorIndicator
+        error={error}
+        hideError={() => {
+          setError(null);
+          history.push("/votings");
+        }}
+      />
+    );
   }
+
+  if (voting.loading) return <Loader loading={true} />;
 
   return (
     <Loader loading={voting.loading && results.loading}>
